@@ -209,7 +209,8 @@ const CONFIG = {
   .env-letter{
     position:absolute;left:50%;bottom:9px;width:86%;
     transform:translateX(-50%) translateY(0);z-index:2;
-    background:#FBF7EF;border:1px solid var(--line);border-radius:4px;
+    background:#FBF7EF;
+    border:1px solid var(--line);border-radius:4px;
     padding:26px 22px 24px;text-align:center;
     box-shadow:0 14px 32px -18px rgba(67,48,42,.55);
     transition:transform 1s cubic-bezier(.2,.8,.25,1) .45s;
@@ -222,9 +223,13 @@ const CONFIG = {
   #introGuest{font-family:'Cormorant Garamond',serif;font-size:1.45rem;line-height:1.2;color:var(--ink)}
 
   .env-pocket{position:absolute;inset:0;z-index:3;border-radius:8px;
-    background:linear-gradient(135deg,#ECE1D1,#E2D4C0);
-    clip-path:polygon(0 0,50% 50%,100% 0,100% 100%,0 100%);
-    box-shadow:inset 0 -3px 10px rgba(140,86,64,.10)}
+    background:linear-gradient(135deg,#ECE1D1,#E2D4C0)}
+
+  .env-diamond{position:absolute;top:-57%;left:5%;right:5%;bottom:43%;z-index:5;
+    clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
+    background:url('fotos/Fondo Carta.jpeg') center/cover no-repeat;
+    opacity:0;transition:opacity .6s ease}
+  .env.is-open .env-diamond{opacity:1;transition:opacity .6s ease .5s}
 
   .env-flap{position:absolute;top:0;left:0;width:100%;height:62%;z-index:7;
     transform-origin:top center;transform:rotateX(0deg);
@@ -502,6 +507,7 @@ const CONFIG = {
         <div id="introGuest" class="serif">Invitado especial</div>
       </div>
       <div class="env-pocket"></div>
+      <div class="env-diamond"></div>
       <div class="env-flap"></div>
       <div class="env-seal"><img id="sealMono" alt="Monograma J y M"></div>
     </button>

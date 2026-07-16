@@ -198,23 +198,24 @@ const CONFIG = {
   .stage{perspective:1500px}
 
   .env{
-    position:relative;width:clamp(280px,84vw,366px);aspect-ratio:1.5/1;
+    position:relative;width:clamp(320px,90vw,480px);aspect-ratio:1.5/1;
     cursor:pointer;border:none;background:none;padding:0;display:block;
   }
   .env:focus-visible{outline:2px solid var(--terra);outline-offset:10px;border-radius:8px}
 
   .env-body{position:absolute;inset:0;border-radius:8px;
-    background:linear-gradient(135deg,var(--cream),#EFE6D7);box-shadow:var(--shadow);z-index:1}
+    background:url("fotos/fondo-tarjeta.jpg") center 22%/cover;box-shadow:var(--shadow);z-index:1}
 
   .env-letter{
-    position:absolute;left:50%;bottom:9px;width:86%;
-    transform:translateX(-50%) translateY(0);z-index:2;
-    background:#FBF7EF;border:1px solid var(--line);border-radius:4px;
+    position:absolute;left:50%;top:68%;width:86%;
+    transform:translateX(-50%) translateY(16px);z-index:2;opacity:0;
+    background:#FBF7EF;
+    border:1px solid var(--line);border-radius:4px;
     padding:26px 22px 24px;text-align:center;
     box-shadow:0 14px 32px -18px rgba(67,48,42,.55);
-    transition:transform 1s cubic-bezier(.2,.8,.25,1) .45s;
+    transition:transform 1s cubic-bezier(.2,.8,.25,1) .45s, opacity .7s ease .45s;
   }
-  .env.is-open .env-letter{transform:translateX(-50%) translateY(-80%);z-index:6}
+  .env.is-open .env-letter{transform:translateX(-50%) translateY(0);opacity:1;z-index:6}
   .env-letter .l-mono{width:46px;margin:0 auto 8px}
   .env-letter .l-mono img{width:100%}
   .env-letter .l-for{font-size:.6rem;letter-spacing:.34em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:3px}
@@ -223,29 +224,30 @@ const CONFIG = {
 
   .env-pocket{position:absolute;inset:0;z-index:3;border-radius:8px;
     background:linear-gradient(135deg,#ECE1D1,#E2D4C0);
-    clip-path:polygon(0 0,50% 50%,100% 0,100% 100%,0 100%);
+    clip-path:polygon(0 0,50% 62%,100% 0,100% 100%,0 100%);
     box-shadow:inset 0 -3px 10px rgba(140,86,64,.10)}
 
   .env-flap{position:absolute;top:0;left:0;width:100%;height:62%;z-index:7;
-    transform-origin:top center;transform:rotateX(0deg);
+    transform-origin:top center;transform:rotateX(0deg);backface-visibility:hidden;opacity:1;
     background:linear-gradient(180deg,#E4D6C2,#D7C5AE);
     clip-path:polygon(0 0,100% 0,50% 100%);
     box-shadow:0 2px 7px rgba(140,86,64,.14);
-    transition:transform .95s cubic-bezier(.6,0,.2,1), z-index 0s .4s}
-  .env.is-open .env-flap{transform:rotateX(-179deg);z-index:1}
+    transition:transform .95s cubic-bezier(.6,0,.2,1), opacity .5s ease .35s, z-index 0s .4s}
+  .env.is-open .env-flap{transform:rotateX(-179deg);opacity:0;z-index:1}
 
-  .env-seal{position:absolute;top:56%;left:50%;width:78px;height:78px;
-    transform:translate(-50%,-50%);z-index:8;border-radius:50%;padding:12px;
+  .env-seal{position:absolute;top:56%;left:50%;width:112px;height:112px;
+    transform:translate(-50%,-50%);z-index:8;border-radius:50%;overflow:hidden;
     display:flex;align-items:center;justify-content:center;
     background:radial-gradient(circle at 38% 30%,var(--dusty-light),var(--dusty) 72%);
     box-shadow:0 10px 22px -10px rgba(140,86,64,.55),inset 0 2px 5px rgba(255,255,255,.55);
     transition:transform .5s ease,opacity .45s ease}
-  .env-seal img{width:100%}
+  .env-seal img{width:100%;height:100%;object-fit:cover;transform:scale(1.35)}
   .env.is-open .env-seal{opacity:0;transform:translate(-50%,-50%) scale(.45) rotate(-12deg)}
 
   .enter-btn{
     background:var(--terra);color:var(--cream);border:none;padding:14px 38px;cursor:pointer;
     font-family:'Jost',sans-serif;letter-spacing:.24em;text-transform:uppercase;font-size:.68rem;
+    margin-top:clamp(90px,22vw,120px);
     opacity:0;pointer-events:none;transform:translateY(8px);
     transition:opacity .5s ease,transform .5s ease,background .3s}
   #intro.opened .enter-btn{opacity:1;pointer-events:auto;transform:none;transition-delay:1.1s,1.1s,0s}
@@ -714,7 +716,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
 
   // Monogramas
   $("heroMono").src = MONO_DARK;
-  $("sealMono").src = MONO_DARK;
+  $("sealMono").src = "fotos/sello-tarjeta.jpg";
   $("letterMono").src = MONO_DARK;
   $("footMono").src = MONO_DARK;
 

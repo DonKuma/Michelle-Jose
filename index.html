@@ -102,7 +102,6 @@ const CONFIG = {
     texto: "Aunque amamos a los más pequeños, este evento será solo para adultos."
   },
 
-  whatsapp: "593999999999",     // formato internacional, sin + ni espacios
   rsvpHasta:"Confirma tu asistencia antes del 14 de octubre",
 
   // ─────────────────────────────────────────────────────────────
@@ -123,9 +122,6 @@ const CONFIG = {
   //  6. Si vuelves a editar el código, crea una "Nueva implementación"
   //     (o "Gestionar implementaciones" → editar → nueva versión) para
   //     que los cambios se apliquen.
-  //
-  // Si dejas 'scriptURL' vacío, se usa automáticamente la confirmación
-  // por WhatsApp como respaldo.
   // ─────────────────────────────────────────────────────────────
   googleSheet: {
     scriptURL: "https://script.google.com/macros/s/AKfycbwUF66QxgITfGHnZ-kvF6_VZFFJgaB6mSGYU9zNaJGkCSFc-S9wY4z9iTlTz5WVzmnf/exec"   // ← pega aquí la URL de tu Web App terminada en /exec
@@ -356,14 +352,12 @@ const CONFIG = {
   .rsvp-toggle input{position:absolute;opacity:0;width:0;height:0}
   .rsvp-toggle span{flex:1;text-align:center;padding:13px 10px;border:1px solid var(--line);cursor:pointer;font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;transition:.25s;color:var(--ink-soft)}
   .rsvp-toggle input:checked+span{background:var(--dark-terra);border-color:var(--dark-terra);color:var(--cream)}
-  .wa-btn,.rsvp-btn{display:inline-flex;align-items:center;gap:11px;background:var(--dark-terra);color:var(--cream);border:none;padding:16px 40px;font-family:'Jost',sans-serif;font-weight:500;letter-spacing:.18em;text-transform:uppercase;font-size:.76rem;cursor:pointer;text-decoration:none;transition:.3s}
-  .wa-btn:hover,.rsvp-btn:hover{background:var(--ink);transform:translateY(-3px)}
+  .rsvp-btn{display:inline-flex;align-items:center;gap:11px;background:var(--dark-terra);color:var(--cream);border:none;padding:16px 40px;font-family:'Jost',sans-serif;font-weight:500;letter-spacing:.18em;text-transform:uppercase;font-size:.76rem;cursor:pointer;text-decoration:none;transition:.3s}
+  .rsvp-btn:hover{background:var(--ink);transform:translateY(-3px)}
   .rsvp-btn:disabled{opacity:.55;cursor:default;transform:none}
   .rsvp-guest{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--dark-terra);font-size:1.25rem;margin-bottom:6px}
   .rsvp-thanks{display:none;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--dark-terra);font-size:1.35rem;line-height:1.5;max-width:420px;margin:0 auto}
   .rsvp-error{display:none;color:#a03a3a;font-size:.78rem;margin-top:14px}
-  .rsvp-alt{display:inline-block;margin-top:16px;color:var(--dark-terra);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px;transition:.3s}
-  .rsvp-alt:hover{color:var(--ink)}
   .rsvp-checklist{display:flex;flex-direction:column;gap:8px}
   .rsvp-checklist label{display:flex;align-items:center;gap:10px;border:1px solid var(--line);padding:11px 14px;font-size:.88rem;cursor:pointer;text-align:left}
   .rsvp-checklist input{width:17px;height:17px;flex:none;accent-color:var(--dark-terra)}
@@ -686,25 +680,11 @@ const CONFIG = {
       </div>
 
       <button type="submit" class="rsvp-btn" id="sheetBtn">Confirmar</button>
-      <p class="rsvp-error" id="sheetError">No pudimos enviar tu confirmación. Intenta de nuevo o escríbenos por WhatsApp.</p>
+      <p class="rsvp-error" id="sheetError">No pudimos enviar tu confirmación. Por favor intenta de nuevo en un momento.</p>
     </form>
     <p class="rsvp-thanks" id="sheetThanks">¡Gracias por confirmar! Ya recibimos tu respuesta y no vemos la hora de celebrar contigo.</p>
-    <div><a class="rsvp-alt" id="waAlt" target="_blank" rel="noopener" style="display:none">o confírmanos por WhatsApp</a></div>
   </div>
   <iframe name="hidden_iframe" id="hidden_iframe" style="display:none"></iframe>
-
-  <!-- Modo WhatsApp (respaldo si no hay Google Sheet configurado) -->
-  <div id="waBlock">
-    <div class="rsvp-field" id="waPersonasField">
-      <label for="asisten">¿Cuántos asistirán?</label>
-      <select id="asisten"></select>
-    </div>
-    <div class="rsvp-field" id="waNombresField" style="display:none">
-      <label>¿Quiénes asistirán?</label>
-      <div class="rsvp-checklist" id="waNombresChecklist"></div>
-    </div>
-    <a class="wa-btn" id="waBtn" target="_blank" rel="noopener">Confirmar por WhatsApp</a>
-  </div>
 </section>
 
 <!-- ════════ CIERRE "GRACIAS" ════════ -->
@@ -860,15 +840,8 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   const hasSheet = gs.scriptURL && gs.scriptURL.trim();
   const maxCupos = useChecklist ? guestList.length : (()=>{const n=parseInt(admision,10);return (isNaN(n)||n<1)?4:n;})();
 
-  function waLink(extra){
-    let msg = `¡Hola! Confirmo mi asistencia a la boda de ${CONFIG.novia} y ${CONFIG.novio}.%0AInvitado: ${encodeURIComponent(quien)}`;
-    if(extra) msg += `%0A${extra}`;
-    return `https://wa.me/${CONFIG.whatsapp}?text=${msg}`;
-  }
-
   if(hasSheet){
     // Modo Google Sheets: el formulario se envía sin salir de la página
-    $("waBlock").style.display = "none";
     $("sheetBlock").style.display = "block";
 
     $("fTitulo").value = titulo;
@@ -914,11 +887,6 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
     $("asistNo").addEventListener("change", syncAsistencia);
     syncAsistencia();
 
-    if(CONFIG.whatsapp && CONFIG.whatsapp.replace(/9/g,"") !== "5933"){
-      $("waAlt").style.display = "inline-block";
-      $("waAlt").href = waLink("");
-    }
-
     const form = $("sheetForm"), btn = $("sheetBtn"), iframe = $("hidden_iframe");
     form.action = gs.scriptURL.trim();
     form.method = "POST";
@@ -948,32 +916,6 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
         }
       }, 12000);
     });
-  } else if(useChecklist){
-    // Modo WhatsApp con checklist de nombres (respaldo si no hay Google Sheet)
-    $("waPersonasField").style.display = "none";
-    $("waNombresField").style.display = "block";
-    const wchecklist = $("waNombresChecklist");
-    guestList.forEach(nombre=>{
-      const label = document.createElement("label");
-      const check = document.createElement("input");
-      check.type = "checkbox"; check.className = "wguest-check"; check.checked = true; check.dataset.name = nombre;
-      const span = document.createElement("span"); span.textContent = nombre;
-      label.appendChild(check); label.appendChild(span);
-      wchecklist.appendChild(label);
-    });
-    function buildWa(){
-      const selected = Array.from(wchecklist.querySelectorAll(".wguest-check:checked")).map(c=>c.dataset.name);
-      $("waBtn").href = waLink(`Asistirán (${selected.length}): ${selected.join(", ")}`);
-    }
-    wchecklist.addEventListener("change", buildWa);
-    buildWa();
-  } else {
-    // Modo WhatsApp con selector numérico de asistentes (respaldo si no hay Google Sheet)
-    const sel=$("asisten");
-    for(let i=1;i<=maxCupos;i++){const o=document.createElement("option");o.value=i;o.textContent=i+(i===1?" persona":" personas");sel.appendChild(o);}
-    sel.value=maxCupos;
-    function buildWa(){ $("waBtn").href = waLink(`Asistirán: ${sel.value} persona(s).`); }
-    buildWa(); sel.addEventListener("change",buildWa);
   }
 
   // Countdown

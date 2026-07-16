@@ -16,6 +16,7 @@ function doPost(e) {
     p.invitado || '',
     p.asistencia || '',
     p.personas || '',
+    p.personasNombres || '',
     p.mensaje || ''
   ]);
 
@@ -35,7 +36,7 @@ function obtenerHoja() {
   let hoja = libro.getSheetByName(NOMBRE_HOJA);
   if (!hoja) {
     hoja = libro.insertSheet(NOMBRE_HOJA);
-    hoja.appendRow(['Fecha', 'Título', 'Invitado', 'Asistencia', 'Personas', 'Mensaje']);
+    hoja.appendRow(['Fecha', 'Título', 'Invitado', 'Asistencia', 'Personas', 'Nombres asistentes', 'Mensaje']);
   }
   return hoja;
 }

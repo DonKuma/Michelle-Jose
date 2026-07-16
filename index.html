@@ -23,6 +23,15 @@
      Datos por invitado llegan por la URL:
        ?titulo=Señora&invitado=Adela Parrales e Hija&firma=Presente&admision=2 personas
 
+     Si la invitación es para más de una persona y quieres que cada quien
+     se seleccione en el formulario (en lugar de solo un número), agrega
+     el parámetro "invitados" con los nombres separados por coma:
+       ?titulo=Familia&invitado=Familia Parrales&admision=3&invitados=Adela Parrales,Juan Parrales,María Parrales
+     Con "invitados" presente (y más de un nombre), el formulario muestra
+     una lista de casillas para marcar quiénes sí asistirán, y esa lista
+     se guarda en el Google Sheet (columna "Nombres asistentes"). Usa el
+     Excel "Generador de invitaciones.xlsx" para armar estas URLs fácil.
+
      FOTOS: apuntan a la carpeta "fotos/" del repositorio. Sube tus imágenes
      con los nombres indicados (hero.jpg, historia-1..3.jpg, galeria-1..6.jpg,
      portada.jpg para el preview de WhatsApp).
@@ -355,6 +364,9 @@ const CONFIG = {
   .rsvp-error{display:none;color:#a03a3a;font-size:.78rem;margin-top:14px}
   .rsvp-alt{display:inline-block;margin-top:16px;color:var(--dark-terra);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px;transition:.3s}
   .rsvp-alt:hover{color:var(--ink)}
+  .rsvp-checklist{display:flex;flex-direction:column;gap:8px}
+  .rsvp-checklist label{display:flex;align-items:center;gap:10px;border:1px solid var(--line);padding:11px 14px;font-size:.88rem;cursor:pointer;text-align:left}
+  .rsvp-checklist input{width:17px;height:17px;flex:none;accent-color:var(--dark-terra)}
 
   /* ════════ FOOTER ════════ */
   footer{background:var(--cream);color:var(--ink);text-align:center;padding:64px 24px 54px;border-top:1px solid var(--line)}
@@ -647,6 +659,8 @@ const CONFIG = {
       <input type="hidden" name="titulo" id="fTitulo">
       <input type="hidden" name="invitado" id="fInvitado">
       <input type="hidden" name="admisionAsignada" id="fAdmisionAsignada">
+      <input type="hidden" name="personas" id="fPersonas" value="1">
+      <input type="hidden" name="personasNombres" id="fPersonasNombres" value="">
 
       <div class="rsvp-field">
         <label>¿Asistirán?</label>
@@ -657,8 +671,13 @@ const CONFIG = {
       </div>
 
       <div class="rsvp-field" id="personasField">
-        <label for="personas">¿Cuántos asistirán?</label>
-        <select id="personas" name="personas"></select>
+        <label for="personasSelect">¿Cuántos asistirán?</label>
+        <select id="personasSelect"></select>
+      </div>
+
+      <div class="rsvp-field" id="nombresField" style="display:none">
+        <label>¿Quiénes asistirán?</label>
+        <div class="rsvp-checklist" id="nombresChecklist"></div>
       </div>
 
       <div class="rsvp-field" id="mensajeField">
@@ -676,9 +695,13 @@ const CONFIG = {
 
   <!-- Modo WhatsApp (respaldo si no hay Google Sheet configurado) -->
   <div id="waBlock">
-    <div class="rsvp-field">
+    <div class="rsvp-field" id="waPersonasField">
       <label for="asisten">¿Cuántos asistirán?</label>
       <select id="asisten"></select>
+    </div>
+    <div class="rsvp-field" id="waNombresField" style="display:none">
+      <label>¿Quiénes asistirán?</label>
+      <div class="rsvp-checklist" id="waNombresChecklist"></div>
     </div>
     <a class="wa-btn" id="waBtn" target="_blank" rel="noopener">Confirmar por WhatsApp</a>
   </div>
@@ -822,6 +845,8 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
 
   // ── Personalización por invitado ──
   const titulo=p("titulo"), invitado=p("invitado","Invitado especial"), firma=p("firma"), admision=p("admision","1 persona");
+  const guestList = p("invitados","").split(",").map(s=>s.trim()).filter(Boolean);
+  const useChecklist = guestList.length > 1;
   $("introTitle").textContent=titulo; $("introGuest").textContent=invitado;
   $("guestTitle").textContent=titulo; $("guestName").textContent=invitado;
   $("admision").textContent=admision;
@@ -833,7 +858,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
 
   const gs = CONFIG.googleSheet || {};
   const hasSheet = gs.scriptURL && gs.scriptURL.trim();
-  const maxCupos = (()=>{const n=parseInt(admision,10);return (isNaN(n)||n<1)?4:n;})();
+  const maxCupos = useChecklist ? guestList.length : (()=>{const n=parseInt(admision,10);return (isNaN(n)||n<1)?4:n;})();
 
   function waLink(extra){
     let msg = `¡Hola! Confirmo mi asistencia a la boda de ${CONFIG.novia} y ${CONFIG.novio}.%0AInvitado: ${encodeURIComponent(quien)}`;
@@ -850,13 +875,40 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
     $("fInvitado").value = invitado;
     $("fAdmisionAsignada").value = admision;
 
-    const personas = $("personas");
-    for(let i=1;i<=maxCupos;i++){const o=document.createElement("option");o.value=i;o.textContent=i+(i===1?" persona":" personas");personas.appendChild(o);}
-    personas.value = maxCupos;
+    const personasField = $("personasField"), nombresField = $("nombresField");
+
+    if(useChecklist){
+      personasField.style.display = "none";
+      const checklist = $("nombresChecklist");
+      guestList.forEach(nombre=>{
+        const label = document.createElement("label");
+        const check = document.createElement("input");
+        check.type = "checkbox"; check.className = "guest-check"; check.checked = true; check.dataset.name = nombre;
+        const span = document.createElement("span"); span.textContent = nombre;
+        label.appendChild(check); label.appendChild(span);
+        checklist.appendChild(label);
+      });
+      function syncNombres(){
+        const selected = Array.from(checklist.querySelectorAll(".guest-check:checked")).map(c=>c.dataset.name);
+        $("fPersonasNombres").value = selected.join(", ");
+        $("fPersonas").value = selected.length;
+      }
+      checklist.addEventListener("change", syncNombres);
+      syncNombres();
+    } else {
+      const personasSelect = $("personasSelect");
+      for(let i=1;i<=maxCupos;i++){const o=document.createElement("option");o.value=i;o.textContent=i+(i===1?" persona":" personas");personasSelect.appendChild(o);}
+      personasSelect.value = maxCupos;
+      $("fPersonasNombres").value = quien;
+      function syncPersonas(){ $("fPersonas").value = personasSelect.value; }
+      personasSelect.addEventListener("change", syncPersonas);
+      syncPersonas();
+    }
 
     function syncAsistencia(){
       const asiste = $("asistSi").checked;
-      $("personasField").style.display = asiste ? "block" : "none";
+      if(useChecklist){ nombresField.style.display = asiste ? "block" : "none"; }
+      else { personasField.style.display = asiste ? "block" : "none"; }
     }
     $("asistSi").addEventListener("change", syncAsistencia);
     $("asistNo").addEventListener("change", syncAsistencia);
@@ -896,8 +948,27 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
         }
       }, 12000);
     });
+  } else if(useChecklist){
+    // Modo WhatsApp con checklist de nombres (respaldo si no hay Google Sheet)
+    $("waPersonasField").style.display = "none";
+    $("waNombresField").style.display = "block";
+    const wchecklist = $("waNombresChecklist");
+    guestList.forEach(nombre=>{
+      const label = document.createElement("label");
+      const check = document.createElement("input");
+      check.type = "checkbox"; check.className = "wguest-check"; check.checked = true; check.dataset.name = nombre;
+      const span = document.createElement("span"); span.textContent = nombre;
+      label.appendChild(check); label.appendChild(span);
+      wchecklist.appendChild(label);
+    });
+    function buildWa(){
+      const selected = Array.from(wchecklist.querySelectorAll(".wguest-check:checked")).map(c=>c.dataset.name);
+      $("waBtn").href = waLink(`Asistirán (${selected.length}): ${selected.join(", ")}`);
+    }
+    wchecklist.addEventListener("change", buildWa);
+    buildWa();
   } else {
-    // Modo WhatsApp con selector de asistentes (respaldo si no hay Google Sheet)
+    // Modo WhatsApp con selector numérico de asistentes (respaldo si no hay Google Sheet)
     const sel=$("asisten");
     for(let i=1;i<=maxCupos;i++){const o=document.createElement("option");o.value=i;o.textContent=i+(i===1?" persona":" personas");sel.appendChild(o);}
     sel.value=maxCupos;

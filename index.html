@@ -198,7 +198,7 @@ const CONFIG = {
   .stage{perspective:1500px}
 
   .env{
-    position:relative;width:clamp(280px,84vw,366px);aspect-ratio:1.5/1;
+    position:relative;width:clamp(340px,96vw,540px);aspect-ratio:1.5/1;
     cursor:pointer;border:none;background:none;padding:0;display:block;
   }
   .env:focus-visible{outline:2px solid var(--terra);outline-offset:10px;border-radius:8px}
@@ -239,13 +239,12 @@ const CONFIG = {
     transition:transform .95s cubic-bezier(.6,0,.2,1), z-index 0s .4s}
   .env.is-open .env-flap{transform:rotateX(-179deg);z-index:1}
 
-  .env-seal{position:absolute;top:56%;left:50%;width:78px;height:78px;
-    transform:translate(-50%,-50%);z-index:8;border-radius:50%;padding:12px;
+  .env-seal{position:absolute;top:56%;left:50%;width:156px;height:156px;
+    transform:translate(-50%,-50%);z-index:8;
     display:flex;align-items:center;justify-content:center;
-    background:radial-gradient(circle at 38% 30%,var(--dusty-light),var(--dusty) 72%);
-    box-shadow:0 10px 22px -10px rgba(140,86,64,.55),inset 0 2px 5px rgba(255,255,255,.55);
+    filter:drop-shadow(0 10px 16px rgba(140,86,64,.45));
     transition:transform .5s ease,opacity .45s ease}
-  .env-seal img{width:100%}
+  .env-seal img{width:100%;height:100%;object-fit:contain}
   .env.is-open .env-seal{opacity:0;transform:translate(-50%,-50%) scale(.45) rotate(-12deg)}
 
   .enter-btn{
@@ -720,7 +719,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
 
   // Monogramas
   $("heroMono").src = MONO_DARK;
-  $("sealMono").src = MONO_DARK;
+  $("sealMono").src = "fotos/Sello Carta.png";
   $("letterMono").src = MONO_DARK;
   $("footMono").src = MONO_DARK;
 

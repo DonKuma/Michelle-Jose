@@ -219,21 +219,25 @@ const CONFIG = {
   .env-body{position:absolute;inset:0;border-radius:8px;
     background:linear-gradient(135deg,var(--cream),#EFE6D7);box-shadow:var(--shadow);z-index:1}
 
+  .env-window{position:absolute;inset:0;z-index:2;overflow:hidden;border-radius:8px}
+  .env.is-open .env-window{overflow:visible;z-index:6}
+
   .env-letter{
-    position:absolute;left:50%;bottom:9px;width:86%;
-    transform:translateX(-50%) translateY(0);z-index:2;
-    background:#FBF7EF;
-    border:1px solid var(--line);border-radius:4px;
-    padding:26px 22px 24px;text-align:center;
-    box-shadow:0 14px 32px -18px rgba(67,48,42,.55);
+    position:absolute;left:50%;bottom:2px;width:62%;aspect-ratio:408/612;
+    transform:translateX(-50%) translateY(0);
     transition:transform 1s cubic-bezier(.2,.8,.25,1) .45s;
   }
-  .env.is-open .env-letter{transform:translateX(-50%) translateY(calc(-65% + 50px));z-index:6}
-  .env-letter .l-mono{width:46px;margin:0 auto 8px}
+  .env.is-open .env-letter{transform:translateX(-50%) translateY(calc(-58% + 10px))}
+  .env-letter .l-cardart{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
+    filter:drop-shadow(0 16px 24px rgba(67,48,42,.4))}
+  .env-letter .l-content{position:absolute;left:31%;top:25.5%;width:38%;height:28%;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;overflow:hidden}
+  .env-letter .l-mono{width:30px;margin:0 auto 4px}
   .env-letter .l-mono img{width:100%}
-  .env-letter .l-for{font-size:.6rem;letter-spacing:.34em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:3px}
-  #introTitle{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--terra);font-size:1rem}
-  #introGuest{font-family:'Cormorant Garamond',serif;font-size:1.45rem;line-height:1.2;color:var(--ink)}
+  .env-letter .l-for{font-size:.42rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:3px;line-height:1.3}
+  #introTitle{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--terra);font-size:.66rem;margin-bottom:1px}
+  #introGuest{font-family:'Cormorant Garamond',serif;font-size:.92rem;line-height:1.15;color:var(--ink)}
 
   .env-pocket{position:absolute;inset:0;z-index:3;border-radius:8px;
     background:linear-gradient(135deg,#ECE1D1,#E2D4C0)}
@@ -262,7 +266,8 @@ const CONFIG = {
 
   @media(max-width:560px){
     .env-seal{width:110px;height:110px}
-    .env.is-open .env-letter{transform:translateX(-50%) translateY(calc(-65% + 110px))}
+    .env-letter{width:68%}
+    .env.is-open .env-letter{transform:translateX(-50%) translateY(calc(-58% + 66px))}
   }
 
   .enter-btn{
@@ -334,9 +339,10 @@ const CONFIG = {
   .tt-btn svg{margin-left:1px}
   .tt-btn:hover{background:var(--ink)}
 
-  .tt-row{display:flex;align-items:center;justify-content:center;gap:56px;flex-wrap:wrap}
-  .tt-side-photo{height:260px;width:auto;max-width:260px;object-fit:contain}
-  @media(max-width:560px){.tt-side-photo{display:none}}
+  .tt-row{display:flex;align-items:center;justify-content:center}
+  .tt-dogs{position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:center;gap:4px;margin-top:20px}
+  .tt-side-photo{height:200px;width:auto;max-width:220px;object-fit:contain}
+  @media(max-width:560px){.tt-side-photo{height:140px;max-width:160px}}
 
   .tt-hearts{position:absolute;inset:0;pointer-events:none;overflow:hidden}
   .tt-heart{position:absolute;bottom:30px;color:var(--terra);opacity:0;
@@ -616,11 +622,16 @@ const CONFIG = {
   <div class="stage">
     <button class="env" id="env" aria-label="Abrir invitación">
       <div class="env-body"></div>
-      <div class="env-letter">
-        <div class="l-mono"><img id="letterMono" alt=""></div>
-        <div class="l-for">Tienes una invitación para</div>
-        <div id="introTitle" class="serif"></div>
-        <div id="introGuest" class="serif">Invitado especial</div>
+      <div class="env-window">
+        <div class="env-letter">
+          <img class="l-cardart" src="fotos/carta.png" alt="" aria-hidden="true">
+          <div class="l-content">
+            <div class="l-mono"><img id="letterMono" alt=""></div>
+            <div class="l-for">Tienes una invitación para</div>
+            <div id="introTitle" class="serif"></div>
+            <div id="introGuest" class="serif">Invitado especial</div>
+          </div>
+        </div>
       </div>
       <div class="env-pocket"></div>
       <div class="env-diamond"></div>
@@ -650,7 +661,6 @@ const CONFIG = {
     <span class="tt-heart">♥</span><span class="tt-heart">♥</span>
   </div>
   <div class="tt-row">
-    <img class="tt-side-photo" src="fotos/perrito-izquierda.png" alt="" onerror="this.remove()">
     <div class="turntable">
       <div class="tt-base">
         <div class="tt-plate">
@@ -664,6 +674,9 @@ const CONFIG = {
         <svg id="ttIconPause" viewBox="0 0 24 24" width="18" height="18" style="display:none"><path fill="currentColor" d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
       </button>
     </div>
+  </div>
+  <div class="tt-dogs">
+    <img class="tt-side-photo" src="fotos/perrito-izquierda.png" alt="" onerror="this.remove()">
     <img class="tt-side-photo" src="fotos/perrito-derecha.png" alt="" onerror="this.remove()">
   </div>
   <audio id="ttAudio" preload="none" loop src="musica/Lady Gaga, Bruno Mars - Die With A Smile (Official Music Video).mp3"></audio>

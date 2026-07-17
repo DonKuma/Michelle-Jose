@@ -868,6 +868,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
         $("fPersonasNombres").value = selected.join(", ");
         $("fPersonas").value = selected.length;
         $("asistSi").disabled = selected.length === 0;
+        $("asistNo").disabled = selected.length === guestList.length;
       }
       checklist.addEventListener("change", syncNombres);
       syncNombres();
@@ -902,11 +903,16 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
 
     let submitting = false, submitted = false;
     form.addEventListener("submit", (ev)=>{
-      if(useChecklist && $("asistSi").checked){
-        const algunoAsiste = $("nombresChecklist").querySelectorAll(".guest-check:checked").length > 0;
-        if(!algunoAsiste){
+      if(useChecklist){
+        const marcados = $("nombresChecklist").querySelectorAll(".guest-check:checked").length;
+        if($("asistSi").checked && marcados === 0){
           ev.preventDefault();
           alert("Debes seleccionar al menos 1 invitado que asistirá, o marcar \"No podremos\".");
+          return;
+        }
+        if($("asistNo").checked && marcados === guestList.length){
+          ev.preventDefault();
+          alert("Si nadie asistirá, desmarca a los invitados de la lista, o selecciona \"Sí, asistiremos\".");
           return;
         }
       }

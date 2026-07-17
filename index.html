@@ -867,9 +867,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
         const selected = Array.from(checklist.querySelectorAll(".guest-check:checked")).map(c=>c.dataset.name);
         $("fPersonasNombres").value = selected.join(", ");
         $("fPersonas").value = selected.length;
-        const ninguno = selected.length === 0;
-        $("asistSi").disabled = ninguno;
-        if(ninguno && $("asistSi").checked){ $("asistSi").checked = false; $("asistNo").checked = true; }
+        $("asistSi").disabled = selected.length === 0;
       }
       checklist.addEventListener("change", syncNombres);
       syncNombres();
@@ -903,7 +901,15 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
     form.target = "hidden_iframe";
 
     let submitting = false, submitted = false;
-    form.addEventListener("submit", ()=>{
+    form.addEventListener("submit", (ev)=>{
+      if(useChecklist && $("asistSi").checked){
+        const algunoAsiste = $("nombresChecklist").querySelectorAll(".guest-check:checked").length > 0;
+        if(!algunoAsiste){
+          ev.preventDefault();
+          alert("Debes seleccionar al menos 1 invitado que asistirá, o marcar \"No podremos\".");
+          return;
+        }
+      }
       submitting = true;
       btn.disabled = true;
       btn.textContent = "Enviando…";

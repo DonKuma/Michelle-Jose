@@ -270,6 +270,79 @@ const CONFIG = {
   .scroll-cue{margin-top:46px;color:var(--terra);font-size:.6rem;letter-spacing:.3em;text-transform:uppercase}
   .scroll-cue::after{content:"";display:block;width:1px;height:30px;background:var(--terra);margin:8px auto 0;opacity:.5}
 
+  /* ════════ TOCADISCOS ════════ */
+  .turntable-wrap{position:relative;background:var(--cream);text-align:center;padding:64px 24px 46px;
+    border-top:1px solid var(--line);overflow:hidden}
+  .tt-glow{position:absolute;top:10%;left:50%;width:340px;height:340px;transform:translateX(-50%);
+    background:radial-gradient(circle,var(--dusty-light) 0%,transparent 68%);
+    opacity:.3;filter:blur(6px);animation:tt-glow-pulse 5.5s ease-in-out infinite;pointer-events:none}
+  @keyframes tt-glow-pulse{0%,100%{transform:translateX(-50%) scale(1);opacity:.22}50%{transform:translateX(-50%) scale(1.15);opacity:.4}}
+  .turntable{position:relative;display:inline-flex;flex-direction:column;align-items:center;gap:18px}
+
+  .tt-base{position:relative;width:216px;padding:22px 20px 18px;border-radius:12px;
+    background:linear-gradient(155deg,#7a5138,#4d3120 55%,#3a2417);
+    box-shadow:0 22px 38px -18px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.1),inset 0 -10px 18px rgba(0,0,0,.35)}
+  .tt-base::before{content:"";position:absolute;inset:8px;border:1px solid rgba(255,255,255,.08);border-radius:8px;pointer-events:none}
+  .tt-plate{position:relative;width:150px;height:150px;margin:0 auto;border-radius:50%;
+    background:radial-gradient(circle,#2a2a2a,#161616 85%);
+    box-shadow:0 6px 14px rgba(0,0,0,.55),inset 0 0 0 5px rgba(0,0,0,.3)}
+  .tt-vinyl{position:absolute;inset:8px;border-radius:50%;
+    background:
+      conic-gradient(from 0deg,rgba(255,255,255,.22) 0deg,transparent 40deg,transparent 320deg,rgba(255,255,255,.14) 360deg),
+      repeating-radial-gradient(circle at center,#151515 0 3px,#2b2b2b 3px 6px);
+    box-shadow:inset 0 0 12px rgba(0,0,0,.6);
+    animation:tt-spin 2.8s linear infinite;animation-play-state:paused}
+  .tt-vinyl::after{content:"";position:absolute;top:14%;left:50%;width:5px;height:5px;
+    border-radius:50%;background:rgba(255,255,255,.45)}
+  .tt-vinyl.spinning{animation-play-state:running}
+  .tt-label{position:absolute;top:50%;left:50%;width:44px;height:44px;transform:translate(-50%,-50%);
+    border-radius:50%;background:radial-gradient(circle at 38% 30%,var(--dusty-light),var(--dusty) 72%);
+    box-shadow:0 2px 6px rgba(0,0,0,.4)}
+  .tt-label::after{content:"";position:absolute;top:50%;left:50%;width:6px;height:6px;background:var(--ink);
+    border-radius:50%;transform:translate(-50%,-50%)}
+  .tt-arm{position:absolute;top:-4px;right:-6px;width:7px;height:88px;
+    background:linear-gradient(180deg,#e8d9b8,#b79a68);border-radius:3px;
+    transform-origin:top center;transform:rotate(-30deg);transition:transform .7s cubic-bezier(.4,0,.2,1);
+    z-index:2;box-shadow:0 2px 4px rgba(0,0,0,.4)}
+  .tt-arm::before{content:"";position:absolute;top:-7px;left:50%;transform:translateX(-50%);
+    width:18px;height:18px;border-radius:50%;background:linear-gradient(155deg,#f1e4c6,#b79a68);
+    box-shadow:0 2px 4px rgba(0,0,0,.45)}
+  .tt-arm::after{content:"";position:absolute;bottom:-3px;left:50%;transform:translateX(-50%) rotate(20deg);
+    width:16px;height:8px;border-radius:2px;background:linear-gradient(90deg,#d8c4a0,#f1e4c6)}
+  .tt-arm.playing{transform:rotate(24deg)}
+  @keyframes tt-spin{to{transform:rotate(360deg)}}
+  .tt-plaque{margin-top:14px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.72rem;
+    letter-spacing:.16em;color:#e6d7c0;opacity:.7}
+
+  .tt-btn{width:50px;height:50px;border-radius:50%;border:none;background:var(--dark-terra);color:var(--cream);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .3s;
+    box-shadow:0 8px 18px -10px rgba(140,86,64,.6)}
+  .tt-btn svg{margin-left:1px}
+  .tt-btn:hover{background:var(--ink)}
+
+  .tt-row{display:flex;align-items:center;justify-content:center;gap:56px;flex-wrap:wrap}
+  .tt-side-photo{height:260px;width:auto;max-width:260px;object-fit:contain}
+  @media(max-width:560px){.tt-side-photo{display:none}}
+
+  .tt-hearts{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  .tt-heart{position:absolute;bottom:30px;color:var(--terra);opacity:0;
+    animation:tt-heart-float 4.2s ease-in infinite;animation-play-state:paused}
+  .tt-hearts.spinning .tt-heart{animation-play-state:running}
+  .tt-heart:nth-child(1){left:4%;font-size:2.4rem;animation-delay:.1s;color:var(--terra)}
+  .tt-heart:nth-child(2){left:18%;font-size:1.9rem;animation-delay:1.7s;color:var(--dusty)}
+  .tt-heart:nth-child(3){left:32%;font-size:2.5rem;animation-delay:.9s;color:var(--dark-terra)}
+  .tt-heart:nth-child(4){left:46%;font-size:1.75rem;animation-delay:2.6s;color:var(--terra)}
+  .tt-heart:nth-child(5){left:60%;font-size:2.3rem;animation-delay:.4s;color:var(--dusty)}
+  .tt-heart:nth-child(6){left:73%;font-size:2rem;animation-delay:2s;color:var(--dark-terra)}
+  .tt-heart:nth-child(7){left:86%;font-size:2.6rem;animation-delay:3.3s;color:var(--terra)}
+  .tt-heart:nth-child(8){left:94%;font-size:1.75rem;animation-delay:1.2s;color:var(--dusty)}
+  @keyframes tt-heart-float{
+    0%{transform:translateY(0) scale(.6);opacity:0}
+    18%{opacity:.85}
+    82%{opacity:.35}
+    100%{transform:translateY(-170px) scale(1.05);opacity:0}
+  }
+
   /* ════════ BANDA VERSÍCULO (verde) ════════ */
   .verse-band{background:var(--cream);color:var(--ink);text-align:center;padding:74px 24px;border-top:1px solid var(--line)}
   .verse-band .sprig{color:var(--green);margin:0 auto 18px}
@@ -522,6 +595,34 @@ const CONFIG = {
     <div class="hdate" id="heroDate">07 · 11 · 2026</div>
     <div class="scroll-cue">Desliza</div>
   </div>
+</section>
+
+<!-- ════════ TOCADISCOS ════════ -->
+<section class="turntable-wrap reveal">
+  <div class="tt-glow"></div>
+  <div class="tt-hearts" id="ttHearts">
+    <span class="tt-heart">♥</span><span class="tt-heart">♥</span><span class="tt-heart">♥</span>
+    <span class="tt-heart">♥</span><span class="tt-heart">♥</span><span class="tt-heart">♥</span>
+    <span class="tt-heart">♥</span><span class="tt-heart">♥</span>
+  </div>
+  <div class="tt-row">
+    <img class="tt-side-photo" src="fotos/perrito-izquierda.png" alt="" onerror="this.remove()">
+    <div class="turntable">
+      <div class="tt-base">
+        <div class="tt-plate">
+          <div class="tt-vinyl" id="ttVinyl"><div class="tt-label"></div></div>
+          <div class="tt-arm" id="ttArm"></div>
+        </div>
+        <div class="tt-plaque">KUMI - 08/07/2016</div>
+      </div>
+      <button class="tt-btn" id="ttBtn" aria-label="Reproducir música">
+        <svg id="ttIconPlay" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+        <svg id="ttIconPause" viewBox="0 0 24 24" width="18" height="18" style="display:none"><path fill="currentColor" d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+      </button>
+    </div>
+    <img class="tt-side-photo" src="fotos/perrito-derecha.png" alt="" onerror="this.remove()">
+  </div>
+  <audio id="ttAudio" preload="none" loop src="musica/Lady Gaga, Bruno Mars - Die With A Smile (Official Music Video).mp3"></audio>
 </section>
 
 <!-- ════════ VERSÍCULO ════════ -->
@@ -866,7 +967,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
       guestList.forEach(nombre=>{
         const label = document.createElement("label");
         const check = document.createElement("input");
-        check.type = "checkbox"; check.className = "guest-check"; check.checked = true; check.dataset.name = nombre;
+        check.type = "checkbox"; check.className = "guest-check"; check.checked = false; check.dataset.name = nombre;
         const span = document.createElement("span"); span.textContent = nombre;
         label.appendChild(check); label.appendChild(span);
         checklist.appendChild(label);
@@ -989,9 +1090,26 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   function enter(){
     intro.classList.add("gone");
     setTimeout(()=>intro.style.display="none",950);
+    $("ttAudio").play().catch(()=>{});
   }
   env.addEventListener("click",openEnv);
   $("enterBtn").addEventListener("click",enter);
+
+  // Tocadiscos
+  const ttAudio=$("ttAudio"), ttBtn=$("ttBtn"), ttVinyl=$("ttVinyl"), ttArm=$("ttArm"), ttHearts=$("ttHearts");
+  function ttSetPlaying(isPlaying){
+    ttVinyl.classList.toggle("spinning", isPlaying);
+    ttArm.classList.toggle("playing", isPlaying);
+    ttHearts.classList.toggle("spinning", isPlaying);
+    $("ttIconPlay").style.display = isPlaying ? "none" : "block";
+    $("ttIconPause").style.display = isPlaying ? "block" : "none";
+  }
+  ttBtn.addEventListener("click", ()=>{
+    if(ttAudio.paused){ ttAudio.play().catch(()=>{}); } else { ttAudio.pause(); }
+  });
+  ttAudio.addEventListener("play", ()=>ttSetPlaying(true));
+  ttAudio.addEventListener("pause", ()=>ttSetPlaying(false));
+  ttAudio.addEventListener("ended", ()=>ttSetPlaying(false));
 
   // Reveal
   const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.1});

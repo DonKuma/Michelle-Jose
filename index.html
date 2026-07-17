@@ -650,7 +650,7 @@ const CONFIG = {
 
   <!-- Modo Google Sheets (se muestra si googleSheet.scriptURL está configurado) -->
   <div id="sheetBlock" style="display:none">
-    <form class="rsvp-form" id="sheetForm">
+    <form class="rsvp-form" id="sheetForm" novalidate>
       <input type="hidden" name="titulo" id="fTitulo">
       <input type="hidden" name="invitado" id="fInvitado">
       <input type="hidden" name="admisionAsignada" id="fAdmisionAsignada">
@@ -903,6 +903,11 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
 
     let submitting = false, submitted = false;
     form.addEventListener("submit", (ev)=>{
+      if(!$("asistSi").checked && !$("asistNo").checked){
+        ev.preventDefault();
+        alert("Debes indicar si asistirás o no antes de confirmar.");
+        return;
+      }
       if(useChecklist){
         const marcados = $("nombresChecklist").querySelectorAll(".guest-check:checked").length;
         if($("asistSi").checked && marcados === 0){

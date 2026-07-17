@@ -877,8 +877,6 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
       syncNombres();
     } else if(maxCupos <= 1){
       personasField.style.display = "none";
-      $("fPersonas").value = 1;
-      $("fPersonasNombres").value = quien;
       $("asistSiTxt").textContent = "Sí, asistiré";
       $("asistNoTxt").textContent = "No podré";
     } else {
@@ -894,6 +892,10 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
     function syncAsistencia(){
       const asiste = $("asistSi").checked;
       if(!useChecklist && maxCupos > 1){ personasField.style.display = asiste ? "block" : "none"; }
+      if(!useChecklist && maxCupos <= 1){
+        $("fPersonas").value = asiste ? 1 : 0;
+        $("fPersonasNombres").value = asiste ? quien : "";
+      }
     }
     $("asistSi").addEventListener("change", syncAsistencia);
     $("asistNo").addEventListener("change", syncAsistencia);

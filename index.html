@@ -660,7 +660,7 @@ const CONFIG = {
       <div class="rsvp-field">
         <label>¿Asistirán?</label>
         <div class="rsvp-toggle">
-          <label style="flex:1;margin:0"><input type="radio" name="asistencia" value="Sí" id="asistSi" required><span id="asistSiTxt">Sí, asistiremos</span></label>
+          <label style="flex:1;margin:0"><input type="radio" name="asistencia" value="Sí" id="asistSi" required checked><span id="asistSiTxt">Sí, asistiremos</span></label>
           <label style="flex:1;margin:0"><input type="radio" name="asistencia" value="No" id="asistNo" required><span id="asistNoTxt">No podremos</span></label>
         </div>
       </div>
@@ -868,7 +868,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
         $("fPersonasNombres").value = selected.join(", ");
         $("fPersonas").value = selected.length;
         $("asistSi").disabled = selected.length === 0;
-        $("asistNo").disabled = selected.length === guestList.length;
+        $("asistNo").disabled = selected.length > 0;
       }
       checklist.addEventListener("change", syncNombres);
       syncNombres();
@@ -915,9 +915,9 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
           alert("Debes seleccionar al menos 1 invitado que asistirá, o marcar \"No podremos\".");
           return;
         }
-        if($("asistNo").checked && marcados === guestList.length){
+        if($("asistNo").checked && marcados > 0){
           ev.preventDefault();
-          alert("Si nadie asistirá, desmarca a los invitados de la lista, o selecciona \"Sí, asistiremos\".");
+          alert("Si al menos un invitado asistirá, desmarca a los que no vengan y selecciona \"Sí, asistiremos\".");
           return;
         }
       }

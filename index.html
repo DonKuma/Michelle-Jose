@@ -200,11 +200,14 @@ const CONFIG = {
   /* ════════ INTRO / CARTA QUE SE ABRE ════════ */
   #intro{
     position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;padding:24px;gap:22px;
+    align-items:center;justify-content:center;padding:24px;
     background:url('fotos/Fondo para invitación.jpeg') center/cover no-repeat;
     transition:opacity .9s ease, visibility .9s ease;
   }
   #intro.gone{opacity:0;visibility:hidden}
+  /* El sobre y el título van en su propio bloque para que el botón "Ver invitación"
+     (que crece hacia abajo al abrir) no cambie la altura total y no mueva el sobre. */
+  .intro-center{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px;transform:translateY(-85px)}
   .intro-top{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;
     font-size:1.15rem;letter-spacing:.03em;text-transform:none;color:var(--ink);
     opacity:1;text-shadow:0 1px 3px rgba(255,255,255,.65)}
@@ -269,16 +272,19 @@ const CONFIG = {
     .env-seal{width:110px;height:110px}
     .env-letter{width:73%}
     .env.is-open .env-letter{transform:translateX(-50%) translateY(calc(45% + 9px))}
-    .enter-btn{margin-top:clamp(180px,48vw,280px)}
   }
 
+  /* position:absolute (relativo a .intro-center) para que este botón, al crecer hacia abajo
+     cuando se abre el sobre, no cambie la altura del bloque centrado ni mueva el sobre/título. */
   .enter-btn{
+    position:absolute;left:50%;top:100%;
     background:var(--terra);color:var(--cream);border:none;padding:14px 38px;cursor:pointer;
     font-family:'Jost',sans-serif;letter-spacing:.24em;text-transform:uppercase;font-size:.68rem;
-    opacity:0;pointer-events:none;transform:translateY(8px);
-    margin-top:clamp(175px,45vw,270px);
+    opacity:0;pointer-events:none;transform:translateX(-50%) translateY(8px);
+    margin-top:69px;white-space:nowrap;
     transition:opacity .5s ease,transform .5s ease,background .3s}
-  #intro.opened .enter-btn{opacity:1;pointer-events:auto;transform:none;transition-delay:2s,2s,0s}
+  #intro.opened .enter-btn{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0);transition-delay:2s,2s,0s;
+    margin-top:clamp(195px,42vw,305px)}
   .enter-btn:hover{background:var(--dark-terra)}
   #intro.opened .intro-top{opacity:0;transition:opacity .4s}
 
@@ -621,28 +627,30 @@ const CONFIG = {
 
 <!-- ════════ INTRO: SOBRE QUE SE ABRE ════════ -->
 <div id="intro">
-  <div class="intro-top">Tu invitación · Toca el sobre para abrir</div>
-  <div class="stage">
-    <button class="env" id="env" aria-label="Abrir invitación">
-      <div class="env-body"></div>
-      <div class="env-window">
-        <div class="env-letter">
-          <img class="l-cardart" src="fotos/carta.png" alt="" aria-hidden="true">
-          <div class="l-content">
-            <div class="l-mono"><img id="letterMono" alt=""></div>
-            <div class="l-for">Tienes una invitación para</div>
-            <div id="introTitle" class="serif"></div>
-            <div id="introGuest" class="serif">Invitado especial</div>
+  <div class="intro-center">
+    <div class="intro-top">Tu invitación · Toca el sobre para abrir</div>
+    <div class="stage">
+      <button class="env" id="env" aria-label="Abrir invitación">
+        <div class="env-body"></div>
+        <div class="env-window">
+          <div class="env-letter">
+            <img class="l-cardart" src="fotos/carta.png" alt="" aria-hidden="true">
+            <div class="l-content">
+              <div class="l-mono"><img id="letterMono" alt=""></div>
+              <div class="l-for">Tienes una invitación para</div>
+              <div id="introTitle" class="serif"></div>
+              <div id="introGuest" class="serif">Invitado especial</div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="env-pocket"></div>
-      <div class="env-diamond"></div>
-      <div class="env-flap"></div>
-      <div class="env-seal"><img id="sealMono" alt="Monograma J y M"></div>
-    </button>
+        <div class="env-pocket"></div>
+        <div class="env-diamond"></div>
+        <div class="env-flap"></div>
+        <div class="env-seal"><img id="sealMono" alt="Monograma J y M"></div>
+      </button>
+    </div>
+    <button class="enter-btn" id="enterBtn">Ver invitación</button>
   </div>
-  <button class="enter-btn" id="enterBtn">Ver invitación</button>
 </div>
 
 <!-- ════════ HERO ════════ -->

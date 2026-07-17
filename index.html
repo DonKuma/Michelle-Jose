@@ -1195,6 +1195,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
     intro.classList.add("opened");
   }
   function enter(){
+    window.scrollTo({top:0,left:0,behavior:"instant"});
     intro.classList.add("gone");
     setTimeout(()=>intro.style.display="none",950);
     $("ttAudio").play().catch(()=>{});

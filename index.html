@@ -871,6 +871,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
         $("asistSi").disabled = vacio;
         $("asistNo").disabled = !vacio;
         if(vacio) $("asistNo").checked = true;
+        else $("asistSi").checked = true;
       }
       checklist.addEventListener("change", syncNombres);
       syncNombres();

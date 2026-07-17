@@ -867,8 +867,10 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
         const selected = Array.from(checklist.querySelectorAll(".guest-check:checked")).map(c=>c.dataset.name);
         $("fPersonasNombres").value = selected.join(", ");
         $("fPersonas").value = selected.length;
-        $("asistSi").disabled = selected.length === 0;
-        $("asistNo").disabled = selected.length > 0;
+        const vacio = selected.length === 0;
+        $("asistSi").disabled = vacio;
+        $("asistNo").disabled = !vacio;
+        if(vacio) $("asistNo").checked = true;
       }
       checklist.addEventListener("change", syncNombres);
       syncNombres();

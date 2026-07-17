@@ -129,10 +129,19 @@ const CONFIG = {
     scriptURL: "https://script.google.com/macros/s/AKfycbwUF66QxgITfGHnZ-kvF6_VZFFJgaB6mSGYU9zNaJGkCSFc-S9wY4z9iTlTz5WVzmnf/exec"   // ← pega aquí la URL de tu Web App terminada en /exec
   },
 
-  regalo: "Tu presencia es nuestro mejor regalo. Si deseas tener un detalle con nosotros, agradecemos una lluvia de sobres.",
+  regalo: "Tu presencia es nuestro mejor regalo. Si deseas tener un detalle con nosotros, aquí te dejamos algunas opciones.",
   // Opcionales para la mesa de regalos (déjalos vacíos "" para ocultarlos)
   regaloLink: "",          // ej: enlace a tu lista/registro de regalos
-  regaloBanco: "",         // ej: "Banco Pichincha · Ahorros 1234567890 · José Pérez · C.I. 0900000000"
+  regaloSobre: "También puedes entregarnos tu regalo en un sobre cerrado el día de la celebración.",         // déjalo vacío "" para ocultar la opción de sobre cerrado
+  // Datos bancarios (deja "" en cualquier campo para no mostrar esa línea; deja todos vacíos para ocultar la opción)
+  regaloBanco: {
+    banco: "Banco Pichincha",
+    tipoCuenta: "Ahorros",
+    numeroCuenta: "1234567890",
+    titular: "José Pérez",
+    cedula: "0900000000",
+    correo: "jose.perez@correo.com"
+  },
 
   // Galería (sube las fotos a la carpeta "fotos/" con estos nombres)
   galeria: [
@@ -482,10 +491,24 @@ const CONFIG = {
   .nokids p{color:var(--ink-soft);max-width:420px;margin:0 auto}
 
   /* ════════ EXTRAS REGALO ════════ */
-  .gift-extra{margin-top:24px;display:flex;flex-direction:column;align-items:center;gap:12px}
-  .gift-link{display:inline-block;border:1px solid var(--terra);color:var(--terra);padding:11px 26px;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;transition:.3s}
-  .gift-link:hover{background:var(--terra);color:var(--cream)}
-  .gift-bank{font-size:.85rem;color:var(--ink-soft);background:var(--cream-2);border:1px solid var(--line);padding:12px 18px;border-radius:4px;max-width:480px}
+  .gift-extra{margin-top:32px}
+  .gift-list{list-style:none;display:flex;flex-direction:column;gap:14px;text-align:left}
+  .gift-item{display:flex;align-items:flex-start;gap:16px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px;padding:16px 20px;transition:.3s}
+  .gift-item:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+  .gift-item .gi-ico{flex:none;width:42px;height:42px;border-radius:50%;background:var(--cream);border:1px solid var(--terra);color:var(--terra);display:flex;align-items:center;justify-content:center;margin-top:2px}
+  .gift-item .gi-ico svg{width:20px;height:20px}
+  .gift-item .gi-body{flex:1;min-width:0}
+  .gift-item .gi-title{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dark-terra);font-weight:500;margin-bottom:4px}
+  .gift-item .gi-text{font-size:.88rem;color:var(--ink-soft);line-height:1.5}
+  .bank-card{position:relative;margin-top:6px;background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:14px 18px 6px;box-shadow:0 12px 26px -18px rgba(67,48,42,.4);overflow:hidden}
+  .bank-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--terra),var(--dusty))}
+  .bank-card ul{list-style:none}
+  .bank-card li{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .bank-card li:last-child{border-bottom:none}
+  .bank-card .br-label{flex:none;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dark-terra)}
+  .bank-card .br-value{color:var(--ink);font-weight:500;text-align:right;word-break:break-word}
+  .gift-item .gift-link{display:inline-block;margin-top:8px;border:1px solid var(--terra);color:var(--terra);padding:9px 22px;font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;transition:.3s}
+  .gift-item .gift-link:hover{background:var(--terra);color:var(--cream)}
 
   /* ════════ CIERRE "GRACIAS" ════════ */
   .closing{background:var(--cream);text-align:center;padding:90px 24px;border-top:1px solid var(--line)}
@@ -567,6 +590,22 @@ const CONFIG = {
       <ellipse cx="12" cy="14.5" rx="8.5" ry="2.6"/>
       <path d="M3.5 14.5v2c0 1.6 3.8 2.8 8.5 2.8s8.5-1.2 8.5-2.8v-2"/>
       <path d="M12 14.5V6M10.5 6h3M11 4l1-1.2 1 1.2"/>
+    </g>
+    <g id="ic-envelope" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3.5" y="5.5" width="17" height="13" rx="1.4"/>
+      <path d="M4 6.5 12 13l8-6.5"/>
+    </g>
+    <g id="ic-bank" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3.5 9.5 12 4.5l8.5 5"/>
+      <path d="M4.5 9.5h15v1.5h-15z"/>
+      <path d="M5.5 11v7M9.2 11v7M14.8 11v7M18.5 11v7"/>
+      <path d="M3.5 19.5h17"/>
+    </g>
+    <g id="ic-gift" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="9.5" width="16" height="10.5" rx="1"/>
+      <path d="M4 13.5h16"/>
+      <path d="M12 9.5v10.5"/>
+      <path d="M12 9.5c-1-2.6-2.6-4-4.2-4-1.4 0-2.3 1-2.3 2.1 0 1 .8 1.9 2.3 1.9M12 9.5c1-2.6 2.6-4 4.2-4 1.4 0 2.3 1 2.3 2.1 0 1-.8 1.9-2.3 1.9"/>
     </g>
   </defs>
 </svg>
@@ -892,12 +931,47 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
 
   // Extras mesa de regalos
   (function(){
-    let html="";
+    let items="";
+    if(CONFIG.regaloSobre && CONFIG.regaloSobre.trim())
+      items+=`<li class="gift-item">
+        <span class="gi-ico"><svg viewBox="0 0 24 24"><use href="#ic-envelope"/></svg></span>
+        <span class="gi-body">
+          <span class="gi-title">Sobre cerrado</span>
+          <span class="gi-text">${CONFIG.regaloSobre.trim()}</span>
+        </span>
+      </li>`;
+    if(CONFIG.regaloBanco){
+      const b=CONFIG.regaloBanco;
+      const campos=[
+        ["Banco", b.banco],
+        ["Tipo de cuenta", b.tipoCuenta],
+        ["Número de cuenta", b.numeroCuenta],
+        ["Titular", b.titular],
+        ["Cédula", b.cedula],
+        ["Correo", b.correo]
+      ];
+      const filas=campos
+        .filter(([,v])=>v && String(v).trim())
+        .map(([l,v])=>`<li><span class="br-label">${l}</span><span class="br-value">${String(v).trim()}</span></li>`)
+        .join("");
+      if(filas)
+        items+=`<li class="gift-item">
+          <span class="gi-ico"><svg viewBox="0 0 24 24"><use href="#ic-bank"/></svg></span>
+          <span class="gi-body">
+            <span class="gi-title">Transferencia bancaria</span>
+            <div class="bank-card"><ul>${filas}</ul></div>
+          </span>
+        </li>`;
+    }
     if(CONFIG.regaloLink && CONFIG.regaloLink.trim())
-      html+=`<a class="gift-link" href="${CONFIG.regaloLink.trim()}" target="_blank" rel="noopener">Ver mesa de regalos</a>`;
-    if(CONFIG.regaloBanco && CONFIG.regaloBanco.trim())
-      html+=`<div class="gift-bank">${CONFIG.regaloBanco.trim()}</div>`;
-    $("giftExtra").innerHTML=html;
+      items+=`<li class="gift-item">
+        <span class="gi-ico"><svg viewBox="0 0 24 24"><use href="#ic-gift"/></svg></span>
+        <span class="gi-body">
+          <span class="gi-title">Mesa de regalos</span>
+          <a class="gift-link" href="${CONFIG.regaloLink.trim()}" target="_blank" rel="noopener">Ver mesa de regalos</a>
+        </span>
+      </li>`;
+    $("giftExtra").innerHTML = items ? `<ul class="gift-list">${items}</ul>` : "";
   })();
 
   // Cierre "Gracias"

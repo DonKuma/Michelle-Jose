@@ -356,6 +356,7 @@ const CONFIG = {
   .rsvp-toggle input{position:absolute;opacity:0;width:0;height:0}
   .rsvp-toggle span{flex:1;text-align:center;padding:13px 10px;border:1px solid var(--line);cursor:pointer;font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;transition:.25s;color:var(--ink-soft)}
   .rsvp-toggle input:checked+span{background:var(--dark-terra);border-color:var(--dark-terra);color:var(--cream)}
+  .rsvp-toggle input:disabled+span{opacity:.4;cursor:not-allowed}
   .rsvp-btn{display:inline-flex;align-items:center;gap:11px;background:var(--dark-terra);color:var(--cream);border:none;padding:16px 40px;font-family:'Jost',sans-serif;font-weight:500;letter-spacing:.18em;text-transform:uppercase;font-size:.76rem;cursor:pointer;text-decoration:none;transition:.3s}
   .rsvp-btn:hover{background:var(--ink);transform:translateY(-3px)}
   .rsvp-btn:disabled{opacity:.55;cursor:default;transform:none}
@@ -659,8 +660,8 @@ const CONFIG = {
       <div class="rsvp-field">
         <label>¿Asistirán?</label>
         <div class="rsvp-toggle">
-          <label style="flex:1;margin:0"><input type="radio" name="asistencia" value="Sí" id="asistSi" checked><span>Sí, asistiremos</span></label>
-          <label style="flex:1;margin:0"><input type="radio" name="asistencia" value="No" id="asistNo"><span>No podremos</span></label>
+          <label style="flex:1;margin:0"><input type="radio" name="asistencia" value="Sí" id="asistSi" required><span id="asistSiTxt">Sí, asistiremos</span></label>
+          <label style="flex:1;margin:0"><input type="radio" name="asistencia" value="No" id="asistNo" required><span id="asistNoTxt">No podremos</span></label>
         </div>
       </div>
 
@@ -852,6 +853,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
 
     if(useChecklist){
       personasField.style.display = "none";
+      nombresField.style.display = "block";
       const checklist = $("nombresChecklist");
       guestList.forEach(nombre=>{
         const label = document.createElement("label");
@@ -865,9 +867,18 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
         const selected = Array.from(checklist.querySelectorAll(".guest-check:checked")).map(c=>c.dataset.name);
         $("fPersonasNombres").value = selected.join(", ");
         $("fPersonas").value = selected.length;
+        const ninguno = selected.length === 0;
+        $("asistSi").disabled = ninguno;
+        if(ninguno && $("asistSi").checked){ $("asistSi").checked = false; $("asistNo").checked = true; }
       }
       checklist.addEventListener("change", syncNombres);
       syncNombres();
+    } else if(maxCupos <= 1){
+      personasField.style.display = "none";
+      $("fPersonas").value = 1;
+      $("fPersonasNombres").value = quien;
+      $("asistSiTxt").textContent = "Sí, asistiré";
+      $("asistNoTxt").textContent = "No podré";
     } else {
       const personasSelect = $("personasSelect");
       for(let i=1;i<=maxCupos;i++){const o=document.createElement("option");o.value=i;o.textContent=i+(i===1?" persona":" personas");personasSelect.appendChild(o);}
@@ -880,8 +891,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
 
     function syncAsistencia(){
       const asiste = $("asistSi").checked;
-      if(useChecklist){ nombresField.style.display = asiste ? "block" : "none"; }
-      else { personasField.style.display = asiste ? "block" : "none"; }
+      if(!useChecklist && maxCupos > 1){ personasField.style.display = asiste ? "block" : "none"; }
     }
     $("asistSi").addEventListener("change", syncAsistencia);
     $("asistNo").addEventListener("change", syncAsistencia);

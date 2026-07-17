@@ -102,7 +102,9 @@ const CONFIG = {
     texto: "Aunque amamos a los más pequeños, este evento será solo para adultos."
   },
 
-  rsvpHasta:"Confirma tu asistencia antes del 14 de octubre",
+  // Fecha y hora límite para confirmar. El texto "Confirma tu asistencia antes del..."
+  // se genera automáticamente a partir de esta fecha (edita solo este valor).
+  rsvpLimite:"2026-09-14T23:59:59-05:00",
 
   // ─────────────────────────────────────────────────────────────
   // CONFIRMACIÓN → GOOGLE SHEETS (sin Google Forms, sin salir de la página)
@@ -352,7 +354,7 @@ const CONFIG = {
   .rsvp-field label{display:block;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:var(--dark-terra);margin-bottom:8px}
   .rsvp-field select,.rsvp-field textarea,.rsvp-field input[type="text"]{width:100%;background:var(--cream);color:var(--ink);border:1px solid var(--line);padding:13px 14px;font-family:'Jost',sans-serif;font-size:.95rem}
   .rsvp-field textarea{resize:vertical;min-height:90px;line-height:1.5}
-  .rsvp-toggle{display:flex;gap:10px}
+  .rsvp-toggle{display:flex;gap:10px;margin-top:20px}
   .rsvp-toggle input{position:absolute;opacity:0;width:0;height:0}
   .rsvp-toggle span{flex:1;text-align:center;padding:13px 10px;border:1px solid var(--line);cursor:pointer;font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;transition:.25s;color:var(--ink-soft)}
   .rsvp-toggle input:checked+span{background:var(--dark-terra);border-color:var(--dark-terra);color:var(--cream)}
@@ -728,7 +730,11 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   $("dressCode").textContent = CONFIG.vestimenta.codigo;
   $("dressNote").textContent = CONFIG.vestimenta.nota;
   $("regalo").textContent = CONFIG.regalo;
-  $("rsvpHasta").textContent = CONFIG.rsvpHasta;
+  try{
+    const MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+    const dl=new Date(CONFIG.rsvpLimite);
+    $("rsvpHasta").textContent = "Confirma tu asistencia antes del " + dl.getDate() + " de " + MESES[dl.getMonth()];
+  }catch(e){}
 
   // Ceremonia / Recepción
   const fill=(pre,o)=>{$(pre+"Title").textContent=o.titulo;$(pre+"Hora").textContent=o.hora;$(pre+"Lugar").textContent=o.lugar;$(pre+"Dir").textContent=o.direccion;$(pre+"Mapa").href=o.mapa;};
@@ -908,6 +914,14 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
 
     let submitting = false, submitted = false;
     form.addEventListener("submit", (ev)=>{
+      if(CONFIG.rsvpLimite){
+        const limite = new Date(CONFIG.rsvpLimite).getTime();
+        if(!isNaN(limite) && Date.now() > limite){
+          ev.preventDefault();
+          alert("Lo sentimos, esta invitación ya caducó y no es posible confirmar tu asistencia.");
+          return;
+        }
+      }
       if(!$("asistSi").checked && !$("asistNo").checked){
         ev.preventDefault();
         alert("Debes indicar si asistirás o no antes de confirmar.");

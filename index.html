@@ -192,11 +192,13 @@ const CONFIG = {
   #intro{
     position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
     align-items:center;justify-content:center;padding:24px;gap:22px;
-    background:radial-gradient(circle at 50% 22%, var(--cream-2), var(--cream) 72%);
+    background:url('fotos/Fondo para invitación.jpeg') center/cover no-repeat;
     transition:opacity .9s ease, visibility .9s ease;
   }
   #intro.gone{opacity:0;visibility:hidden}
-  .intro-top{font-size:.64rem;letter-spacing:.4em;text-transform:uppercase;color:var(--ink-soft);opacity:.85}
+  .intro-top{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;
+    font-size:1.15rem;letter-spacing:.03em;text-transform:none;color:var(--ink);
+    opacity:1;text-shadow:0 1px 3px rgba(255,255,255,.65)}
   .stage{perspective:1500px}
 
   .env{

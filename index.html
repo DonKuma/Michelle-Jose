@@ -443,7 +443,7 @@ const CONFIG = {
   .card .hr{font-size:1.4rem;color:var(--terra);font-family:'Cormorant Garamond',serif;margin-bottom:16px}
   .card .place{font-size:1.05rem;margin-bottom:3px}
   .card .addr{font-size:.88rem;color:var(--ink-soft);margin-bottom:22px}
-  .map-link{display:inline-block;border:1px solid var(--terra);color:var(--terra);padding:10px 24px;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;transition:.3s}
+  .map-link{display:inline-block;border:1px solid var(--terra);border-radius:30px;color:var(--terra);padding:10px 24px;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;transition:.3s}
   .map-link:hover{background:var(--terra);color:var(--cream)}
 
   .itin{max-width:520px;margin:64px auto 0}
@@ -488,10 +488,10 @@ const CONFIG = {
   .rsvp-field textarea{resize:vertical;min-height:90px;line-height:1.5}
   .rsvp-toggle{display:flex;gap:10px;margin-top:20px}
   .rsvp-toggle input{position:absolute;opacity:0;width:0;height:0}
-  .rsvp-toggle span{flex:1;text-align:center;padding:13px 10px;border:1px solid var(--line);cursor:pointer;font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;transition:.25s;color:var(--ink-soft)}
+  .rsvp-toggle span{flex:1;text-align:center;padding:13px 10px;border:1px solid var(--line);border-radius:30px;cursor:pointer;font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;transition:.25s;color:var(--ink-soft)}
   .rsvp-toggle input:checked+span{background:var(--dark-terra);border-color:var(--dark-terra);color:var(--cream)}
   .rsvp-toggle input:disabled+span{opacity:.4;cursor:not-allowed}
-  .rsvp-btn{display:inline-flex;align-items:center;gap:11px;background:var(--dark-terra);color:var(--cream);border:none;padding:16px 40px;font-family:'Jost',sans-serif;font-weight:500;letter-spacing:.18em;text-transform:uppercase;font-size:.76rem;cursor:pointer;text-decoration:none;transition:.3s}
+  .rsvp-btn{display:inline-flex;align-items:center;gap:11px;background:var(--dark-terra);color:var(--cream);border:none;border-radius:30px;padding:16px 40px;font-family:'Jost',sans-serif;font-weight:500;letter-spacing:.18em;text-transform:uppercase;font-size:.76rem;cursor:pointer;text-decoration:none;transition:.3s}
   .rsvp-btn:hover{background:var(--ink);transform:translateY(-3px)}
   .rsvp-btn:disabled{opacity:.55;cursor:default;transform:none}
   .rsvp-guest{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--dark-terra);font-size:1.25rem;margin-bottom:6px}
@@ -539,8 +539,13 @@ const CONFIG = {
   .bank-card li:last-child{border-bottom:none}
   .bank-card .br-label{flex:none;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dark-terra)}
   .bank-card .br-value{color:var(--ink);font-weight:500;text-align:right;word-break:break-word}
-  .gift-item .gift-link{display:inline-block;margin-top:8px;border:1px solid var(--terra);color:var(--terra);padding:9px 22px;font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;transition:.3s}
+  .gift-item .gift-link{display:inline-block;margin-top:8px;border:1px solid var(--terra);border-radius:30px;color:var(--terra);padding:9px 22px;font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;transition:.3s}
   .gift-item .gift-link:hover{background:var(--terra);color:var(--cream)}
+  .bank-toggle{display:inline-block;margin-top:8px;border:1px solid var(--terra);border-radius:30px;background:none;color:var(--terra);
+    padding:9px 22px;font-family:'Jost',sans-serif;font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;
+    cursor:pointer;transition:.3s}
+  .bank-toggle:hover{background:var(--terra);color:var(--cream)}
+  .bank-card[hidden]{display:none}
 
   /* ════════ CIERRE "GRACIAS" ════════ */
   .closing{background:rgba(245,239,231,.6);text-align:center;padding:90px 24px;border-top:1px solid var(--line)}
@@ -979,7 +984,8 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
           <span class="gi-ico"><svg viewBox="0 0 24 24"><use href="#ic-bank"/></svg></span>
           <span class="gi-body">
             <span class="gi-title">Transferencia bancaria</span>
-            <div class="bank-card"><ul>${filas}</ul></div>
+            <button type="button" class="bank-toggle" aria-expanded="false">Ver datos de la cuenta</button>
+            <div class="bank-card" hidden><ul>${filas}</ul></div>
           </span>
         </li>`;
     }
@@ -992,6 +998,14 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
         </span>
       </li>`;
     $("giftExtra").innerHTML = items ? `<ul class="gift-list">${items}</ul>` : "";
+    const bankToggle=$("giftExtra").querySelector(".bank-toggle");
+    if(bankToggle) bankToggle.addEventListener("click",()=>{
+      const card=bankToggle.nextElementSibling;
+      const open=card.hasAttribute("hidden");
+      card.toggleAttribute("hidden",!open);
+      bankToggle.setAttribute("aria-expanded",String(open));
+      bankToggle.textContent=open?"Ocultar datos de la cuenta":"Ver datos de la cuenta";
+    });
   })();
 
   // Cierre "Gracias"

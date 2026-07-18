@@ -89,8 +89,8 @@ const CONFIG = {
   ],
 
   vestimenta: {
-    codigo:"Formal / Etiqueta",
-    nota:"Te sugerimos seguir nuestra paleta de colores. Reservamos el blanco para la novia."
+    codigo:"Formal",
+    nota:"Colores blanco, beige o similares son exclusivos de los novios."
   },
 
   // Mostrar mapa de Google embebido en Ceremonia y Recepción
@@ -177,7 +177,15 @@ const CONFIG = {
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{
-    background:var(--cream);color:var(--ink);
+    background-color:var(--cream);
+    background-image:
+      linear-gradient(rgba(245,239,231,.82),rgba(245,239,231,.82)),
+      url('fotos/Fondo para invitación.jpeg');
+    background-position:center,center;
+    background-size:cover,cover;
+    background-repeat:no-repeat,no-repeat;
+    background-attachment:fixed,fixed;
+    color:var(--ink);
     font-family:'Jost',sans-serif;font-weight:300;line-height:1.75;
     overflow-x:hidden;-webkit-font-smoothing:antialiased;
   }
@@ -305,7 +313,7 @@ const CONFIG = {
     box-shadow:0 0 6px rgba(0,0,0,.6)}
 
   /* ════════ TOCADISCOS ════════ */
-  .turntable-wrap{position:relative;background:var(--cream);text-align:center;padding:64px 24px 46px;
+  .turntable-wrap{position:relative;background:rgba(245,239,231,.82);text-align:center;padding:64px 24px 46px;
     border-top:1px solid var(--line);overflow:hidden}
   .tt-glow{position:absolute;top:10%;left:50%;width:340px;height:340px;transform:translateX(-50%);
     background:radial-gradient(circle,var(--dusty-light) 0%,transparent 68%);
@@ -394,7 +402,7 @@ const CONFIG = {
   }
 
   /* ════════ BANDA VERSÍCULO (verde) ════════ */
-  .verse-band{background:var(--cream);color:var(--ink);text-align:center;padding:74px 24px;border-top:1px solid var(--line)}
+  .verse-band{background:rgba(245,239,231,.82);color:var(--ink);text-align:center;padding:74px 24px;border-top:1px solid var(--line)}
   .verse-band .sprig{color:var(--green);margin:0 auto 18px}
   .verse{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(1.5rem,4.4vw,2.3rem);line-height:1.5;max-width:640px;margin:0 auto}
   .verse-ref{display:block;margin-top:16px;font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;opacity:.8;font-family:'Jost',sans-serif;font-style:normal}
@@ -414,7 +422,7 @@ const CONFIG = {
   .firma{margin-top:22px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--dusty)}
 
   /* ════════ COUNTDOWN (rosa claro) ════════ */
-  .countdown-wrap{background:var(--cream);text-align:center;padding:70px 24px;border-top:1px solid var(--line)}
+  .countdown-wrap{background:rgba(245,239,231,.82);text-align:center;padding:70px 24px;border-top:1px solid var(--line)}
   .countdown-wrap .eyebrow{color:var(--terra)}
   .countdown{display:flex;justify-content:center;gap:clamp(12px,5vw,42px);margin-top:26px;flex-wrap:wrap}
   .cd-num{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,9vw,4rem);line-height:1;color:var(--dark-terra)}
@@ -430,7 +438,7 @@ const CONFIG = {
   .story-item p{color:var(--ink-soft);font-size:.95rem;max-width:280px;margin:0 auto}
 
   /* ════════ DETALLES + ITINERARIO ════════ */
-  .details-band{background:var(--cream);padding:84px 24px;border-top:1px solid var(--line)}
+  .details-band{background:rgba(245,239,231,.82);padding:84px 24px;border-top:1px solid var(--line)}
   .details{max-width:940px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:24px}
   .card{border:1px solid var(--line);background:var(--cream);padding:46px 32px;text-align:center;transition:transform .5s,border-color .5s,box-shadow .5s}
   .card:hover{transform:translateY(-6px);border-color:var(--terra);box-shadow:var(--shadow)}
@@ -457,12 +465,21 @@ const CONFIG = {
   .gallery img:hover{filter:none;transform:scale(1.02)}
 
   /* ════════ VESTIMENTA (terracota) ════════ */
-  .dress{background:var(--cream);color:var(--ink);text-align:center;padding:80px 24px;border-top:1px solid var(--line)}
+  .dress{background:rgba(245,239,231,.82);color:var(--ink);text-align:center;padding:80px 24px;border-top:1px solid var(--line)}
   .dress .sprig{color:var(--green);margin:0 auto 14px}
   .dress h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(1.6rem,4.6vw,2.2rem);margin-bottom:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--dark-terra)}
   .dress p{max-width:480px;margin:0 auto;color:var(--ink-soft)}
-  .swatches{display:flex;justify-content:center;gap:14px;margin-top:30px;flex-wrap:wrap}
-  .swatches span{width:34px;height:34px;border-radius:50%;border:2px solid var(--cream);box-shadow:0 0 0 1px var(--line)}
+
+  .dress-looks{display:flex;justify-content:center;align-items:flex-end;gap:24px;max-width:600px;margin:44px auto 0}
+  .dress-look{flex:1;min-width:0;max-width:250px}
+  .dress-divider{width:1px;flex:none;align-self:stretch;background:var(--line);margin:20px 0}
+  .dl-frame{position:relative}
+  .dl-frame img{width:100%;height:auto;display:block;filter:drop-shadow(0 16px 20px rgba(67,48,42,.3));transition:transform .5s cubic-bezier(.2,.8,.25,1)}
+  .dress-look:hover .dl-frame img{transform:translateY(-4px)}
+  .dl-cap{margin-top:14px;display:flex;flex-direction:column;gap:3px}
+  .dl-kicker{font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--terra)}
+  .dl-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:var(--dark-terra);line-height:1.1}
+  @media(max-width:560px){.dress-look{max-width:170px}.dl-name{font-size:1.25rem}}
 
   /* ════════ REGALO ════════ */
   .gift{max-width:600px;margin:0 auto;padding:80px 24px;text-align:center}
@@ -471,7 +488,7 @@ const CONFIG = {
   .gift p{color:var(--ink-soft);max-width:500px;margin:0 auto}
 
   /* ════════ RSVP (rosa empolvado) ════════ */
-  .rsvp{background:var(--cream);color:var(--ink);text-align:center;padding:84px 24px;border-top:1px solid var(--line)}
+  .rsvp{background:rgba(245,239,231,.82);color:var(--ink);text-align:center;padding:84px 24px;border-top:1px solid var(--line)}
   .rsvp h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(1.8rem,5.4vw,2.6rem);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em;color:var(--dark-terra)}
   .rsvp .sub{color:var(--ink-soft);margin-bottom:24px}
   .rsvp-form{max-width:360px;margin:0 auto}
@@ -540,7 +557,7 @@ const CONFIG = {
   .gift-item .gift-link:hover{background:var(--terra);color:var(--cream)}
 
   /* ════════ CIERRE "GRACIAS" ════════ */
-  .closing{background:var(--cream);text-align:center;padding:90px 24px;border-top:1px solid var(--line)}
+  .closing{background:rgba(245,239,231,.82);text-align:center;padding:90px 24px;border-top:1px solid var(--line)}
   .closing .cmono{width:88px;margin:0 auto 14px}
   .closing .cmono img{width:100%}
   .closing .cnames{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(2.4rem,9vw,4rem);line-height:1;color:var(--ink)}
@@ -794,10 +811,17 @@ const CONFIG = {
   <div class="eyebrow">Código de vestimenta</div>
   <h3 id="dressCode" style="margin-top:10px">Formal</h3>
   <p id="dressNote"></p>
-  <div class="swatches">
-    <span style="background:#707651"></span><span style="background:#8C5640"></span>
-    <span style="background:#C47758"></span><span style="background:#CD9B8B"></span>
-    <span style="background:#DFB9AF"></span>
+
+  <div class="dress-looks">
+    <figure class="dress-look">
+      <div class="dl-frame"><img src="fotos/Codigo mujer.png" alt="Referencia de vestimenta para mujer" loading="lazy"></div>
+      <figcaption class="dl-cap"><span class="dl-kicker">Damas</span><span class="dl-name">Vestido Largo</span></figcaption>
+    </figure>
+    <span class="dress-divider" aria-hidden="true"></span>
+    <figure class="dress-look">
+      <div class="dl-frame"><img src="fotos/Codigo hombre.png" alt="Referencia de vestimenta para hombre" loading="lazy"></div>
+      <figcaption class="dl-cap"><span class="dl-kicker">Caballeros</span><span class="dl-name">Traje Oscuro</span></figcaption>
+    </figure>
   </div>
 </section>
 

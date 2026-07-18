@@ -284,8 +284,8 @@ const CONFIG = {
   /* position:absolute (relativo a .intro-center) para que este botón, al crecer hacia abajo
      cuando se abre el sobre, no cambie la altura del bloque centrado ni mueva el sobre/título. */
   .enter-btn{
-    position:absolute;left:50%;top:100%;
-    background:var(--terra);color:var(--cream);border:none;padding:14px 38px;cursor:pointer;
+    position:absolute;left:50%;top:115%;
+    background:var(--terra);color:var(--cream);border:none;border-radius:30px;padding:14px 38px;cursor:pointer;
     font-family:'Jost',sans-serif;letter-spacing:.24em;text-transform:uppercase;font-size:.68rem;
     opacity:0;pointer-events:none;transform:translateX(-50%) translateY(8px);
     margin-top:69px;white-space:nowrap;
@@ -657,7 +657,7 @@ const CONFIG = {
 <!-- ════════ INTRO: SOBRE QUE SE ABRE ════════ -->
 <div id="intro">
   <div class="intro-center">
-    <div class="intro-top">Tu invitación · Toca el sobre para abrir</div>
+    <div class="intro-top">Toca el sobre para abrir</div>
     <div class="stage">
       <button class="env" id="env" aria-label="Abrir invitación">
         <div class="env-body"></div>
@@ -666,7 +666,7 @@ const CONFIG = {
             <img class="l-cardart" src="fotos/carta.png" alt="" aria-hidden="true">
             <div class="l-content">
               <div class="l-mono"><img id="letterMono" alt=""></div>
-              <div class="l-for">Tienes una invitación para</div>
+              <div class="l-for">Invitación para:</div>
               <div id="introTitle" class="serif"></div>
               <div id="introGuest" class="serif">Invitado especial</div>
             </div>

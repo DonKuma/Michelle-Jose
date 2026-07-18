@@ -33,7 +33,7 @@
      Excel "Generador de invitaciones.xlsx" para armar estas URLs fácil.
 
      FOTOS: apuntan a la carpeta "fotos/" del repositorio. Sube tus imágenes
-     con los nombres indicados (hero.jpg, historia-1..3.jpg, galeria-1..6.jpg,
+     con los nombres indicados (hero.jpg, historia-1..3.jpg,
      portada.jpg para el preview de WhatsApp).
 ═════════════════════════════════════════════════════════════════ -->
 <script>
@@ -93,9 +93,6 @@ const CONFIG = {
     nota:"Colores blanco, beige o similares son exclusivos de los novios."
   },
 
-  // Mostrar mapa de Google embebido en Ceremonia y Recepción
-  mapasEmbebidos: true,
-
   // Sección "Sin niños" (opcional). activo:false para ocultarla.
   sinNinos: {
     activo: true,
@@ -141,16 +138,7 @@ const CONFIG = {
     titular: "José Pérez",
     cedula: "0900000000",
     correo: "jose.perez@correo.com"
-  },
-
-  // Galería (sube las fotos a la carpeta "fotos/" con estos nombres)
-  galeria: [
-    "fotos/DSC_2833.jpg",
-    "fotos/DSC_2836.jpg",
-    "fotos/DSC_2889.jpg",
-    "fotos/DSC_2943.jpg",
-    "fotos/DSC_3025.jpg"
-  ]
+  }
 };
 </script>
 
@@ -188,6 +176,16 @@ const CONFIG = {
     color:var(--ink);
     font-family:'Jost',sans-serif;font-weight:300;line-height:1.75;
     overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  }
+  /* En móvil, "fixed" fuerza a los navegadores (sobre todo iOS Safari) a recalcular
+     el "cover" contra el alto de TODA la página (no el viewport), dejando la textura
+     estirada/borrosa. Se usa "scroll" + un tamaño fijo en mosaico para que se vea nítida. */
+  @media (max-width:760px){
+    body{
+      background-attachment:scroll,scroll;
+      background-size:cover,320px auto;
+      background-repeat:no-repeat,repeat;
+    }
   }
   .serif{font-family:'Cormorant Garamond',serif}
   .script{font-family:'Pinyon Script',cursive}
@@ -456,12 +454,6 @@ const CONFIG = {
   .itin-row .dot{width:9px;height:9px;border-radius:50%;background:var(--terra);flex:none}
   .itin-row .e{font-size:1rem;letter-spacing:.02em}
 
-  /* ════════ GALERÍA ════════ */
-  .gallery-wrap{padding:80px 18px 40px;text-align:center}
-  .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;max-width:1000px;margin:40px auto 0}
-  .gallery img{width:100%;height:230px;object-fit:cover;border:1px solid var(--line);filter:var(--photo-filter);transition:filter .5s,transform .5s}
-  .gallery img:hover{filter:none;transform:scale(1.02)}
-
   /* ════════ VESTIMENTA (terracota) ════════ */
   .dress{background:rgba(245,239,231,.6);color:var(--ink);text-align:center;padding:80px 24px;border-top:1px solid var(--line)}
   .dress .sprig{color:var(--green);margin:0 auto 14px}
@@ -522,10 +514,6 @@ const CONFIG = {
   .datebadge .dw{font-size:.58rem;letter-spacing:.34em;text-transform:uppercase;color:var(--dark-terra)}
   .datebadge .dd{font-family:'Cormorant Garamond',serif;font-size:2.7rem;line-height:1;color:var(--terra)}
   .datebadge .dm{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--dark-terra)}
-
-  /* ════════ MAPA EMBEBIDO EN TARJETAS ════════ */
-  .card .map-embed{margin-top:18px;border:1px solid var(--line);border-radius:4px;overflow:hidden}
-  .card .map-embed iframe{width:100%;height:185px;border:0;display:block;filter:saturate(.9)}
 
   /* ════════ SIN NIÑOS ════════ */
   .nokids{max-width:560px;margin:0 auto;padding:74px 24px;text-align:center}
@@ -592,8 +580,6 @@ const CONFIG = {
   /* ── Reveal ── */
   .reveal{opacity:0;transform:translateY(26px);transition:opacity 1s ease,transform 1s ease}
   .reveal.in{opacity:1;transform:none}
-
-  @media (max-width:520px){.gallery img{height:175px}}
 </style>
 </head>
 <body>
@@ -784,7 +770,6 @@ const CONFIG = {
       <div class="place" id="cLugar">—</div>
       <div class="addr" id="cDir">—</div>
       <a class="map-link" id="cMapa" target="_blank" rel="noopener">Cómo llegar</a>
-      <div class="map-embed" id="cMap" style="display:none"></div>
     </div>
     <div class="card">
       <div class="licon"><svg viewBox="0 0 24 24"><use href="#ic-table"/></svg></div>
@@ -793,7 +778,6 @@ const CONFIG = {
       <div class="place" id="rLugar">—</div>
       <div class="addr" id="rDir">—</div>
       <a class="map-link" id="rMapa" target="_blank" rel="noopener">Cómo llegar</a>
-      <div class="map-embed" id="rMap" style="display:none"></div>
     </div>
   </div>
   <div class="itin">
@@ -879,7 +863,7 @@ const CONFIG = {
       </div>
 
       <div class="rsvp-field" id="mensajeField">
-        <label for="mensaje">Alergias o un mensaje para nosotros (opcional)</label>
+        <label for="mensaje">Un mensaje para nosotros (opcional)</label>
         <textarea id="mensaje" name="mensaje"></textarea>
       </div>
 
@@ -889,13 +873,6 @@ const CONFIG = {
     <p class="rsvp-thanks" id="sheetThanks">¡Gracias por confirmar! Ya recibimos tu respuesta y no vemos la hora de celebrar contigo.</p>
   </div>
   <iframe name="hidden_iframe" id="hidden_iframe" style="display:none"></iframe>
-</section>
-
-<!-- ════════ GALERÍA ════════ -->
-<section class="gallery-wrap reveal">
-  <div class="eyebrow">Momentos</div>
-  <div class="bdivider" style="margin-top:14px"><span class="ln"></span><span class="sprig" style="color:var(--terra)"><svg viewBox="0 0 80 64"><use href="#sprig-shape" fill="currentColor"/></svg></span><span class="ln"></span></div>
-  <div class="gallery" id="gallery"></div>
 </section>
 
 <!-- ════════ CIERRE "GRACIAS" ════════ -->
@@ -965,16 +942,6 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
     $("badgeDay").textContent=String(dt.getDate()).padStart(2,"0");
     $("badgeMon").textContent=MON[dt.getMonth()]+" "+dt.getFullYear();
   }catch(e){}
-
-  // Mapas embebidos en las tarjetas
-  if(CONFIG.mapasEmbebidos){
-    const ciudad=(CONFIG.ciudad||"").split("·")[0].trim();
-    const embed=o=>"https://www.google.com/maps?q="+encodeURIComponent(o.lugar+", "+o.direccion+(ciudad?", "+ciudad:""))+"&z=15&output=embed";
-    [["c",CONFIG.ceremonia],["r",CONFIG.recepcion]].forEach(([pre,o])=>{
-      const box=$(pre+"Map"); box.style.display="block";
-      box.innerHTML=`<iframe loading="lazy" title="Mapa ${o.titulo}" src="${embed(o)}"></iframe>`;
-    });
-  }
 
   // Sin niños
   if(CONFIG.sinNinos && CONFIG.sinNinos.activo){
@@ -1056,11 +1023,6 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
       +`<div class="anio script">${h.anio}</div><h4 class="serif">${h.titulo}</h4><p>${h.texto}</p>`;
     $("storyGrid").appendChild(el);
   });
-
-  // Galería
-  if(Array.isArray(CONFIG.galeria)&&CONFIG.galeria.length){
-    CONFIG.galeria.forEach(src=>{const i=document.createElement("img");i.src=src;i.alt="Foto";i.loading="lazy";$("gallery").appendChild(i);});
-  } else { $("gallery").closest("section").style.display="none"; }
 
   // ── Personalización por invitado ──
   const titulo=p("titulo"), invitado=p("invitado","Invitado especial"), firma=p("firma"), admision=p("admision","1 persona");

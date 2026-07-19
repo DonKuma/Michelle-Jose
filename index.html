@@ -418,11 +418,40 @@ const CONFIG = {
   .firma{margin-top:22px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--dusty)}
 
   /* ════════ COUNTDOWN (rosa claro) ════════ */
-  .countdown-wrap{background:rgba(245,239,231,.6);text-align:center;padding:70px 24px;border-top:1px solid var(--line)}
+  .countdown-wrap{position:relative;background:rgba(245,239,231,.6);text-align:center;padding:70px 24px;
+    border-top:1px solid var(--line);overflow:hidden}
   .countdown-wrap .eyebrow{color:var(--terra)}
-  .countdown{display:flex;justify-content:center;gap:clamp(12px,5vw,42px);margin-top:26px;flex-wrap:wrap}
-  .cd-num{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,9vw,4rem);line-height:1;color:var(--dark-terra)}
-  .cd-label{font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;color:var(--ink-soft);margin-top:8px}
+
+  /* Corazones y destellos flotando de fondo */
+  .cd-decor{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+  .cd-deco{position:absolute;bottom:-30px;opacity:0;animation:cd-float ease-in infinite}
+  .cd-deco:nth-child(1){left:5%;font-size:1.5rem;color:var(--terra);animation-delay:.2s;animation-duration:9s}
+  .cd-deco:nth-child(2){left:16%;font-size:1rem;color:var(--dusty);animation-delay:3.4s;animation-duration:11s}
+  .cd-deco:nth-child(3){left:29%;font-size:.85rem;color:var(--green);animation-delay:1.6s;animation-duration:8s}
+  .cd-deco:nth-child(4){left:41%;font-size:1.3rem;color:var(--dusty-light);animation-delay:5s;animation-duration:10s}
+  .cd-deco:nth-child(5){left:58%;font-size:1.1rem;color:var(--terra);animation-delay:.8s;animation-duration:9.5s}
+  .cd-deco:nth-child(6){left:70%;font-size:.9rem;color:var(--green);animation-delay:4.2s;animation-duration:8.5s}
+  .cd-deco:nth-child(7){left:83%;font-size:1.4rem;color:var(--dusty);animation-delay:2.4s;animation-duration:11.5s}
+  .cd-deco:nth-child(8){left:93%;font-size:1rem;color:var(--terra);animation-delay:6s;animation-duration:9s}
+  @keyframes cd-float{
+    0%{transform:translateY(0) rotate(0deg);opacity:0}
+    12%{opacity:.7}
+    50%{transform:translateY(-140px) rotate(14deg)}
+    88%{opacity:.4}
+    100%{transform:translateY(-280px) rotate(-10deg);opacity:0}
+  }
+
+  .countdown{position:relative;z-index:1;display:flex;justify-content:center;align-items:center;
+    gap:clamp(2px,1.6vw,14px);margin-top:30px;flex-wrap:wrap}
+  .cd-item{display:flex;flex-direction:column;align-items:center;min-width:56px}
+  .cd-num{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(2.5rem,10vw,4.2rem);line-height:1;
+    color:var(--dark-terra);font-variant-numeric:tabular-nums}
+  .cd-num.pulse{animation:cd-pulse .5s ease}
+  @keyframes cd-pulse{0%{transform:scale(1)}40%{transform:scale(1.22);color:var(--terra)}100%{transform:scale(1)}}
+  .cd-label{margin-top:6px;font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;color:var(--ink-soft)}
+  .cd-sep{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,7vw,3.2rem);line-height:1;color:var(--terra);
+    opacity:.55;transform:translateY(-.6em)}
+  @media(prefers-reduced-motion:reduce){.cd-num.pulse{animation:none}.cd-deco{animation:none;opacity:0}}
 
   /* ════════ NUESTRA HISTORIA ════════ */
   .story{max-width:1000px;margin:0 auto;padding:90px 24px 60px;text-align:center}
@@ -744,6 +773,11 @@ const CONFIG = {
 
 <!-- ════════ COUNTDOWN ════════ -->
 <section class="countdown-wrap reveal">
+  <div class="cd-decor" aria-hidden="true">
+    <span class="cd-deco">♥</span><span class="cd-deco">✦</span><span class="cd-deco">♥</span>
+    <span class="cd-deco">✦</span><span class="cd-deco">♥</span><span class="cd-deco">✦</span>
+    <span class="cd-deco">♥</span><span class="cd-deco">✦</span>
+  </div>
   <div class="datebadge">
     <span class="dw" id="badgeDow">Sábado</span>
     <span class="dd" id="badgeDay">07</span>
@@ -751,10 +785,13 @@ const CONFIG = {
   </div>
   <div class="eyebrow">Sólo faltan</div>
   <div class="countdown">
-    <div><div class="cd-num" id="cdD">0</div><div class="cd-label">Días</div></div>
-    <div><div class="cd-num" id="cdH">0</div><div class="cd-label">Horas</div></div>
-    <div><div class="cd-num" id="cdM">0</div><div class="cd-label">Minutos</div></div>
-    <div><div class="cd-num" id="cdS">0</div><div class="cd-label">Segundos</div></div>
+    <div class="cd-item"><div class="cd-num" id="cdD">0</div><div class="cd-label">Días</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-item"><div class="cd-num" id="cdH">0</div><div class="cd-label">Horas</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-item"><div class="cd-num" id="cdM">0</div><div class="cd-label">Minutos</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-item"><div class="cd-num" id="cdS">0</div><div class="cd-label">Segundos</div></div>
   </div>
 </section>
 
@@ -1178,13 +1215,21 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
 
   // Countdown
   const target=new Date(CONFIG.fechaISO).getTime();
+  function setCd(id,val){
+    const el=$(id);
+    if(el.textContent===val) return;
+    el.textContent=val;
+    el.classList.remove("pulse");
+    void el.offsetWidth;
+    el.classList.add("pulse");
+  }
   function tick(){
     const diff=target-Date.now();
-    if(diff<=0){["cdD","cdH","cdM","cdS"].forEach(i=>$(i).textContent="0");return;}
-    $("cdD").textContent=Math.floor(diff/86400000);
-    $("cdH").textContent=String(Math.floor(diff%86400000/3600000)).padStart(2,"0");
-    $("cdM").textContent=String(Math.floor(diff%3600000/60000)).padStart(2,"0");
-    $("cdS").textContent=String(Math.floor(diff%60000/1000)).padStart(2,"0");
+    if(diff<=0){["cdD","cdH","cdM","cdS"].forEach(i=>setCd(i,"0"));return;}
+    setCd("cdD",String(Math.floor(diff/86400000)));
+    setCd("cdH",String(Math.floor(diff%86400000/3600000)).padStart(2,"0"));
+    setCd("cdM",String(Math.floor(diff%3600000/60000)).padStart(2,"0"));
+    setCd("cdS",String(Math.floor(diff%60000/1000)).padStart(2,"0"));
   }
   tick(); setInterval(tick,1000);
 

@@ -311,7 +311,7 @@ const CONFIG = {
     box-shadow:0 0 6px rgba(0,0,0,.6)}
 
   /* ════════ TOCADISCOS ════════ */
-  .turntable-wrap{position:relative;background:rgba(245,239,231,.6);text-align:center;padding:64px 24px 54px;
+  .turntable-wrap{position:relative;background:rgba(245,239,231,.6);text-align:center;padding:128px 24px 54px;
     border-top:1px solid var(--line);overflow:hidden}
   .tt-glow{position:absolute;top:10%;left:50%;width:340px;height:340px;transform:translateX(-50%);
     background:radial-gradient(circle,var(--dusty-light) 0%,transparent 68%);
@@ -385,29 +385,53 @@ const CONFIG = {
 
   /* Tapa de vidrio con volumen real: una cajita en 3D (cara de arriba +
      cara frontal, mismas fórmulas rotateX/translateZ que la base de madera)
-     en vez de una sola lámina plana. Se levanta y desliza hacia atrás al
-     empezar a sonar la música. */
-  .tt-cover{position:absolute;left:8px;right:8px;top:8px;height:112px;
+     en vez de una sola lámina plana. Gira sobre una bisagra en el borde de
+     atrás (como una tapa real) al empezar a sonar la música. */
+  .tt-cover{position:absolute;left:8px;right:8px;top:8px;bottom:8px;
     transform-style:preserve-3d;transform-origin:50% 0%;
-    transform:translateY(0) translateZ(0) rotateX(0deg);
+    transform:rotateX(0deg);
     transition:transform 1s cubic-bezier(.16,1.32,.34,1);
     z-index:6;pointer-events:none}
-  .tt-cover.open{transform:translateY(-66px) translateZ(30px) rotateX(-15deg)}
+  .tt-cover.open{transform:rotateX(60deg)}
   .tt-cface{position:absolute;top:50%;left:50%;
-    background:linear-gradient(200deg,rgba(255,255,255,.36),rgba(255,255,255,.08) 60%);
-    border:1px solid rgba(255,255,255,.45);
-    box-shadow:inset 0 0 14px rgba(255,255,255,.18)}
-  .tt-cface.top{width:224px;height:112px;margin:-56px 0 0 -112px;border-radius:6px;
-    transform:translateZ(18px)}
-  .tt-cface.front{width:224px;height:18px;margin:-9px 0 0 -112px;border-radius:0 0 6px 6px;
-    transform:rotateX(90deg) translateY(9px) translateZ(-56px);border-top:none;
-    background:linear-gradient(180deg,rgba(255,255,255,.3),rgba(255,255,255,.06))}
+    background:
+      linear-gradient(115deg,rgba(255,255,255,.05) 30%,rgba(255,255,255,.5) 46%,rgba(255,255,255,.08) 62%),
+      linear-gradient(200deg,rgba(224,238,247,.4),rgba(224,238,247,.08) 60%);
+    border:1px solid rgba(255,255,255,.55);
+    box-shadow:inset 0 0 16px rgba(255,255,255,.22)}
+  .tt-cface.top{width:224px;height:168px;margin:-84px 0 0 -112px;border-radius:6px;
+    transform:translateZ(30px)}
+  .tt-cface.front{width:224px;height:30px;margin:-15px 0 0 -112px;border-radius:0 0 6px 6px;
+    transform:rotateX(90deg) translateY(15px) translateZ(-84px);border-top:none;
+    background:linear-gradient(180deg,rgba(255,255,255,.15),rgba(224,238,247,.05) 40%,rgba(0,0,0,.05));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 0 16px rgba(255,255,255,.15)}
 
-  .tt-btn{width:50px;height:50px;border-radius:50%;border:none;background:var(--dark-terra);color:var(--cream);
+  .tt-btn-wrap{position:relative;display:flex;align-items:center;justify-content:center}
+  .tt-btn{position:relative;z-index:1;width:50px;height:50px;border-radius:50%;border:none;
+    background:var(--dark-terra);color:var(--cream);
     display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .3s;
     box-shadow:0 8px 18px -10px rgba(140,86,64,.6)}
   .tt-btn svg{margin-left:1px}
   .tt-btn:hover{background:var(--ink)}
+
+  /* Ecualizador: barritas que laten detrás del botón, sólo mientras suena
+     la música (las del centro quedan tapadas por el botón). */
+  .tt-eq{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    display:flex;align-items:center;justify-content:space-between;
+    width:160px;height:54px;z-index:0;pointer-events:none}
+  .tt-eq span{width:6px;border-radius:3px;height:14%;opacity:.85;
+    background:linear-gradient(180deg,var(--dusty-light),var(--terra));
+    animation:tt-eq-bounce 1.2s ease-in-out infinite;animation-play-state:paused}
+  .tt-eq.playing span{animation-play-state:running}
+  .tt-eq span:nth-child(1){animation-delay:-1.1s}
+  .tt-eq span:nth-child(2){animation-delay:-.85s}
+  .tt-eq span:nth-child(3){animation-delay:-.6s}
+  .tt-eq span:nth-child(4){animation-delay:-.35s}
+  .tt-eq span:nth-child(5){animation-delay:-.1s}
+  .tt-eq span:nth-child(6){animation-delay:-.7s}
+  .tt-eq span:nth-child(7){animation-delay:-.2s}
+  @keyframes tt-eq-bounce{0%,100%{height:16%}50%{height:100%}}
+  @media(prefers-reduced-motion:reduce){.tt-eq span{animation:none}}
 
   .tt-row{position:relative;z-index:1;display:flex;align-items:center;justify-content:center}
   @media(max-width:560px){
@@ -417,7 +441,9 @@ const CONFIG = {
     .tt-plate{width:118px;height:118px}
     .tt-label{width:36px;height:36px}
     .tt-arm{height:70px}
-    .tt-cover{height:92px}
+    .tt-cface.top{width:184px;height:138px;margin:-69px 0 0 -92px}
+    .tt-cface.front{width:184px;height:14px;margin:-7px 0 0 -92px;
+      transform:rotateX(90deg) translateY(7px) translateZ(-69px)}
   }
 
   .tt-hearts{position:absolute;inset:0;z-index:2;pointer-events:none}
@@ -780,10 +806,15 @@ const CONFIG = {
           <div class="tt-plaque">KUMI - 08/07/2016</div>
         </div>
       </div>
-      <button class="tt-btn" id="ttBtn" aria-label="Reproducir música">
-        <svg id="ttIconPlay" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
-        <svg id="ttIconPause" viewBox="0 0 24 24" width="18" height="18" style="display:none"><path fill="currentColor" d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
-      </button>
+      <div class="tt-btn-wrap">
+        <div class="tt-eq" id="ttEq" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <button class="tt-btn" id="ttBtn" aria-label="Reproducir música">
+          <svg id="ttIconPlay" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          <svg id="ttIconPause" viewBox="0 0 24 24" width="18" height="18" style="display:none"><path fill="currentColor" d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+        </button>
+      </div>
     </div>
   </div>
   <audio id="ttAudio" preload="none" loop src="musica/Lady Gaga, Bruno Mars - Die With A Smile (Official Music Video).mp3"></audio>
@@ -1297,11 +1328,11 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   $("enterBtn").addEventListener("click",enter);
 
   // Tocadiscos
-  const ttAudio=$("ttAudio"), ttBtn=$("ttBtn"), ttVinyl=$("ttVinyl"), ttArm=$("ttArm"), ttHearts=$("ttHearts"), ttCover=$("ttCover");
+  const ttAudio=$("ttAudio"), ttBtn=$("ttBtn"), ttVinyl=$("ttVinyl"), ttArm=$("ttArm"), ttHearts=$("ttHearts"), ttCover=$("ttCover"), ttEq=$("ttEq");
   let ttTimers=[];
   function ttClearTimers(){ ttTimers.forEach(clearTimeout); ttTimers=[]; }
   // Secuencia escalonada: primero se abre la tapa, luego baja el brazo,
-  // y por último arranca el giro — no todo a la vez.
+  // y por último arranca el giro (y el ecualizador) — no todo a la vez.
   function ttSetPlaying(isPlaying){
     ttClearTimers();
     $("ttIconPlay").style.display = isPlaying ? "none" : "block";
@@ -1309,11 +1340,12 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
     if(isPlaying){
       ttCover.classList.add("open");
       ttTimers.push(setTimeout(()=>ttArm.classList.add("playing"), 350));
-      ttTimers.push(setTimeout(()=>{ttVinyl.classList.add("spinning");ttHearts.classList.add("spinning");}, 600));
+      ttTimers.push(setTimeout(()=>{ttVinyl.classList.add("spinning");ttHearts.classList.add("spinning");ttEq.classList.add("playing");}, 600));
     } else {
       ttArm.classList.remove("playing");
       ttVinyl.classList.remove("spinning");
       ttHearts.classList.remove("spinning");
+      ttEq.classList.remove("playing");
       ttTimers.push(setTimeout(()=>ttCover.classList.remove("open"), 250));
     }
   }

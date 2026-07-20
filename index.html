@@ -387,8 +387,10 @@ const CONFIG = {
   .countdown-wrap{position:relative;border-top:1px solid var(--line);overflow:hidden}
   .countdown-wrap .eyebrow{color:var(--terra)}
 
-  .cd-photo{position:relative;padding:64px 24px 224px;text-align:center;
-    background:linear-gradient(rgba(35,24,18,.35),rgba(35,24,18,.55)),url('fotos/Iglesia Interior.jpeg') center 22%/cover no-repeat}
+  .cd-photo{position:relative;padding:64px 24px 224px;text-align:center;background:var(--cream)}
+  .cd-photo::before{content:"";position:absolute;inset:0;z-index:0;
+    background:url('fotos/Iglesia Interior.jpeg') center 22%/cover no-repeat;
+    opacity:.45}
 
   .cd-frame{position:relative;width:min(320px,76vw);margin:0 auto}
   .cd-frame-art{display:block;width:100%;height:auto;filter:drop-shadow(0 18px 26px rgba(35,24,18,.4))}
@@ -1213,7 +1215,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   // Al pausar: el giro se detiene al instante y el brazo vuelve a su posición de reposo.
   function ttSetPlaying(isPlaying){
     clearTimeout(ttSpinTimer);
-    ttCaption.textContent = isPlaying ? "Toca el vinilo para parar la música" : "Toca el vinilo para reproducir la música";
+    ttCaption.textContent = isPlaying ? "Toca el vinilo para pausar la música" : "Toca el vinilo para reproducir la música";
     if(isPlaying){
       ttArmImg.classList.add("playing");
       ttSpinTimer=setTimeout(()=>ttLabelImg.classList.add("spinning"), 500);

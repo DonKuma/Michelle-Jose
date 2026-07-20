@@ -377,7 +377,7 @@ const CONFIG = {
   .countdown-wrap{position:relative;border-top:1px solid var(--line);overflow:hidden}
   .countdown-wrap .eyebrow{color:var(--terra)}
 
-  .cd-photo{position:relative;padding:64px 24px 250px;text-align:center;
+  .cd-photo{position:relative;padding:64px 24px 224px;text-align:center;
     background:linear-gradient(rgba(35,24,18,.14),rgba(35,24,18,.3)),url('fotos/Iglesia Interior.jpeg') center 22%/cover no-repeat}
 
   .cd-frame{position:relative;width:min(320px,76vw);margin:0 auto}
@@ -387,9 +387,11 @@ const CONFIG = {
   .cd-frame-text .dd{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(2.4rem,10vw,3.6rem);line-height:1;color:var(--dark-terra);margin-top:8px}
   .cd-frame-text .dm{font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);margin-top:8px}
   .cd-frame-hr{width:34px;height:1px;background:var(--line);margin:16px 0}
+  .cd-frame-mono{width:34px;margin-bottom:10px}
+  .cd-frame-mono img{width:100%;display:block}
   .cd-frame-eyebrow{font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--terra)}
 
-  .countdown-card{position:absolute;z-index:1;left:50%;bottom:34px;transform:translateX(-50%);
+  .countdown-card{position:absolute;z-index:1;left:50%;bottom:60px;transform:translateX(-50%);
     width:calc(100% - 56px);max-width:460px;background:var(--cream);
     border:1px solid var(--line);box-shadow:var(--shadow);padding:30px 18px}
 
@@ -403,8 +405,8 @@ const CONFIG = {
   .cd-label{margin-top:6px;font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;color:var(--ink-soft)}
   .cd-sep{width:15px;height:13px;color:var(--terra);opacity:.65;flex:none}
   @media(max-width:480px){
-    .cd-photo{padding:52px 20px 226px}
-    .countdown-card{width:calc(100% - 40px);bottom:26px;padding:24px 12px}
+    .cd-photo{padding:52px 20px 198px}
+    .countdown-card{width:calc(100% - 40px);bottom:48px;padding:24px 12px}
   }
   @media(prefers-reduced-motion:reduce){.cd-num.pulse{animation:none}}
 
@@ -720,6 +722,7 @@ const CONFIG = {
         <span class="dd" id="badgeDay">07</span>
         <span class="dm" id="badgeMon">Noviembre 2026</span>
         <span class="cd-frame-hr"></span>
+        <div class="cd-frame-mono"><img id="cdMono" alt="Monograma J y M"></div>
         <span class="cd-frame-eyebrow">Sólo faltan</span>
       </div>
     </div>
@@ -881,6 +884,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   $("heroMono").src = MONO_DARK;
   $("sealMono").src = "fotos/Sello Carta.png";
   $("letterMono").src = MONO_DARK;
+  $("cdMono").src = MONO_DARK;
 
   // Datos fijos
   $("novia").textContent = CONFIG.novia;

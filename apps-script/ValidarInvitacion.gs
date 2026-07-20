@@ -8,8 +8,8 @@
 //  1. Abre el Google Sheet con la lista de invitaciones generadas.
 //  2. Menú "Extensiones" → "Apps Script".
 //  3. Borra el contenido de Code.gs y pega TODO este archivo. Guarda.
-//  4. Ajusta abajo NOMBRE_HOJA (o GID_HOJA) y COLUMNA_URL para que coincidan
-//     exactamente con tu sheet.
+//  4. Si tu sheet no usa la pestaña con gid=1035945475, o la URL generada
+//     no está en la columna F, ajusta GID_HOJA / NOMBRE_HOJA / COLUMNA_URL.
 //  5. Botón "Implementar" → "Nueva implementación" → tipo "Aplicación web".
 //     - Ejecutar como: Yo (tu cuenta)
 //     - Quién tiene acceso: Cualquier usuario
@@ -26,13 +26,25 @@
 const NOMBRE_HOJA = '';
 const GID_HOJA = 1035945475;
 
-// Encabezado (fila 1) de la columna que contiene la URL completa generada
-// para cada invitado. Debe coincidir tal cual con el texto de esa celda.
-const COLUMNA_URL = 'URL';
+// Columna (1 = A, 2 = B, ...) donde está la URL completa generada para cada
+// invitado. En "Generador de invitaciones.xlsx" esa es la columna F
+// ("URL generada"), por eso el valor por defecto es 6. No se busca por el
+// texto del encabezado (puede variar) sino por posición.
+const COLUMNA_URL = 6;
 
 function doGet(e) {
   const entrante = (e.parameter && e.parameter.check) || '';
-  const valido = entrante ? validarUrl(entrante) : false;
+  let valido = false;
+  try {
+    valido = entrante ? validarUrl(entrante) : false;
+  } catch (err) {
+    // Si algo falla (sheet/gid mal configurado, etc.) se devuelve el error
+    // en vez de una excepción sin formato, para poder detectarlo abriendo
+    // esta misma URL "/exec?check=..." directo en el navegador.
+    return ContentService
+      .createTextOutput(JSON.stringify({ valid: false, error: String(err) }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 
   return ContentService
     .createTextOutput(JSON.stringify({ valid: valido }))
@@ -41,19 +53,17 @@ function doGet(e) {
 
 function validarUrl(urlEntrante) {
   const hoja = obtenerHoja();
-  const datos = hoja.getDataRange().getValues();
-  if (datos.length < 2) return false;
+  const ultimaFila = hoja.getLastRow();
+  if (ultimaFila < 1) return false;
 
-  const encabezados = datos[0].map(h => String(h).trim().toLowerCase());
-  const col = encabezados.indexOf(COLUMNA_URL.trim().toLowerCase());
-  if (col === -1) {
-    throw new Error('No se encontró la columna "' + COLUMNA_URL + '". Revisa COLUMNA_URL en el script.');
-  }
-
+  const columna = hoja.getRange(1, COLUMNA_URL, ultimaFila, 1).getValues();
   const claveEntrante = normalizarQuery(urlEntrante);
-  for (let i = 1; i < datos.length; i++) {
-    const urlFila = String(datos[i][col] || '').trim();
-    if (!urlFila) continue;
+
+  for (let i = 0; i < columna.length; i++) {
+    const urlFila = String(columna[i][0] || '').trim();
+    // Salta la fila de encabezado ("URL generada") y cualquier celda que no
+    // sea realmente una URL (por ejemplo la nota "URL base del sitio:").
+    if (urlFila.toLowerCase().indexOf('http') !== 0) continue;
     if (normalizarQuery(urlFila) === claveEntrante) return true;
   }
   return false;

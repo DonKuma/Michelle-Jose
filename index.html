@@ -126,6 +126,24 @@ const CONFIG = {
     scriptURL: "https://script.google.com/macros/s/AKfycbwUF66QxgITfGHnZ-kvF6_VZFFJgaB6mSGYU9zNaJGkCSFc-S9wY4z9iTlTz5WVzmnf/exec"   // ← pega aquí la URL de tu Web App terminada en /exec
   },
 
+  // ─────────────────────────────────────────────────────────────
+  // VALIDAR INVITACIÓN CONTRA TU LISTA DE INVITADOS (opcional)
+  // Si lo configuras, la pantalla de carga revisa (en el servidor, sin
+  // exponer tu lista de invitados) que la URL que se abrió esté en el
+  // Google Sheet de invitaciones generadas. Si no está, en vez de la
+  // invitación se muestra fotos/error.png.
+  //
+  // CÓMO CONFIGURARLO:
+  //  1. Sigue los pasos del archivo apps-script/ValidarInvitacion.gs
+  //     (es un Apps Script aparte, atado al sheet de invitaciones generadas,
+  //     no al de confirmaciones).
+  //  2. Pega abajo la URL "/exec" que te dé ese despliegue.
+  //  3. Déjalo en "" para desactivar esta validación (todas las URL entran).
+  // ─────────────────────────────────────────────────────────────
+  validarInvitacion: {
+    scriptURL: "https://script.google.com/macros/s/AKfycbxdb54yvuRJoY4KCyjJm4kXh6EL7OQJQWeVv0qC1VRvQmmYvCIbEg-EPvq16e_eUjvL/exec"   // ← pega aquí la URL /exec de ValidarInvitacion.gs
+  },
+
   regalo: "Tu presencia es nuestro mejor regalo. Si deseas tener un detalle con nosotros, aquí te dejamos algunas opciones.",
   // Opcionales para la mesa de regalos (déjalos vacíos "" para ocultarlos)
   regaloLink: "",          // ej: enlace a tu lista/registro de regalos
@@ -207,6 +225,7 @@ const CONFIG = {
     align-items:center;justify-content:center;gap:20px;background:var(--cream);
     transition:opacity .25s ease, visibility .25s ease}
   #preloader.done{opacity:0;visibility:hidden;pointer-events:none}
+  #plLoading{display:flex;flex-direction:column;align-items:center;gap:20px}
   #preloader .pl-mono{width:60px;opacity:.92}
   #preloader .pl-mono img{width:100%;display:block}
   #preloader .pl-ring{width:30px;height:30px;border-radius:50%;
@@ -216,6 +235,10 @@ const CONFIG = {
   @keyframes pl-spin{to{transform:rotate(360deg)}}
   @media(prefers-reduced-motion:reduce){#preloader .pl-ring{animation:none}}
   body.pl-active{overflow:hidden}
+
+  .pl-error{display:none;flex-direction:column;align-items:center;gap:16px;padding:0 24px;text-align:center}
+  .pl-error img{max-width:min(88vw,420px);width:100%;border-radius:14px;box-shadow:var(--shadow)}
+  .pl-error p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--ink-soft)}
 
   /* ════════ INTRO / CARTA QUE SE ABRE ════════ */
   #intro{
@@ -584,9 +607,14 @@ const CONFIG = {
 
 <!-- ════════ PANTALLA DE CARGA ════════ -->
 <div id="preloader" aria-hidden="true">
-  <div class="pl-mono"><img id="preloaderMono" alt=""></div>
-  <div class="pl-ring"></div>
-  <div class="pl-text">Cargando</div>
+  <div id="plLoading">
+    <div class="pl-mono"><img id="preloaderMono" alt=""></div>
+    <div class="pl-ring"></div>
+    <div class="pl-text">Cargando</div>
+  </div>
+  <div class="pl-error" id="plError">
+    <img src="fotos/error.png" alt="Esta invitación no es para ti">
+  </div>
 </div>
 
 <!-- Motivo botánico reutilizable -->
@@ -1267,7 +1295,27 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   });
   const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready.catch(()=>{}) : Promise.resolve();
   const safetyTimeout = new Promise(res=>setTimeout(res, 8000));
-  Promise.race([Promise.all([pageLoaded, fontsReady]), safetyTimeout]).then(hidePreloader);
+
+  function showInviteError(){
+    $("plLoading").style.display = "none";
+    $("plError").style.display = "flex";
+  }
+
+  // Valida (en el servidor, vía Apps Script) que la URL abierta esté en la
+  // lista de invitaciones generadas. Si no hay scriptURL configurado, no se
+  // valida nada. Si la validación falla por red/CORS, se deja pasar para no
+  // bloquear a un invitado real por un problema técnico.
+  const vi = CONFIG.validarInvitacion || {};
+  const validarURL = vi.scriptURL && vi.scriptURL.trim();
+  const invitacionValida = validarURL
+    ? fetch(validarURL + "?check=" + encodeURIComponent(location.href))
+        .then(r=>r.json()).then(d=>!!d.valid).catch(()=>true)
+    : Promise.resolve(true);
+
+  invitacionValida.then(valida=>{
+    if(!valida){ showInviteError(); return; }
+    Promise.race([Promise.all([pageLoaded, fontsReady]), safetyTimeout]).then(hidePreloader);
+  });
 
 })();
 </script>

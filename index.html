@@ -311,122 +311,30 @@ const CONFIG = {
     box-shadow:0 0 6px rgba(0,0,0,.6)}
 
   /* ════════ TOCADISCOS ════════ */
-  .turntable-wrap{position:relative;background:rgba(245,239,231,.6);text-align:center;padding:128px 24px 54px;
+  .turntable-wrap{position:relative;background:rgba(245,239,231,.6);text-align:center;padding:50px 24px 54px;
     border-top:1px solid var(--line);overflow:hidden}
-  /*
   .tt-glow{position:absolute;top:10%;left:50%;width:340px;height:340px;transform:translateX(-50%);
     background:radial-gradient(circle,var(--dusty-light) 0%,transparent 68%);
     opacity:.3;filter:blur(6px);animation:tt-glow-pulse 5.5s ease-in-out infinite;pointer-events:none}
   @keyframes tt-glow-pulse{0%,100%{transform:translateX(-50%) scale(1);opacity:.22}50%{transform:translateX(-50%) scale(1.15);opacity:.4}}
-  */
-  .turntable{position:relative;display:inline-flex;flex-direction:column;align-items:center;gap:22px}
+  .turntable{position:relative;display:inline-flex;flex-direction:column;align-items:center;gap:18px}
 
-  /*
-  .tt-box{position:relative;width:240px}
-  .tt-topwrap{position:relative;width:100%;height:112px;perspective:760px}
-  .tt-top{position:absolute;left:0;right:0;bottom:0;height:184px;padding:26px 22px 16px;
-    border-radius:18px 18px 0 0;transform:rotateX(55deg);transform-origin:50% 100%;
-    transform-style:preserve-3d;
-    background:
-      repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0 2px,transparent 2px 6px),
-      radial-gradient(circle at 15px 15px,#241209 0 3px,transparent 3.5px),
-      radial-gradient(circle at calc(100% - 15px) 15px,#241209 0 3px,transparent 3.5px),
-      linear-gradient(155deg,#7a5138,#4d3120 55%,#3a2417);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -10px 18px rgba(0,0,0,.35)}
-  .tt-top::before{content:"";position:absolute;top:8px;left:8px;right:8px;bottom:0;
-    border:1px solid rgba(255,255,255,.08);border-bottom:none;border-radius:14px 14px 0 0;pointer-events:none}
-  .tt-front{position:relative;width:100%;height:42px;border-radius:0 0 18px 18px;
-    background:linear-gradient(180deg,#3a2417,#211408);
-    box-shadow:0 22px 36px -16px rgba(0,0,0,.6),inset 0 2px 0 rgba(255,255,255,.06);
-    display:flex;align-items:center;justify-content:center}
-  .tt-box::after{content:"";position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);
-    width:80%;height:22px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(0,0,0,.4),transparent 72%);
-    filter:blur(3px);z-index:-1}
-
-  .tt-stage{position:relative;display:flex;align-items:center;justify-content:center}
-  .tt-plate{position:relative;width:150px;height:150px;border-radius:50%;flex:none;
-    background:radial-gradient(circle,#2a2a2a,#161616 85%);
-    box-shadow:0 6px 14px rgba(0,0,0,.55),inset 0 0 0 5px rgba(0,0,0,.3),0 0 0 3px rgba(230,215,192,.2),0 0 0 4px rgba(0,0,0,.3)}
-  .tt-vinyl{position:absolute;inset:8px;border-radius:50%;
-    background:
-      conic-gradient(from 0deg,rgba(255,255,255,.22) 0deg,transparent 40deg,transparent 320deg,rgba(255,255,255,.14) 360deg),
-      repeating-radial-gradient(circle at center,#151515 0 3px,#2b2b2b 3px 6px);
-    box-shadow:inset 0 0 12px rgba(0,0,0,.6);
+  /* Foto real del tocadiscos (fotos/vinilo-base.png) con dos piezas recortadas
+     superpuestas en su posición exacta: la etiqueta central (gira sin parar
+     mientras suena) y el brazo/aguja (gira sobre el pivote real de la foto,
+     entre la posición de reposo y la posición apoyada sobre el disco). */
+  .tt-photo{position:relative;width:230px;filter:drop-shadow(0 20px 26px rgba(0,0,0,.28))}
+  .tt-photo-base{display:block;width:100%;height:auto}
+  .tt-photo-label{position:absolute;left:44.6%;top:56%;width:24%;height:24%;
+    transform:translate(-50%,-50%);border-radius:50%;
     animation:tt-spin 2.8s linear infinite;animation-play-state:paused}
-  .tt-vinyl::after{content:"";position:absolute;top:14%;left:50%;width:5px;height:5px;
-    border-radius:50%;background:rgba(255,255,255,.45)}
-  .tt-vinyl.spinning{animation-play-state:running}
-  .tt-label{position:absolute;top:50%;left:50%;width:44px;height:44px;transform:translate(-50%,-50%);
-    border-radius:50%;background:radial-gradient(circle at 38% 30%,var(--dusty-light),var(--dusty) 72%);
-    box-shadow:0 2px 6px rgba(0,0,0,.4)}
-  .tt-label::after{content:"";position:absolute;top:50%;left:50%;width:6px;height:6px;background:var(--ink);
-    border-radius:50%;transform:translate(-50%,-50%)}
-  .tt-arm{position:absolute;top:-4px;right:-6px;width:9px;height:86px;
-    border-radius:2px;background:#3a3a3a;
-    transform-origin:top center;transform:rotate(-15deg) rotateY(26deg);
-    transition:transform .7s cubic-bezier(.4,0,.2,1);z-index:2;
-    filter:drop-shadow(0 5px 5px rgba(0,0,0,.4))}
-  .tt-arm-hi{position:absolute;top:0;left:0;width:58%;height:100%;border-radius:2px 0 0 2px;
-    background:linear-gradient(180deg,#f4f4f4,#c6c6c6 55%,#8f8f8f)}
-  .tt-counterweight{position:absolute;top:-30px;left:50%;transform:translateX(-50%);
-    width:13px;height:15px;border-radius:3px;
-    background:linear-gradient(90deg,#2a2a2a,#6a6a6a 45%,#2a2a2a);
-    box-shadow:0 2px 4px rgba(0,0,0,.5)}
-  .tt-arm::before{content:"";position:absolute;top:-11px;left:50%;transform:translateX(-50%);
-    width:22px;height:22px;border-radius:50%;
-    background:radial-gradient(circle at 32% 28%,#f5f5f5,#aaa 55%,#5c5c5c 100%);
-    box-shadow:0 3px 5px rgba(0,0,0,.5),inset -3px -3px 5px rgba(0,0,0,.3)}
-  .tt-headshell{position:absolute;bottom:-9px;left:50%;transform:translateX(-50%) rotate(18deg);
-    width:19px;height:11px;border-radius:2px;
-    background:linear-gradient(100deg,#4a4a4a,#161616 60%,#000);
-    box-shadow:0 2px 3px rgba(0,0,0,.5)}
-  .tt-headshell::before,.tt-headshell::after{content:"";position:absolute;top:2px;
-    width:2.5px;height:2.5px;border-radius:50%;background:#d6d6d6;box-shadow:inset 0 0 1px #000}
-  .tt-headshell::before{left:2.5px}
-  .tt-headshell::after{right:2.5px}
-  .tt-arm.playing{transform:rotate(24deg) rotateY(26deg)}
-  .tt-stylus{position:absolute;bottom:-13px;left:50%;transform:translateX(-50%) rotate(18deg);
-    width:2px;height:5px;border-radius:1px;background:#161616;z-index:3}
-  @keyframes tt-spin{to{transform:rotate(360deg)}}
-  .tt-plaque{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.7rem;
-    letter-spacing:.16em;color:#e6d7c0;opacity:.75}
+  .tt-photo-label.spinning{animation-play-state:running}
+  @keyframes tt-spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+  .tt-photo-arm{position:absolute;left:38.2%;top:27.6%;width:50.2%;height:58.2%;
+    transform-origin:79.3% 17.9%;transform:rotate(-28deg);
+    transition:transform .7s cubic-bezier(.4,0,.2,1)}
+  .tt-photo-arm.playing{transform:rotate(0deg)}
 
-  .tt-cover{position:absolute;left:8px;right:8px;top:8px;bottom:8px;
-    transform-style:preserve-3d;transform-origin:50% 0%;
-    transform:rotateX(0deg);
-    transition:transform 1s cubic-bezier(.22,1,.36,1);
-    z-index:6;pointer-events:none}
-  .tt-cover.open{transform:rotateX(60deg)}
-  .tt-hinge-fill{position:absolute;top:-58px;width:14px;height:66px;border-radius:4px;
-    background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(224,238,247,.1));
-    border:1px solid rgba(255,255,255,.5);
-    opacity:0;transition:opacity .5s ease;
-    pointer-events:none;z-index:5}
-  .tt-hinge-fill.left{left:14px}
-  .tt-hinge-fill.right{right:14px}
-  .tt-hinge-fill.show{opacity:1;transition-delay:.5s}
-  .tt-cface{position:absolute;top:50%;left:50%;
-    background:
-      linear-gradient(115deg,rgba(255,255,255,.05) 30%,rgba(255,255,255,.5) 46%,rgba(255,255,255,.08) 62%),
-      linear-gradient(200deg,rgba(224,238,247,.4),rgba(224,238,247,.08) 60%);
-    border:1px solid rgba(255,255,255,.55);
-    box-shadow:inset 0 0 16px rgba(255,255,255,.22)}
-  .tt-cface.top{width:224px;height:168px;margin:-84px 0 0 -112px;border-radius:8px 8px 0 0;
-    border-width:4px;border-left-width:5px;border-right-width:5px;border-bottom-width:0;
-    box-shadow:
-      inset 0 0 16px rgba(255,255,255,.22),
-      inset 5px 0 8px -5px rgba(0,0,0,.3),
-      inset -5px 0 8px -5px rgba(0,0,0,.3);
-    transform:translateZ(30px)}
-  .tt-cface.top::after{content:"";position:absolute;left:-5px;right:-5px;bottom:0;height:14px;
-    border-radius:0 0 8px 8px;border:1px solid rgba(255,255,255,.55);border-top:none;
-    background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,.1))}
-  .tt-cface.front{width:224px;height:30px;margin:-15px 0 0 -112px;
-    border-width:4px;border-left-width:5px;border-right-width:5px;border-top:none;
-    transform:rotateX(90deg) translateY(15px) translateZ(-84px);
-    background:linear-gradient(180deg,rgba(255,255,255,.15),rgba(224,238,247,.05) 40%,rgba(0,0,0,.05));
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 0 16px rgba(255,255,255,.15)}
-  */
 
   .tt-btn-wrap{position:relative;display:flex;align-items:center;justify-content:center}
   .tt-btn{position:relative;z-index:1;width:50px;height:50px;border-radius:50%;border:none;
@@ -436,56 +344,14 @@ const CONFIG = {
   .tt-btn svg{margin-left:1px}
   .tt-btn:hover{background:var(--ink)}
 
-  /*
-  .tt-eq{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    display:flex;align-items:center;justify-content:space-between;
-    width:160px;height:54px;z-index:0;pointer-events:none}
-  .tt-eq span{width:6px;border-radius:3px;height:14%;opacity:.85;
-    background:linear-gradient(180deg,var(--dusty-light),var(--terra));
-    animation:tt-eq-bounce 1.2s ease-in-out infinite;animation-play-state:paused}
-  .tt-eq.playing span{animation-play-state:running}
-  .tt-eq span:nth-child(1){animation-delay:-1.1s}
-  .tt-eq span:nth-child(2){animation-delay:-.85s}
-  .tt-eq span:nth-child(3){animation-delay:-.6s}
-  .tt-eq span:nth-child(4){animation-delay:-.35s}
-  .tt-eq span:nth-child(5){animation-delay:-.1s}
-  .tt-eq span:nth-child(6){animation-delay:-.7s}
-  .tt-eq span:nth-child(7){animation-delay:-.2s}
-  @keyframes tt-eq-bounce{0%,100%{height:16%}50%{height:100%}}
-  @media(prefers-reduced-motion:reduce){.tt-eq span{animation:none}}
-  */
-
   .tt-row{position:relative;z-index:1;display:flex;align-items:center;justify-content:center}
-  /*
   @media(max-width:560px){
-    .tt-box{width:200px}
-    .tt-topwrap{height:92px}
-    .tt-top{height:154px;padding:20px 18px 14px}
-    .tt-plate{width:118px;height:118px}
-    .tt-label{width:36px;height:36px}
-    .tt-arm{height:70px}
-    .tt-cface.top{width:184px;height:138px;margin:-69px 0 0 -92px}
-    .tt-cface.front{width:186px;height:24px;margin:-20px 0 0 -93px;
-      transform:rotateX(90deg) translateY(12px) translateZ(-69px)}
+    .tt-photo{width:190px}
   }
-
-  .tt-hearts{position:absolute;inset:0;z-index:2;pointer-events:none}
-  .tt-heart{position:absolute;bottom:10px;color:#e0263f;opacity:0;
-    animation:tt-heart-float 3.2s ease-in infinite;animation-play-state:paused}
-  .tt-hearts.spinning .tt-heart{animation-play-state:running}
-  .tt-heart:nth-child(1){left:2%;font-size:1.5rem;animation-delay:.1s;color:#e0263f}
-  .tt-heart:nth-child(2){left:22%;font-size:1.1rem;animation-delay:1.1s;color:#ff4d5e}
-  .tt-heart:nth-child(3){left:42%;font-size:1.6rem;animation-delay:.6s;color:#c81e3a}
-  .tt-heart:nth-child(4){left:62%;font-size:1.1rem;animation-delay:1.7s;color:#e0263f}
-  .tt-heart:nth-child(5){left:80%;font-size:1.5rem;animation-delay:.3s;color:#ff4d5e}
-  .tt-heart:nth-child(6){left:96%;font-size:1.2rem;animation-delay:1.4s;color:#c81e3a}
-  @keyframes tt-heart-float{
-    0%{transform:translateY(0) scale(.6);opacity:0}
-    18%{opacity:.85}
-    82%{opacity:.35}
-    100%{transform:translateY(-80px) scale(1.05);opacity:0}
+  @media(prefers-reduced-motion:reduce){
+    .tt-photo-label{animation:none}
+    .tt-photo-arm{transition:none}
   }
-  */
 
   /* ════════ BANDA VERSÍCULO (verde) ════════ */
   .verse-band{background:rgba(245,239,231,.6);color:var(--ink);text-align:center;padding:74px 24px;border-top:1px solid var(--line)}
@@ -804,47 +670,15 @@ const CONFIG = {
 
 <!-- ════════ TOCADISCOS ════════ -->
 <section class="turntable-wrap reveal">
-  <!-- <div class="tt-glow"></div> -->
+  <div class="tt-glow"></div>
   <div class="tt-row">
     <div class="turntable">
-      <!--
-      <div class="tt-box">
-        <div class="tt-topwrap">
-          <div class="tt-top">
-            <div class="tt-stage">
-              <div class="tt-hearts" id="ttHearts">
-                <span class="tt-heart">♥</span><span class="tt-heart">♥</span><span class="tt-heart">♥</span>
-                <span class="tt-heart">♥</span><span class="tt-heart">♥</span><span class="tt-heart">♥</span>
-              </div>
-              <div class="tt-plate">
-                <div class="tt-vinyl" id="ttVinyl"><div class="tt-label"></div></div>
-                <div class="tt-arm" id="ttArm">
-                  <div class="tt-arm-hi"></div>
-                  <div class="tt-counterweight"></div>
-                  <div class="tt-headshell"></div>
-                  <div class="tt-stylus"></div>
-                </div>
-              </div>
-            </div>
-            <div class="tt-hinge-fill left" id="ttHingeL"></div>
-            <div class="tt-hinge-fill right" id="ttHingeR"></div>
-            <div class="tt-cover" id="ttCover">
-              <div class="tt-cface top"></div>
-              <div class="tt-cface front"></div>
-            </div>
-          </div>
-        </div>
-        <div class="tt-front">
-          <div class="tt-plaque">KUMI - 08/07/2016</div>
-        </div>
+      <div class="tt-photo">
+        <img class="tt-photo-base" src="fotos/vinilo-base.png" alt="">
+        <img class="tt-photo-label" id="ttLabelImg" src="fotos/vinilo-label.png" alt="">
+        <img class="tt-photo-arm" id="ttArmImg" src="fotos/vinilo-brazo.png" alt="">
       </div>
-      -->
       <div class="tt-btn-wrap">
-        <!--
-        <div class="tt-eq" id="ttEq" aria-hidden="true">
-          <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-        </div>
-        -->
         <button class="tt-btn" id="ttBtn" aria-label="Reproducir música">
           <svg id="ttIconPlay" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
           <svg id="ttIconPause" viewBox="0 0 24 24" width="18" height="18" style="display:none"><path fill="currentColor" d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
@@ -1363,33 +1197,21 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   $("enterBtn").addEventListener("click",enter);
 
   // Tocadiscos
-  const ttAudio=$("ttAudio"), ttBtn=$("ttBtn");
-  /* const ttVinyl=$("ttVinyl"), ttArm=$("ttArm"), ttHearts=$("ttHearts"), ttCover=$("ttCover"), ttEq=$("ttEq"), ttHingeL=$("ttHingeL"), ttHingeR=$("ttHingeR");
-  let ttTimers=[];
-  function ttClearTimers(){ ttTimers.forEach(clearTimeout); ttTimers=[]; } */
-  // Secuencia escalonada: primero se abre la tapa, luego baja el brazo,
-  // y por último arranca el giro (y el ecualizador) — no todo a la vez.
+  const ttAudio=$("ttAudio"), ttBtn=$("ttBtn"), ttArmImg=$("ttArmImg"), ttLabelImg=$("ttLabelImg");
+  let ttSpinTimer=null;
+  // Al reproducir: el brazo baja hacia el disco y, cuando llega, arranca el giro.
+  // Al pausar: el giro se detiene al instante y el brazo vuelve a su posición de reposo.
   function ttSetPlaying(isPlaying){
+    clearTimeout(ttSpinTimer);
     $("ttIconPlay").style.display = isPlaying ? "none" : "block";
     $("ttIconPause").style.display = isPlaying ? "block" : "none";
-    /*
-    ttClearTimers();
     if(isPlaying){
-      ttCover.classList.add("open");
-      ttHingeL.classList.add("show");
-      ttHingeR.classList.add("show");
-      ttTimers.push(setTimeout(()=>ttArm.classList.add("playing"), 350));
-      ttTimers.push(setTimeout(()=>{ttVinyl.classList.add("spinning");ttHearts.classList.add("spinning");ttEq.classList.add("playing");}, 600));
+      ttArmImg.classList.add("playing");
+      ttSpinTimer=setTimeout(()=>ttLabelImg.classList.add("spinning"), 500);
     } else {
-      ttArm.classList.remove("playing");
-      ttVinyl.classList.remove("spinning");
-      ttHearts.classList.remove("spinning");
-      ttEq.classList.remove("playing");
-      ttHingeL.classList.remove("show");
-      ttHingeR.classList.remove("show");
-      ttTimers.push(setTimeout(()=>ttCover.classList.remove("open"), 250));
+      ttArmImg.classList.remove("playing");
+      ttLabelImg.classList.remove("spinning");
     }
-    */
   }
   ttBtn.addEventListener("click", ()=>{
     if(ttAudio.paused){ ttAudio.play().catch(()=>{}); } else { ttAudio.pause(); }

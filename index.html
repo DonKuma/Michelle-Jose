@@ -1256,7 +1256,15 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
     intro.classList.add("gone");
     setTimeout(()=>intro.style.display="none",950);
     $("ttAudio").play().catch(()=>{});
+    // El scroll queda bloqueado (pantalla de carga + sobre) hasta que se
+    // presiona "Ver invitación"; recién aquí se habilita.
+    document.body.classList.remove("pl-active");
   }
+  // Refuerzo para iOS Safari, donde overflow:hidden en <body> a veces no
+  // basta para frenar el scroll táctil mientras pl-active sigue activo.
+  document.body.addEventListener("touchmove", (ev)=>{
+    if(document.body.classList.contains("pl-active")) ev.preventDefault();
+  }, {passive:false});
   env.addEventListener("click",openEnv);
   $("enterBtn").addEventListener("click",enter);
 
@@ -1308,7 +1316,8 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   const preloader=$("preloader");
   function hidePreloader(){
     preloader.classList.add("done");
-    document.body.classList.remove("pl-active");
+    // El scroll sigue bloqueado: todavía falta el sobre (se habilita recién
+    // al presionar "Ver invitación", en enter()).
     setTimeout(()=>preloader.remove(), 300);
   }
   const pageLoaded = new Promise(res=>{

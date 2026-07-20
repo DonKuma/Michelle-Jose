@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>
+// Se registra lo antes posible (antes que cualquier imagen/recurso del body)
+// para no perderse fallas de carga tempranas. El script principal, al final
+// del body, solo lee esta bandera.
+window.__cargaFallida = false;
+window.addEventListener("error", function(ev){
+  var t = ev.target;
+  if(t && t !== window && ["IMG","SCRIPT","LINK"].indexOf(t.tagName) !== -1) window.__cargaFallida = true;
+}, true);
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="format-detection" content="telephone=no">
@@ -614,6 +624,10 @@ const CONFIG = {
   </div>
   <div class="pl-error" id="plError">
     <img src="fotos/error.png" alt="Esta invitación no es para ti">
+  </div>
+  <div class="pl-error" id="plLoadError">
+    <img src="fotos/error carga.png" alt="Hubo un problema al cargar la invitación">
+    <p>Hubo un problema al cargar la invitación. Intenta recargar la página.</p>
   </div>
 </div>
 
@@ -1301,6 +1315,15 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
     $("plError").style.display = "flex";
   }
 
+  function showLoadError(){
+    $("plLoading").style.display = "none";
+    $("plLoadError").style.display = "flex";
+  }
+
+  // window.__cargaFallida lo registra un script al inicio de <head> (ver
+  // arriba del todo del archivo), para no perderse fallas de imágenes que
+  // ocurren antes de que este script (al final del body) llegue a correr.
+
   // Valida (en el servidor, vía Apps Script) que la URL abierta esté en la
   // lista de invitaciones generadas. Si no hay scriptURL configurado, no se
   // valida nada. Si la validación falla por red/CORS, se deja pasar para no
@@ -1319,7 +1342,10 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
 
   invitacionValida.then(valida=>{
     if(!valida){ showInviteError(); return; }
-    Promise.race([Promise.all([pageLoaded, fontsReady]), safetyTimeout]).then(hidePreloader);
+    Promise.race([Promise.all([pageLoaded, fontsReady]), safetyTimeout]).then(()=>{
+      if(window.__cargaFallida){ showLoadError(); return; }
+      hidePreloader();
+    });
   });
 
 })();

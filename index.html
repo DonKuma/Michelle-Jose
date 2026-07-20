@@ -236,8 +236,10 @@ const CONFIG = {
   .env{
     position:relative;width:clamp(340px,96vw,540px);aspect-ratio:1.5/1;
     cursor:pointer;border:none;background:none;padding:0;display:block;
+    -webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;
   }
   .env:focus-visible{outline:2px solid var(--terra);outline-offset:10px;border-radius:8px}
+  .env, .env *{-webkit-touch-callout:none;-webkit-user-drag:none}
 
   .env-body{position:absolute;inset:0;border-radius:8px;
     background:linear-gradient(135deg,var(--cream),#EFE6D7);box-shadow:var(--shadow);z-index:1}
@@ -1198,6 +1200,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
     if(opened) return; opened=true;
     env.classList.add("is-open");
     intro.classList.add("opened");
+    env.blur();
   }
   function enter(){
     window.scrollTo({top:0,left:0,behavior:"instant"});

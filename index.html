@@ -205,7 +205,7 @@ const CONFIG = {
   /* ════════ PANTALLA DE CARGA ════════ */
   #preloader{position:fixed;inset:0;z-index:500;display:flex;flex-direction:column;
     align-items:center;justify-content:center;gap:20px;background:var(--cream);
-    transition:opacity .6s ease, visibility .6s ease}
+    transition:opacity .25s ease, visibility .25s ease}
   #preloader.done{opacity:0;visibility:hidden;pointer-events:none}
   #preloader .pl-mono{width:60px;opacity:.92}
   #preloader .pl-mono img{width:100%;display:block}
@@ -1260,7 +1260,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   function hidePreloader(){
     preloader.classList.add("done");
     document.body.classList.remove("pl-active");
-    setTimeout(()=>preloader.remove(), 700);
+    setTimeout(()=>preloader.remove(), 300);
   }
   const pageLoaded = new Promise(res=>{
     if(document.readyState==="complete") res(); else window.addEventListener("load", res, {once:true});

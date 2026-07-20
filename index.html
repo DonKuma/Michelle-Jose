@@ -393,6 +393,17 @@ const CONFIG = {
     transition:transform 1s cubic-bezier(.16,1.32,.34,1);
     z-index:6;pointer-events:none}
   .tt-cover.open{transform:rotateX(60deg)}
+  /* Columnas fijas (no giran con la tapa): rellenan el hueco que queda entre
+     la caja de madera y el vidrio cuando está levantado, como si fueran las
+     bisagras que los conectan. Invisibles con la tapa cerrada. */
+  .tt-hinge-fill{position:absolute;top:-58px;width:14px;height:66px;border-radius:4px;
+    background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(224,238,247,.1));
+    border:1px solid rgba(255,255,255,.5);
+    opacity:0;transition:opacity .5s ease;
+    pointer-events:none;z-index:5}
+  .tt-hinge-fill.left{left:14px}
+  .tt-hinge-fill.right{right:14px}
+  .tt-hinge-fill.show{opacity:1;transition-delay:.5s}
   .tt-cface{position:absolute;top:50%;left:50%;
     background:
       linear-gradient(115deg,rgba(255,255,255,.05) 30%,rgba(255,255,255,.5) 46%,rgba(255,255,255,.08) 62%),
@@ -811,6 +822,8 @@ const CONFIG = {
                 <div class="tt-arm" id="ttArm"><div class="tt-arm-hi"></div><div class="tt-stylus"></div></div>
               </div>
             </div>
+            <div class="tt-hinge-fill left" id="ttHingeL"></div>
+            <div class="tt-hinge-fill right" id="ttHingeR"></div>
             <div class="tt-cover" id="ttCover">
               <div class="tt-cface top"></div>
               <div class="tt-cface front"></div>
@@ -1343,7 +1356,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   $("enterBtn").addEventListener("click",enter);
 
   // Tocadiscos
-  const ttAudio=$("ttAudio"), ttBtn=$("ttBtn"), ttVinyl=$("ttVinyl"), ttArm=$("ttArm"), ttHearts=$("ttHearts"), ttCover=$("ttCover"), ttEq=$("ttEq");
+  const ttAudio=$("ttAudio"), ttBtn=$("ttBtn"), ttVinyl=$("ttVinyl"), ttArm=$("ttArm"), ttHearts=$("ttHearts"), ttCover=$("ttCover"), ttEq=$("ttEq"), ttHingeL=$("ttHingeL"), ttHingeR=$("ttHingeR");
   let ttTimers=[];
   function ttClearTimers(){ ttTimers.forEach(clearTimeout); ttTimers=[]; }
   // Secuencia escalonada: primero se abre la tapa, luego baja el brazo,
@@ -1354,6 +1367,8 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
     $("ttIconPause").style.display = isPlaying ? "block" : "none";
     if(isPlaying){
       ttCover.classList.add("open");
+      ttHingeL.classList.add("show");
+      ttHingeR.classList.add("show");
       ttTimers.push(setTimeout(()=>ttArm.classList.add("playing"), 350));
       ttTimers.push(setTimeout(()=>{ttVinyl.classList.add("spinning");ttHearts.classList.add("spinning");ttEq.classList.add("playing");}, 600));
     } else {
@@ -1361,6 +1376,8 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
       ttVinyl.classList.remove("spinning");
       ttHearts.classList.remove("spinning");
       ttEq.classList.remove("playing");
+      ttHingeL.classList.remove("show");
+      ttHingeR.classList.remove("show");
       ttTimers.push(setTimeout(()=>ttCover.classList.remove("open"), 250));
     }
   }

@@ -323,7 +323,7 @@ const CONFIG = {
      superpuestas en su posición exacta: la etiqueta central (gira sin parar
      mientras suena) y el brazo/aguja (gira sobre el pivote real de la foto,
      entre la posición de reposo y la posición apoyada sobre el disco). */
-  .tt-photo{position:relative;width:230px;filter:drop-shadow(0 20px 26px rgba(0,0,0,.28))}
+  .tt-photo{position:relative;width:230px;filter:drop-shadow(0 20px 26px rgba(0,0,0,.28));cursor:pointer}
   .tt-photo-base{display:block;width:100%;height:auto}
   .tt-photo-label{position:absolute;left:44.6%;top:56%;width:24%;height:24%;
     transform:translate(-50%,-50%);border-radius:50%;
@@ -336,13 +336,8 @@ const CONFIG = {
   .tt-photo-arm.playing{transform:rotate(0deg)}
 
 
-  .tt-btn-wrap{position:relative;display:flex;align-items:center;justify-content:center}
-  .tt-btn{position:relative;z-index:1;width:50px;height:50px;border-radius:50%;border:none;
-    background:var(--dark-terra);color:var(--cream);
-    display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .3s;
-    box-shadow:0 8px 18px -10px rgba(140,86,64,.6)}
-  .tt-btn svg{margin-left:1px}
-  .tt-btn:hover{background:var(--ink)}
+  .tt-caption{font-size:1rem;letter-spacing:.02em;color:var(--ink-soft);font-style:italic;
+    font-family:'Cormorant Garamond',serif}
 
   .tt-row{position:relative;z-index:1;display:flex;align-items:center;justify-content:center}
   @media(max-width:560px){
@@ -668,17 +663,12 @@ const CONFIG = {
   <div class="tt-glow"></div>
   <div class="tt-row">
     <div class="turntable">
-      <div class="tt-photo">
+      <div class="tt-photo" id="ttPhoto" role="button" tabindex="0" aria-label="Reproducir o detener la música">
         <img class="tt-photo-base" src="fotos/vinilo-base.png" alt="">
         <img class="tt-photo-label" id="ttLabelImg" src="fotos/vinilo-label.png" alt="">
         <img class="tt-photo-arm" id="ttArmImg" src="fotos/vinilo-brazo.png" alt="">
       </div>
-      <div class="tt-btn-wrap">
-        <button class="tt-btn" id="ttBtn" aria-label="Reproducir música">
-          <svg id="ttIconPlay" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
-          <svg id="ttIconPause" viewBox="0 0 24 24" width="18" height="18" style="display:none"><path fill="currentColor" d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
-        </button>
-      </div>
+      <div class="tt-caption" id="ttCaption">Toca el vinilo para reproducir la música</div>
     </div>
   </div>
   <audio id="ttAudio" preload="none" loop src="musica/Lady Gaga, Bruno Mars - Die With A Smile (Official Music Video).mp3"></audio>
@@ -1197,14 +1187,13 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   $("enterBtn").addEventListener("click",enter);
 
   // Tocadiscos
-  const ttAudio=$("ttAudio"), ttBtn=$("ttBtn"), ttArmImg=$("ttArmImg"), ttLabelImg=$("ttLabelImg");
+  const ttAudio=$("ttAudio"), ttPhoto=$("ttPhoto"), ttArmImg=$("ttArmImg"), ttLabelImg=$("ttLabelImg"), ttCaption=$("ttCaption");
   let ttSpinTimer=null;
   // Al reproducir: el brazo baja hacia el disco y, cuando llega, arranca el giro.
   // Al pausar: el giro se detiene al instante y el brazo vuelve a su posición de reposo.
   function ttSetPlaying(isPlaying){
     clearTimeout(ttSpinTimer);
-    $("ttIconPlay").style.display = isPlaying ? "none" : "block";
-    $("ttIconPause").style.display = isPlaying ? "block" : "none";
+    ttCaption.textContent = isPlaying ? "Toca el vinilo para parar la música" : "Toca el vinilo para reproducir la música";
     if(isPlaying){
       ttArmImg.classList.add("playing");
       ttSpinTimer=setTimeout(()=>ttLabelImg.classList.add("spinning"), 500);
@@ -1213,12 +1202,28 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
       ttLabelImg.classList.remove("spinning");
     }
   }
-  ttBtn.addEventListener("click", ()=>{
+  function ttToggle(){
     if(ttAudio.paused){ ttAudio.play().catch(()=>{}); } else { ttAudio.pause(); }
+  }
+  ttPhoto.addEventListener("click", ttToggle);
+  ttPhoto.addEventListener("keydown", e=>{
+    if(e.key==="Enter" || e.key===" "){ e.preventDefault(); ttToggle(); }
   });
   ttAudio.addEventListener("play", ()=>ttSetPlaying(true));
   ttAudio.addEventListener("pause", ()=>ttSetPlaying(false));
   ttAudio.addEventListener("ended", ()=>ttSetPlaying(false));
+
+  // La música solo debe sonar mientras la página está visible: si minimizan
+  // o cambian de pestaña se pausa, y se reanuda al volver (si sonaba antes).
+  let ttWasPlaying=false;
+  document.addEventListener("visibilitychange", ()=>{
+    if(document.hidden){
+      ttWasPlaying = !ttAudio.paused;
+      if(ttWasPlaying) ttAudio.pause();
+    } else if(ttWasPlaying){
+      ttAudio.play().catch(()=>{});
+    }
+  });
 
   // Reveal
   const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.1});

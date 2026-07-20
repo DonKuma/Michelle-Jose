@@ -1307,7 +1307,12 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   // bloquear a un invitado real por un problema técnico.
   const vi = CONFIG.validarInvitacion || {};
   const validarURL = vi.scriptURL && vi.scriptURL.trim();
-  const invitacionValida = validarURL
+  // En pruebas locales (file://, localhost, 127.0.0.1) no tiene sentido
+  // validar contra el Google Sheet: nunca vas a tener ahí una URL real de
+  // invitado, así que se omite la validación y se deja pasar directo.
+  const esPruebaLocal = location.protocol === "file:"
+    || ["localhost","127.0.0.1","::1",""].includes(location.hostname);
+  const invitacionValida = (validarURL && !esPruebaLocal)
     ? fetch(validarURL + "?check=" + encodeURIComponent(location.href))
         .then(r=>r.json()).then(d=>!!d.valid).catch(()=>true)
     : Promise.resolve(true);

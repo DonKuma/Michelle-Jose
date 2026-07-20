@@ -202,6 +202,21 @@ const CONFIG = {
   .bdivider .ln{flex:1;height:1px;background:var(--line)}
   .bdivider .sprig{width:46px;height:40px;flex:none}
 
+  /* ════════ PANTALLA DE CARGA ════════ */
+  #preloader{position:fixed;inset:0;z-index:500;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:20px;background:var(--cream);
+    transition:opacity .6s ease, visibility .6s ease}
+  #preloader.done{opacity:0;visibility:hidden;pointer-events:none}
+  #preloader .pl-mono{width:60px;opacity:.92}
+  #preloader .pl-mono img{width:100%;display:block}
+  #preloader .pl-ring{width:30px;height:30px;border-radius:50%;
+    border:2px solid var(--line);border-top-color:var(--terra);
+    animation:pl-spin .9s linear infinite}
+  #preloader .pl-text{font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;color:var(--ink-soft)}
+  @keyframes pl-spin{to{transform:rotate(360deg)}}
+  @media(prefers-reduced-motion:reduce){#preloader .pl-ring{animation:none}}
+  body.pl-active{overflow:hidden}
+
   /* ════════ INTRO / CARTA QUE SE ABRE ════════ */
   #intro{
     position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
@@ -373,22 +388,20 @@ const CONFIG = {
   .countdown-wrap .eyebrow{color:var(--terra)}
 
   .cd-photo{position:relative;padding:64px 24px 224px;text-align:center;
-    background:linear-gradient(rgba(35,24,18,.14),rgba(35,24,18,.3)),url('fotos/Iglesia Interior.jpeg') center 22%/cover no-repeat}
+    background:linear-gradient(rgba(35,24,18,.35),rgba(35,24,18,.55)),url('fotos/Iglesia Interior.jpeg') center 22%/cover no-repeat}
 
   .cd-frame{position:relative;width:min(320px,76vw);margin:0 auto}
   .cd-frame-art{display:block;width:100%;height:auto;filter:drop-shadow(0 18px 26px rgba(35,24,18,.4))}
-  .cd-frame-text{position:absolute;inset:16% 21% 25%;display:flex;flex-direction:column;align-items:center;justify-content:center}
-  .cd-frame-text .dw{font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;color:var(--dark-terra)}
-  .cd-frame-text .dd{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(2.4rem,10vw,3.6rem);line-height:1;color:var(--dark-terra);margin-top:8px}
-  .cd-frame-text .dm{font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);margin-top:8px}
-  .cd-frame-hr{width:34px;height:1px;background:var(--line);margin:16px 0}
-  .cd-frame-mono{width:34px;margin-bottom:10px}
-  .cd-frame-mono img{width:100%;display:block}
-  .cd-frame-eyebrow{font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--terra)}
+  .cd-frame-text{position:absolute;inset:19% 20% 16%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(6px,2.4vw,16px)}
+  .cd-frame-text .dw{font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:var(--dark-terra)}
+  .cd-frame-text .dd{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(2.8rem,12vw,4.4rem);line-height:1;color:var(--dark-terra)}
+  .cd-frame-text .dm{font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft)}
+  .cd-frame-hr{width:34px;height:1px;background:var(--line)}
 
   .countdown-card{position:absolute;z-index:1;left:50%;bottom:60px;transform:translateX(-50%);
     width:calc(100% - 56px);max-width:460px;background:var(--cream);
     border:1px solid var(--line);box-shadow:var(--shadow);padding:30px 18px}
+  .cd-card-eyebrow{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--terra);margin-bottom:16px}
 
   .countdown{position:relative;z-index:1;display:flex;justify-content:center;align-items:center;
     gap:clamp(2px,1.6vw,14px);flex-wrap:wrap}
@@ -398,7 +411,8 @@ const CONFIG = {
   .cd-num.pulse{animation:cd-pulse .5s ease}
   @keyframes cd-pulse{0%{transform:scale(1)}40%{transform:scale(1.22);color:var(--terra)}100%{transform:scale(1)}}
   .cd-label{margin-top:6px;font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;color:var(--ink-soft)}
-  .cd-sep{width:15px;height:13px;color:var(--terra);opacity:.65;flex:none}
+  .cd-sep{align-self:flex-start;margin-top:2px;font-family:'Cormorant Garamond',serif;font-weight:500;
+    font-size:clamp(1.7rem,6.4vw,2.7rem);line-height:1;color:var(--terra);opacity:.75;flex:none}
   @media(max-width:480px){
     .cd-photo{padding:52px 20px 198px}
     .countdown-card{width:calc(100% - 40px);bottom:48px;padding:24px 12px}
@@ -562,7 +576,14 @@ const CONFIG = {
   .reveal.in{opacity:1;transform:none}
 </style>
 </head>
-<body>
+<body class="pl-active">
+
+<!-- ════════ PANTALLA DE CARGA ════════ -->
+<div id="preloader" aria-hidden="true">
+  <div class="pl-mono"><img id="preloaderMono" alt=""></div>
+  <div class="pl-ring"></div>
+  <div class="pl-text">Cargando</div>
+</div>
 
 <!-- Motivo botánico reutilizable -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -710,20 +731,19 @@ const CONFIG = {
       <div class="cd-frame-text">
         <span class="dw" id="badgeDow">Sábado</span>
         <span class="dd" id="badgeDay">07</span>
-        <span class="dm" id="badgeMon">Noviembre 2026</span>
         <span class="cd-frame-hr"></span>
-        <div class="cd-frame-mono"><img id="cdMono" alt="Monograma J y M"></div>
-        <span class="cd-frame-eyebrow">Sólo faltan</span>
+        <span class="dm" id="badgeMon">Noviembre 2026</span>
       </div>
     </div>
     <div class="countdown-card">
+      <div class="cd-card-eyebrow">Sólo faltan</div>
       <div class="countdown">
         <div class="cd-item"><div class="cd-num" id="cdD">0</div><div class="cd-label">Días</div></div>
-        <div class="cd-sep" aria-hidden="true"><svg viewBox="0 0 80 64"><use href="#sprig-shape" fill="currentColor"/></svg></div>
+        <div class="cd-sep" aria-hidden="true">:</div>
         <div class="cd-item"><div class="cd-num" id="cdH">0</div><div class="cd-label">Horas</div></div>
-        <div class="cd-sep" aria-hidden="true"><svg viewBox="0 0 80 64"><use href="#sprig-shape" fill="currentColor"/></svg></div>
+        <div class="cd-sep" aria-hidden="true">:</div>
         <div class="cd-item"><div class="cd-num" id="cdM">0</div><div class="cd-label">Minutos</div></div>
-        <div class="cd-sep" aria-hidden="true"><svg viewBox="0 0 80 64"><use href="#sprig-shape" fill="currentColor"/></svg></div>
+        <div class="cd-sep" aria-hidden="true">:</div>
         <div class="cd-item"><div class="cd-num" id="cdS">0</div><div class="cd-label">Segundos</div></div>
       </div>
     </div>
@@ -772,12 +792,12 @@ const CONFIG = {
 
   <div class="dress-looks">
     <figure class="dress-look">
-      <div class="dl-frame"><img src="fotos/Codigo mujer.png" alt="Referencia de vestimenta para mujer" loading="lazy"></div>
+      <div class="dl-frame"><img src="fotos/Codigo mujer.png" alt="Referencia de vestimenta para mujer"></div>
       <figcaption class="dl-cap"><span class="dl-kicker">Damas</span><span class="dl-name">Vestido Largo</span></figcaption>
     </figure>
     <span class="dress-divider" aria-hidden="true"></span>
     <figure class="dress-look">
-      <div class="dl-frame"><img src="fotos/Codigo hombre.png" alt="Referencia de vestimenta para hombre" loading="lazy"></div>
+      <div class="dl-frame"><img src="fotos/Codigo hombre.png" alt="Referencia de vestimenta para hombre"></div>
       <figcaption class="dl-cap"><span class="dl-kicker">Caballeros</span><span class="dl-name">Traje Oscuro</span></figcaption>
     </figure>
   </div>
@@ -871,10 +891,10 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   const p = (k,def) => (params.get(k) || def || "").trim();
 
   // Monogramas
+  $("preloaderMono").src = MONO_DARK;
   $("heroMono").src = MONO_DARK;
   $("sealMono").src = "fotos/Sello Carta.png";
   $("letterMono").src = MONO_DARK;
-  $("cdMono").src = MONO_DARK;
 
   // Datos fijos
   $("novia").textContent = CONFIG.novia;
@@ -1006,7 +1026,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   // Historia
   CONFIG.historia.forEach(h=>{
     const el=document.createElement("div"); el.className="story-item";
-    el.innerHTML=`<div class="ph"><img src="${h.foto}" alt="${h.titulo}" loading="lazy"></div>`
+    el.innerHTML=`<div class="ph"><img src="${h.foto}" alt="${h.titulo}"></div>`
       +`<div class="anio script">${h.anio}</div><h4 class="serif">${h.titulo}</h4><p>${h.texto}</p>`;
     $("storyGrid").appendChild(el);
   });
@@ -1228,6 +1248,21 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   // Reveal
   const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.1});
   document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+
+  // Pantalla de carga: se oculta solo cuando toda la página (imágenes, fuentes)
+  // terminó de cargar, para que nada se muestre a medias.
+  const preloader=$("preloader");
+  function hidePreloader(){
+    preloader.classList.add("done");
+    document.body.classList.remove("pl-active");
+    setTimeout(()=>preloader.remove(), 700);
+  }
+  const pageLoaded = new Promise(res=>{
+    if(document.readyState==="complete") res(); else window.addEventListener("load", res, {once:true});
+  });
+  const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready.catch(()=>{}) : Promise.resolve();
+  const safetyTimeout = new Promise(res=>setTimeout(res, 8000));
+  Promise.race([Promise.all([pageLoaded, fontsReady]), safetyTimeout]).then(hidePreloader);
 
 })();
 </script>

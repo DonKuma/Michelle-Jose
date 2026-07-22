@@ -73,7 +73,7 @@ const CONFIG = {
 
   ceremonia: {
     titulo:"Ceremonia", lugar:"Iglesia Católica Santa Teresita del Niño Jesús | Entre Ríos",
-    direccion:"Av. Samborondón Km 1.5", hora:"15:45",
+    direccion:"Av. Samborondón Km 1.5", hora:"15:30",
     mapa:"https://maps.app.goo.gl/2iJdDmccJyH13ZBY6"
   },
   recepcion: {
@@ -408,7 +408,7 @@ const CONFIG = {
   }
 
   /* ════════ BANDA VERSÍCULO (verde) ════════ */
-  .verse-band{background:rgba(245,239,231,.6);color:var(--ink);text-align:center;padding:74px 24px;border-top:1px solid var(--line)}
+  .verse-band{color:var(--ink);text-align:center;padding:74px 24px;border-top:1px solid var(--line)}
   .verse-band .sprig{color:var(--green);margin:0 auto 18px}
   .verse{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(1.5rem,4.4vw,2.3rem);line-height:1.5;max-width:640px;margin:0 auto}
   .verse-ref{display:block;margin-top:16px;font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;opacity:.8;font-family:'Jost',sans-serif;font-style:normal}
@@ -431,20 +431,20 @@ const CONFIG = {
   .countdown-wrap{position:relative;border-top:1px solid var(--line);overflow:hidden}
   .countdown-wrap .eyebrow{color:var(--terra)}
 
-  .cd-photo{position:relative;padding:64px 24px 224px;text-align:center;background:var(--cream)}
+  .cd-photo{position:relative;padding:16px 24px 220px;text-align:center;background:var(--cream)}
   .cd-photo::before{content:"";position:absolute;inset:0;z-index:0;
     background:url('fotos/Iglesia Interior.jpeg') center 22%/cover no-repeat;
     opacity:.45}
 
-  .cd-frame{position:relative;width:min(320px,76vw);margin:0 auto}
+  .cd-frame{position:relative;width:min(260px,65vw);margin:0 auto}
   .cd-frame-art{display:block;width:100%;height:auto;filter:drop-shadow(0 18px 26px rgba(35,24,18,.4))}
-  .cd-frame-text{position:absolute;inset:19% 20% 16%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(6px,2.4vw,16px)}
-  .cd-frame-text .dw{font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:var(--dark-terra)}
-  .cd-frame-text .dd{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(2.8rem,12vw,4.4rem);line-height:1;color:var(--dark-terra)}
-  .cd-frame-text .dm{font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft)}
+  .cd-frame-text{position:absolute;inset:31% 25% 27%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(4px,1.6vw,10px)}
+  .cd-frame-text .dw{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:var(--dark-terra)}
+  .cd-frame-text .dd{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(2rem,8vw,2.6rem);line-height:1;color:var(--dark-terra)}
+  .cd-frame-text .dm{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)}
   .cd-frame-hr{width:34px;height:1px;background:var(--line)}
 
-  .countdown-card{position:absolute;z-index:1;left:50%;bottom:60px;transform:translateX(-50%);
+  .countdown-card{position:absolute;z-index:1;left:50%;bottom:46px;transform:translateX(-50%);
     width:calc(100% - 56px);max-width:460px;background:var(--cream);
     border:1px solid var(--line);box-shadow:var(--shadow);padding:30px 18px}
   .cd-card-eyebrow{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--terra);margin-bottom:16px}
@@ -460,13 +460,13 @@ const CONFIG = {
   .cd-sep{align-self:flex-start;margin-top:2px;font-family:'Cormorant Garamond',serif;font-weight:500;
     font-size:clamp(1.7rem,6.4vw,2.7rem);line-height:1;color:var(--terra);opacity:.75;flex:none}
   @media(max-width:480px){
-    .cd-photo{padding:52px 20px 198px}
-    .countdown-card{width:calc(100% - 40px);bottom:48px;padding:24px 12px}
+    .cd-photo{padding:14px 20px 194px}
+    .countdown-card{width:calc(100% - 40px);bottom:36px;padding:24px 12px}
   }
   @media(prefers-reduced-motion:reduce){.cd-num.pulse{animation:none}}
 
   /* ════════ NUESTRA HISTORIA ════════ */
-  .story{max-width:1000px;margin:0 auto;padding:90px 24px 60px;text-align:center}
+  .story{max-width:1000px;margin:0 auto;padding:0px 24px 60px;text-align:center}
   .story-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:30px;margin-top:46px}
   .story-item .ph{aspect-ratio:6/7;overflow:hidden;border:1px solid var(--line);border-radius:160px 160px 8px 8px}
   .story-item img{width:100%;height:100%;object-fit:cover;filter:var(--photo-filter)}
@@ -488,7 +488,7 @@ const CONFIG = {
   .map-link:hover{background:var(--terra);color:var(--cream)}
 
   .itin{max-width:520px;margin:64px auto 0}
-  .itin .eyebrow{display:block;text-align:center;margin-bottom:26px}
+  .itin-title{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.9rem;text-align:center;margin-bottom:26px}
   .itin-row{display:flex;align-items:center;gap:20px;padding:14px 0;border-bottom:1px dashed var(--line)}
   .itin-row:last-child{border-bottom:0}
   .itin-row .t{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--dark-terra);min-width:78px;text-align:right}
@@ -513,7 +513,7 @@ const CONFIG = {
   @media(max-width:560px){.dress-look{max-width:170px}.dl-name{font-size:1.25rem}}
 
   /* ════════ REGALO ════════ */
-  .gift{max-width:600px;margin:0 auto;padding:80px 24px;text-align:center}
+  .gift{max-width:600px;margin:0 auto;padding:0px 24px;text-align:center}
   .gift .sprig{margin:0 auto 14px;color:var(--green)}
   .gift h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(1.8rem,5vw,2.5rem);margin-bottom:12px}
   .gift p{color:var(--ink-soft);max-width:500px;margin:0 auto}
@@ -612,7 +612,7 @@ const CONFIG = {
   .tl-ico{width:132px;height:120px;display:inline-block;margin-bottom:6px}
   .tl-ico img{width:100%;height:100%;object-fit:contain;display:block}
   .tl-ev{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--ink);line-height:1.2}
-  .tl-t{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--terra);margin-top:2px}
+  .tl-t{font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;color:var(--terra);margin-top:2px}
   @media(max-width:540px){
     .tl-item{padding:14px 10px}
     .tl-dot{top:22px}
@@ -620,7 +620,7 @@ const CONFIG = {
     .tl-item:nth-child(even) .tl-dot{left:-4px}
     .tl-ico{width:88px;height:80px;margin-bottom:4px}
     .tl-ev{font-size:1.05rem}
-    .tl-t{font-size:.62rem;letter-spacing:.12em}
+    .tl-t{font-size:.82rem;letter-spacing:.12em}
   }
   @media(max-width:380px){
     .tl-item{padding:12px 6px}
@@ -722,6 +722,13 @@ const CONFIG = {
   </div>
 </section>
 
+<!-- ════════ ¡NOS CASAMOS! + VIDEO ════════ -->
+<section class="nos reveal">
+  <h3>¡Nos casamos!</h3>
+  <p id="mensaje"></p>
+  <div class="video-wrap" id="videoWrap" style="display:none"></div>
+</section>
+
 <!-- ════════ TOCADISCOS ════════ -->
 <section class="turntable-wrap reveal">
   <div class="tt-glow"></div>
@@ -743,13 +750,6 @@ const CONFIG = {
   <p class="verse serif" id="verse">“…”
     <span class="verse-ref" id="verseRef"></span>
   </p>
-</section>
-
-<!-- ════════ ¡NOS CASAMOS! + VIDEO ════════ -->
-<section class="nos reveal">
-  <h3>¡Nos casamos!</h3>
-  <p id="mensaje"></p>
-  <div class="video-wrap" id="videoWrap" style="display:none"></div>
 </section>
 
 <!-- ════════ COUNTDOWN ════════ -->
@@ -803,7 +803,7 @@ const CONFIG = {
     <div class="card">
       <div class="licon licon-photo"><img src="fotos/Ceremonia acuarela.png" alt="Ceremonia"></div>
       <h3 id="cTitle">Ceremonia</h3>
-      <div class="hr" id="cHora">15:45</div>
+      <div class="hr" id="cHora">15:30</div>
       <div class="place" id="cLugar">—</div>
       <div class="addr" id="cDir">—</div>
       <a class="map-link" id="cMapa" target="_blank" rel="noopener">Cómo llegar</a>
@@ -818,7 +818,7 @@ const CONFIG = {
     </div>
   </div>
   <div class="itin">
-    <span class="eyebrow">Itinerario</span>
+    <h3 class="itin-title">Itinerario</h3>
     <div class="timeline" id="timeline"></div>
   </div>
 </section>

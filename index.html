@@ -84,11 +84,14 @@ const CONFIG = {
 
   // Línea de tiempo del día (itinerario)
   itinerario: [
-    { hora:"17:00", evento:"Ceremonia religiosa" },
-    { hora:"19:30", evento:"Cóctel de bienvenida" },
-    { hora:"20:30", evento:"Cena" },
-    { hora:"22:00", evento:"Primer baile" },
-    { hora:"22:30", evento:"¡A bailar!" }
+    { hora:"15:30", evento:"Ceremonia", foto:"fotos/Cronograma/Iglesia recorte.png" },
+    { hora:"17:30", evento:"Recepción y bienvenida", foto:"fotos/Cronograma/Recepción recorte.png" },
+    { hora:"18:30", evento:"Entrada de los novios", foto:"fotos/Cronograma/Llegada novios recorte.png" },
+    { hora:"19:00", evento:"Primer baile", foto:"fotos/Cronograma/Baile novios recorte.png" },
+    { hora:"19:15", evento:"Brindis", foto:"fotos/Cronograma/Brindis recorte.png" },
+    { hora:"20:00", evento:"Cena", foto:"fotos/Cronograma/Cena recorte.png" },
+    { hora:"21:00", evento:"¡A celebrar!", foto:"fotos/Cronograma/A celebrar recorte.png" },
+    { hora:"23:30", evento:"Felices por siempre", foto:"fotos/Cronograma/felices por siempre recorte.png" }
   ],
 
   // Nuestra historia (3 hitos — sube las fotos a la carpeta "fotos/")
@@ -472,7 +475,7 @@ const CONFIG = {
   .story-item p{color:var(--ink-soft);font-size:.95rem;max-width:280px;margin:0 auto}
 
   /* ════════ DETALLES + ITINERARIO ════════ */
-  .details-band{background:rgba(245,239,231,.6);padding:84px 24px;border-top:1px solid var(--line)}
+  .details-band{padding:84px 24px;border-top:1px solid var(--line)}
   .details{max-width:940px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:24px}
   .card{border:1px solid var(--line);background:var(--cream);padding:46px 32px;text-align:center;transition:transform .5s,border-color .5s,box-shadow .5s}
   .card:hover{transform:translateY(-6px);border-color:var(--terra);box-shadow:var(--shadow)}
@@ -580,7 +583,7 @@ const CONFIG = {
   .bank-card[hidden]{display:none}
 
   /* ════════ CIERRE "GRACIAS" ════════ */
-  .closing{background:rgba(245,239,231,.6);text-align:center;padding:90px 24px;border-top:1px solid var(--line)}
+  .closing{text-align:center;padding:90px 24px;border-top:1px solid var(--line)}
   .closing .cmono{width:88px;margin:0 auto 14px}
   .closing .cmono img{width:100%}
   .closing .cnames{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(2.4rem,9vw,4rem);line-height:1;color:var(--ink)}
@@ -606,14 +609,23 @@ const CONFIG = {
   .tl-dot{position:absolute;top:26px;width:9px;height:9px;border-radius:50%;background:var(--terra);border:2px solid var(--cream);box-shadow:0 0 0 1px var(--line)}
   .tl-item:nth-child(odd) .tl-dot{right:-5px}
   .tl-item:nth-child(even) .tl-dot{left:-5px}
-  .tl-ico{width:38px;height:38px;color:var(--green);display:inline-block;margin-bottom:4px}
-  .tl-ico svg{width:100%;height:100%}
+  .tl-ico{width:132px;height:120px;display:inline-block;margin-bottom:6px}
+  .tl-ico img{width:100%;height:100%;object-fit:contain;display:block}
   .tl-ev{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--ink);line-height:1.2}
   .tl-t{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--terra);margin-top:2px}
   @media(max-width:540px){
-    .timeline::before{left:18px}
-    .tl-item,.tl-item:nth-child(even){width:100%;margin-left:0;text-align:left;padding:16px 0 16px 46px}
-    .tl-item:nth-child(odd) .tl-dot,.tl-item:nth-child(even) .tl-dot{left:14px;right:auto}
+    .tl-item{padding:14px 10px}
+    .tl-dot{top:22px}
+    .tl-item:nth-child(odd) .tl-dot{right:-4px}
+    .tl-item:nth-child(even) .tl-dot{left:-4px}
+    .tl-ico{width:88px;height:80px;margin-bottom:4px}
+    .tl-ev{font-size:1.05rem}
+    .tl-t{font-size:.62rem;letter-spacing:.12em}
+  }
+  @media(max-width:380px){
+    .tl-item{padding:12px 6px}
+    .tl-ico{width:74px;height:68px}
+    .tl-ev{font-size:.92rem}
   }
 
   /* ── Reveal ── */
@@ -652,29 +664,6 @@ const CONFIG = {
       <path d="M40 26 C48 24 53 26 56 21 C50 19 44 21 40 26Z"/>
       <path d="M40 14 C35 11 31 12 28 7 C34 6 38 9 40 14Z"/>
       <path d="M40 14 C45 11 49 12 52 7 C46 6 42 9 40 14Z"/>
-    </g>
-    <g id="ic-church" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 2.5v3.5M10.4 4.2h3.2"/>
-      <path d="M12 6.5 5.5 11.5V21.5h13V11.5z"/>
-      <path d="M9.2 21.5v-4.2h5.6v4.2"/>
-      <path d="M12 9.5v3M10.5 11h3"/>
-    </g>
-    <g id="ic-champ" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M6.5 3.5 8 10.5M10.5 3.5 9 10.5M6.5 3.5h4M8.6 10.5 8.4 19.5M6 20.5h4.8"/>
-      <path d="M13.5 3.5 15 10.5M17.5 3.5 16 10.5M13.5 3.5h4M15.6 10.5 15.4 19.5M13 20.5h4.8"/>
-    </g>
-    <g id="ic-fork" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M7 2.5v6M7 2.5v6M5.5 2.5v4a1.5 1.5 0 0 0 3 0v-4M7 8.5v13"/>
-      <path d="M16 2.5c-1.7 0-2.5 2-2.5 4.5S14.3 11 16 11v10.5M16 2.5v8.5"/>
-    </g>
-    <g id="ic-rings" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round">
-      <circle cx="9.5" cy="14.5" r="6"/><circle cx="15" cy="14.5" r="6"/>
-      <path d="M8 8.5 9.5 5h0M16 8.5 14.5 5" stroke-linecap="round"/>
-    </g>
-    <g id="ic-table" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-      <ellipse cx="12" cy="14.5" rx="8.5" ry="2.6"/>
-      <path d="M3.5 14.5v2c0 1.6 3.8 2.8 8.5 2.8s8.5-1.2 8.5-2.8v-2"/>
-      <path d="M12 14.5V6M10.5 6h3M11 4l1-1.2 1 1.2"/>
     </g>
     <g id="ic-envelope" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
       <rect x="3.5" y="5.5" width="17" height="13" rx="1.4"/>
@@ -1054,20 +1043,11 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   $("cNovia").textContent=CONFIG.novia; $("cNovio").textContent=CONFIG.novio;
   try{const d=new Date(CONFIG.fechaISO);$("closeDate").textContent=String(d.getDate()).padStart(2,"0")+" · "+String(d.getMonth()+1).padStart(2,"0")+" · "+d.getFullYear();}catch(e){}
 
-  // Itinerario (línea de tiempo zigzag con iconos)
-  const iconFor=(ev)=>{
-    const s=(ev||"").toLowerCase();
-    if(/ceremon|iglesia|religios|misa/.test(s)) return "ic-church";
-    if(/cóctel|coctel|brindis|bienvenida|copa/.test(s)) return "ic-champ";
-    if(/cena|comida|banquete|almuerzo/.test(s)) return "ic-fork";
-    if(/baile|bailar|fiesta|baile de novios|primer baile/.test(s)) return "ic-rings";
-    if(/recep/.test(s)) return "ic-table";
-    return "ic-rings";
-  };
+  // Itinerario (línea de tiempo zigzag con ilustraciones)
   CONFIG.itinerario.forEach(it=>{
     const el=document.createElement("div"); el.className="tl-item";
     el.innerHTML=`<span class="tl-dot"></span>`
-      +`<span class="tl-ico"><svg viewBox="0 0 24 24"><use href="#${iconFor(it.evento)}"/></svg></span>`
+      +`<span class="tl-ico"><img src="${it.foto}" alt="${it.evento}"></span>`
       +`<div class="tl-ev">${it.evento}</div><div class="tl-t">${it.hora}</div>`;
     $("timeline").appendChild(el);
   });

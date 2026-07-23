@@ -416,16 +416,14 @@ const CONFIG = {
   /* ════════ INVITACIÓN PERSONALIZADA ════════ */
   .invite{max-width:600px;margin:0 auto;padding:84px 24px;text-align:center}
   .invite .eyebrow{margin-bottom:8px}
-  .guest-card{
-    margin-top:30px;border:1px solid var(--line);padding:48px 30px;background:var(--cream);
-    box-shadow:var(--shadow);position:relative;
-  }
-  .guest-card .sprig{margin:0 auto 14px;color:var(--dusty)}
-  #guestTitle{color:var(--terra);font-style:italic;font-size:1.1rem;font-family:'Cormorant Garamond',serif}
-  #guestName{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(1.9rem,7vw,2.9rem);line-height:1.1;margin-top:2px}
-  .admision{display:inline-flex;align-items:center;gap:9px;margin-top:24px;border:1px solid var(--line);padding:10px 22px;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dark-terra)}
+  .guest-card{position:relative;margin:30px auto 0;width:100%;max-width:420px}
+  .guest-card-art{display:block;width:100%;height:auto}
+  .guest-card-text{position:absolute;inset:29% 21%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+  #guestTitle{color:var(--terra);font-style:italic;font-size:.85rem;font-family:'Cormorant Garamond',serif}
+  #guestName{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(1.3rem,5.6vw,1.9rem);line-height:1.05;margin-top:2px}
+  .admision{display:inline-flex;align-items:center;gap:6px;margin-top:10px;border:1px solid var(--line);padding:6px 14px;font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;color:var(--dark-terra)}
   .admision b{font-weight:500;color:var(--ink)}
-  .firma{margin-top:22px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--dusty)}
+  .firma{margin-top:8px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--dusty)}
 
   /* ════════ COUNTDOWN (foto iglesia + marco) ════════ */
   .countdown-wrap{position:relative;border-top:1px solid var(--line);overflow:hidden}
@@ -783,10 +781,13 @@ const CONFIG = {
   <div class="eyebrow">Con todo el cariño</div>
   <div class="bdivider" style="margin-top:14px"><span class="ln"></span><span class="ln"></span></div>
   <div class="guest-card">
-    <div id="guestTitle" class="serif"></div>
-    <div id="guestName" class="serif">Invitado especial</div>
-    <div class="admision">Cupos reservados: <b id="admision">—</b></div>
-    <div class="firma" id="firma"></div>
+    <img class="guest-card-art" src="fotos/Invitación.png" alt="">
+    <div class="guest-card-text">
+      <div id="guestTitle" class="serif"></div>
+      <div id="guestName" class="serif">Invitado especial</div>
+      <div class="admision">Cupos reservados: <b id="admision">—</b></div>
+      <div class="firma" id="firma"></div>
+    </div>
   </div>
 </section>
 

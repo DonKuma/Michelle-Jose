@@ -470,7 +470,7 @@ const CONFIG = {
   .story-viewport{overflow:hidden;flex:1;touch-action:pan-y}
   .story-grid{display:flex;transition:transform .5s ease}
   .story-item{flex:0 0 100%;min-width:0}
-  .story-item .ph{aspect-ratio:6/7;overflow:hidden;border:1px solid var(--line);border-radius:160px 160px 8px 8px}
+  .story-item .ph{aspect-ratio:6/9;overflow:hidden;border:1px solid var(--line);border-radius:160px 160px 8px 8px}
   .story-item img{width:100%;height:100%;object-fit:cover;filter:var(--photo-filter)}
   .story-item .anio{font-family:'Pinyon Script',cursive;font-size:2rem;color:var(--terra);margin-top:18px;line-height:1}
   .story-item h4{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.5rem;margin:2px 0 6px}
@@ -1058,43 +1058,59 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   });
 
   // Historia (carrusel)
-  CONFIG.historia.forEach(h=>{
+  function buildStoryItem(h){
     const el=document.createElement("div"); el.className="story-item";
     el.innerHTML=`<div class="ph"><img src="${h.foto}" alt="${h.titulo}"></div>`
       +`<div class="anio script">${h.anio}</div><h4 class="serif">${h.titulo}</h4><p>${h.texto}</p>`;
-    $("storyGrid").appendChild(el);
-  });
+    return el;
+  }
+  CONFIG.historia.forEach(h=>{ $("storyGrid").appendChild(buildStoryItem(h)); });
 
   (function(){
     const track=$("storyGrid"), dotsWrap=$("storyDots"), prevBtn=$("storyPrev"), nextBtn=$("storyNext");
     const total=CONFIG.historia.length;
     if(!track || total<=1){ if(prevBtn) prevBtn.style.display="none"; if(nextBtn) nextBtn.style.display="none"; return; }
 
-    let idx=0, timer=null;
+    // Clones al inicio y al final para que el loop se vea infinito
+    const firstClone=buildStoryItem(CONFIG.historia[0]);
+    const lastClone=buildStoryItem(CONFIG.historia[total-1]);
+    firstClone.setAttribute("aria-hidden","true");
+    lastClone.setAttribute("aria-hidden","true");
+    track.appendChild(firstClone);
+    track.insertBefore(lastClone, track.firstChild);
+
+    let pos=1, timer=null; // pos 1..total = reales; 0 y total+1 = clones
     const dots=CONFIG.historia.map((_,i)=>{
       const b=document.createElement("button");
       b.type="button"; b.className="story-dot"; b.setAttribute("aria-label","Ir a la historia "+(i+1));
-      b.addEventListener("click",()=>go(i,true));
+      b.addEventListener("click",()=>go(i+1,true));
       dotsWrap.appendChild(b);
       return b;
     });
 
-    function render(){
-      track.style.transform=`translateX(-${idx*100}%)`;
-      dots.forEach((d,i)=>d.classList.toggle("active", i===idx));
+    function render(withTransition){
+      track.style.transition = withTransition===false ? "none" : "";
+      track.style.transform=`translateX(-${pos*100}%)`;
+      const real=(pos-1+total)%total;
+      dots.forEach((d,i)=>d.classList.toggle("active", i===real));
     }
-    function go(i, manual){
-      idx=(i+total)%total;
-      render();
+    function go(p, manual){
+      pos=p;
+      render(true);
       if(manual) restart();
     }
-    function next(){ go(idx+1); }
-    function start(){ timer=setInterval(next, 3000); }
+    function start(){ timer=setInterval(()=>go(pos+1), 3000); }
     function stop(){ if(timer){ clearInterval(timer); timer=null; } }
     function restart(){ stop(); start(); }
 
-    prevBtn.addEventListener("click",()=>go(idx-1,true));
-    nextBtn.addEventListener("click",()=>go(idx+1,true));
+    track.addEventListener("transitionend",e=>{
+      if(e.propertyName!=="transform") return;
+      if(pos===0){ pos=total; render(false); }
+      else if(pos===total+1){ pos=1; render(false); }
+    });
+
+    prevBtn.addEventListener("click",()=>go(pos-1,true));
+    nextBtn.addEventListener("click",()=>go(pos+1,true));
 
     let touchX=null;
     const viewport=track.parentElement;
@@ -1102,11 +1118,11 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
     viewport.addEventListener("touchend",e=>{
       if(touchX===null) return;
       const dx=e.changedTouches[0].clientX-touchX;
-      if(Math.abs(dx)>40) go(idx+(dx<0?1:-1),true); else restart();
+      if(Math.abs(dx)>40) go(pos+(dx<0?1:-1),true); else restart();
       touchX=null;
     });
 
-    render();
+    render(false);
     start();
   })();
 

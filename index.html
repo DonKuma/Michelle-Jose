@@ -157,10 +157,10 @@ const CONFIG = {
     scriptURL: "https://script.google.com/macros/s/AKfycbxdb54yvuRJoY4KCyjJm4kXh6EL7OQJQWeVv0qC1VRvQmmYvCIbEg-EPvq16e_eUjvL/exec"   // ← pega aquí la URL /exec de ValidarInvitacion.gs
   },
 
-  regalo: "Tu presencia es nuestro mejor regalo. Si deseas tener un detalle con nosotros, aquí te dejamos algunas opciones.",
+  regalo: "Con mucha ilusión comenzamos esta nueva etapa. Agradeceremos que su obsequio sea en sobre cerrado o mediante transferencia bancaria.",
   // Opcionales para la mesa de regalos (déjalos vacíos "" para ocultarlos)
   regaloLink: "",          // ej: enlace a tu lista/registro de regalos
-  regaloSobre: "También puedes entregarnos tu regalo en un sobre cerrado el día de la celebración.",         // déjalo vacío "" para ocultar la opción de sobre cerrado
+  regaloSobre: "Puedes entregarnos tu regalo en un sobre cerrado el día de la celebración.",         // déjalo vacío "" para ocultar la opción de sobre cerrado
   // Datos bancarios (deja "" en cualquier campo para no mostrar esa línea; deja todos vacíos para ocultar la opción)
   regaloBanco: {
     banco: "Banco Pichincha",
@@ -463,14 +463,22 @@ const CONFIG = {
   }
   @media(prefers-reduced-motion:reduce){.cd-num.pulse{animation:none}}
 
-  /* ════════ NUESTRA HISTORIA ════════ */
-  .story{max-width:1000px;margin:0 auto;padding:0px 24px 60px;text-align:center}
-  .story-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:30px;margin-top:46px}
+  /* ════════ NUESTRA HISTORIA (carrusel) ════════ */
+  .story{max-width:1000px;margin:0 auto;padding:90px 24px 60px;text-align:center}
+  .story-carousel{display:flex;align-items:center;gap:14px;max-width:420px;margin:46px auto 0}
+  .story-viewport{overflow:hidden;flex:1;touch-action:pan-y}
+  .story-grid{display:flex;transition:transform .5s ease}
+  .story-item{flex:0 0 100%;min-width:0}
   .story-item .ph{aspect-ratio:6/7;overflow:hidden;border:1px solid var(--line);border-radius:160px 160px 8px 8px}
   .story-item img{width:100%;height:100%;object-fit:cover;filter:var(--photo-filter)}
   .story-item .anio{font-family:'Pinyon Script',cursive;font-size:2rem;color:var(--terra);margin-top:18px;line-height:1}
   .story-item h4{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.5rem;margin:2px 0 6px}
   .story-item p{color:var(--ink-soft);font-size:.95rem;max-width:280px;margin:0 auto}
+  .story-arrow{flex:none;width:38px;height:38px;border-radius:50%;background:transparent;border:1px solid var(--line);color:var(--dark-terra);font-size:1rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.25s}
+  .story-arrow:hover{background:var(--dark-terra);border-color:var(--dark-terra);color:var(--cream)}
+  .story-dots{display:flex;justify-content:center;gap:8px;margin-top:22px}
+  .story-dot{width:8px;height:8px;padding:0;border-radius:5px;border:none;background:var(--line);cursor:pointer;transition:.3s}
+  .story-dot.active{width:22px;background:var(--terra)}
 
   /* ════════ DETALLES + ITINERARIO ════════ */
   .details-band{padding:84px 24px;border-top:1px solid var(--line)}
@@ -609,21 +617,19 @@ const CONFIG = {
   .tl-item:nth-child(even) .tl-dot{left:-5px}
   .tl-ico{width:132px;height:120px;display:inline-block;margin-bottom:6px}
   .tl-ico img{width:100%;height:100%;object-fit:contain;display:block}
-  .tl-ev{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--ink);line-height:1.2}
-  .tl-t{font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;color:var(--terra);margin-top:2px}
+  .tl-ev{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--ink);line-height:1.2}
+  .tl-t{font-size:0.85rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);margin-top:2px}
   @media(max-width:540px){
     .tl-item{padding:14px 10px}
     .tl-dot{top:22px}
     .tl-item:nth-child(odd) .tl-dot{right:-4px}
     .tl-item:nth-child(even) .tl-dot{left:-4px}
     .tl-ico{width:88px;height:80px;margin-bottom:4px}
-    .tl-ev{font-size:1.05rem}
-    .tl-t{font-size:.82rem;letter-spacing:.12em}
+    .tl-t{letter-spacing:.12em}
   }
   @media(max-width:380px){
     .tl-item{padding:12px 6px}
     .tl-ico{width:74px;height:68px}
-    .tl-ev{font-size:.92rem}
   }
 
   /* ── Reveal ── */
@@ -776,26 +782,18 @@ const CONFIG = {
   </div>
 </section>
 
-<!-- ════════ INVITACIÓN PERSONALIZADA ════════ -->
-<section class="invite reveal">
-  <div class="eyebrow">Con todo el cariño</div>
-  <div class="bdivider" style="margin-top:14px"><span class="ln"></span><span class="ln"></span></div>
-  <div class="guest-card">
-    <img class="guest-card-art" src="fotos/Invitación.png" alt="">
-    <div class="guest-card-text">
-      <div id="guestTitle" class="serif"></div>
-      <div id="guestName" class="serif">Invitado especial</div>
-      <div class="admision">Cupos reservados: <b id="admision">—</b></div>
-      <div class="firma" id="firma"></div>
-    </div>
-  </div>
-</section>
-
 <!-- ════════ NUESTRA HISTORIA ════════ -->
 <section class="story reveal">
   <div class="eyebrow">Nuestra historia</div>
   <div class="bdivider" style="margin-top:14px"><span class="ln"></span><span class="ln"></span></div>
-  <div class="story-grid" id="storyGrid"></div>
+  <div class="story-carousel">
+    <button type="button" class="story-arrow" id="storyPrev" aria-label="Historia anterior">&#10094;</button>
+    <div class="story-viewport">
+      <div class="story-grid" id="storyGrid"></div>
+    </div>
+    <button type="button" class="story-arrow" id="storyNext" aria-label="Historia siguiente">&#10095;</button>
+  </div>
+  <div class="story-dots" id="storyDots"></div>
 </section>
 
 <!-- ════════ DETALLES + ITINERARIO ════════ -->
@@ -845,23 +843,30 @@ const CONFIG = {
 
 <!-- ════════ SIN NIÑOS ════════ -->
 <section class="nokids reveal" id="nokids" style="display:none">
-  <div class="kico">
-    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
-      <circle cx="24" cy="14" r="6"/>
-      <path d="M14 40 C14 30 18 26 24 26 C30 26 34 30 34 40"/>
-      <line x1="8" y1="8" x2="40" y2="40"/>
-    </svg>
-  </div>
   <h3>Solo adultos</h3>
   <p id="nokidsText"></p>
 </section>
 
 <!-- ════════ REGALO ════════ -->
 <section class="gift reveal">
-  <div class="eyebrow">Mesa de regalos</div>
-  <h3 style="margin-top:10px">Un detalle</h3>
+  <h3 style="margin-top:10px">AGRADECEMOS SU GENTILEZA</h3>
   <p id="regalo"></p>
   <div class="gift-extra" id="giftExtra"></div>
+</section>
+
+<!-- ════════ INVITACIÓN PERSONALIZADA ════════ -->
+<section class="invite reveal">
+  <div class="eyebrow">Con todo el cariño</div>
+  <div class="bdivider" style="margin-top:14px"><span class="ln"></span><span class="ln"></span></div>
+  <div class="guest-card">
+    <img class="guest-card-art" src="fotos/Invitación.png" alt="">
+    <div class="guest-card-text">
+      <div id="guestTitle" class="serif"></div>
+      <div id="guestName" class="serif">Invitado especial</div>
+      <div class="admision">Cupos reservados: <b id="admision">—</b></div>
+      <div class="firma" id="firma"></div>
+    </div>
+  </div>
 </section>
 
 <!-- ════════ RSVP ════════ -->
@@ -1053,13 +1058,58 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
     $("timeline").appendChild(el);
   });
 
-  // Historia
+  // Historia (carrusel)
   CONFIG.historia.forEach(h=>{
     const el=document.createElement("div"); el.className="story-item";
     el.innerHTML=`<div class="ph"><img src="${h.foto}" alt="${h.titulo}"></div>`
       +`<div class="anio script">${h.anio}</div><h4 class="serif">${h.titulo}</h4><p>${h.texto}</p>`;
     $("storyGrid").appendChild(el);
   });
+
+  (function(){
+    const track=$("storyGrid"), dotsWrap=$("storyDots"), prevBtn=$("storyPrev"), nextBtn=$("storyNext");
+    const total=CONFIG.historia.length;
+    if(!track || total<=1){ if(prevBtn) prevBtn.style.display="none"; if(nextBtn) nextBtn.style.display="none"; return; }
+
+    let idx=0, timer=null;
+    const dots=CONFIG.historia.map((_,i)=>{
+      const b=document.createElement("button");
+      b.type="button"; b.className="story-dot"; b.setAttribute("aria-label","Ir a la historia "+(i+1));
+      b.addEventListener("click",()=>go(i,true));
+      dotsWrap.appendChild(b);
+      return b;
+    });
+
+    function render(){
+      track.style.transform=`translateX(-${idx*100}%)`;
+      dots.forEach((d,i)=>d.classList.toggle("active", i===idx));
+    }
+    function go(i, manual){
+      idx=(i+total)%total;
+      render();
+      if(manual) restart();
+    }
+    function next(){ go(idx+1); }
+    function start(){ timer=setInterval(next, 3000); }
+    function stop(){ if(timer){ clearInterval(timer); timer=null; } }
+    function restart(){ stop(); start(); }
+
+    prevBtn.addEventListener("click",()=>go(idx-1,true));
+    nextBtn.addEventListener("click",()=>go(idx+1,true));
+
+    let touchX=null;
+    const viewport=track.parentElement;
+    viewport.addEventListener("touchstart",e=>{ touchX=e.touches[0].clientX; stop(); },{passive:true});
+    viewport.addEventListener("touchend",e=>{
+      if(touchX===null) return;
+      const dx=e.changedTouches[0].clientX-touchX;
+      if(Math.abs(dx)>40) go(idx+(dx<0?1:-1),true); else restart();
+      touchX=null;
+    });
+
+    render();
+    start();
+  })();
 
   // ── Personalización por invitado ──
   const titulo=p("titulo"), invitado=p("invitado","Invitado especial"), firma=p("firma"), admision=p("admision","1 persona");

@@ -164,12 +164,12 @@ const CONFIG = {
   regaloSobre: "Puedes entregarnos tu regalo el día de la celebración.",         // déjalo vacío "" para ocultar la opción de sobre cerrado
   // Datos bancarios (deja "" en cualquier campo para no mostrar esa línea; deja todos vacíos para ocultar la opción)
   regaloBanco: {
-    banco: "Banco Pichincha",
+    banco: "Banco Bolivariano",
     tipoCuenta: "Ahorros",
-    numeroCuenta: "1234567890",
-    titular: "José Pérez",
-    cedula: "0900000000",
-    correo: "jose.perez@correo.com"
+    numeroCuenta: "0841273217",
+    titular: "José Blancas",
+    cedula: "0928713056",
+    correo: "blancasmoreno@gmail.com"
   }
 };
 </script>
@@ -577,10 +577,15 @@ const CONFIG = {
   .bank-card{position:relative;margin-top:6px;background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:14px 18px 6px;box-shadow:0 12px 26px -18px rgba(67,48,42,.4);overflow:hidden}
   .bank-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--terra),var(--dusty))}
   .bank-card ul{list-style:none}
-  .bank-card li{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .bank-card li{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:9px 0;border-bottom:1px dashed var(--line)}
   .bank-card li:last-child{border-bottom:none}
   .bank-card .br-label{flex:none;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dark-terra)}
+  .bank-card .br-value-wrap{display:flex;align-items:center;gap:6px;min-width:0}
   .bank-card .br-value{color:var(--ink);font-weight:500;text-align:right;word-break:break-word}
+  .br-copy{flex:none;width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:var(--cream-2);color:var(--dark-terra);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.25s;padding:0}
+  .br-copy svg{width:13px;height:13px}
+  .br-copy:hover{background:var(--terra);border-color:var(--terra);color:var(--cream)}
+  .br-copy.is-copied{background:var(--terra);border-color:var(--terra);color:var(--cream)}
   .gift-item .gift-link{display:inline-block;margin-top:8px;border:1px solid var(--terra);border-radius:30px;color:var(--terra);padding:9px 22px;font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;transition:.3s}
   .gift-item .gift-link:hover{background:var(--terra);color:var(--cream)}
   .bank-toggle{display:inline-block;margin-top:8px;border:1px solid var(--terra);border-radius:30px;background:none;color:var(--terra);
@@ -685,6 +690,13 @@ const CONFIG = {
       <path d="M4 13.5h16"/>
       <path d="M12 9.5v10.5"/>
       <path d="M12 9.5c-1-2.6-2.6-4-4.2-4-1.4 0-2.3 1-2.3 2.1 0 1 .8 1.9 2.3 1.9M12 9.5c1-2.6 2.6-4 4.2-4 1.4 0 2.3 1 2.3 2.1 0 1-.8 1.9-2.3 1.9"/>
+    </g>
+    <g id="ic-copy" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="8" y="8" width="12" height="12" rx="1.5"/>
+      <path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/>
+    </g>
+    <g id="ic-check" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 12.5l5 5L20 6"/>
     </g>
   </defs>
 </svg>
@@ -1013,7 +1025,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
       ];
       const filas=campos
         .filter(([,v])=>v && String(v).trim())
-        .map(([l,v])=>`<li><span class="br-label">${l}</span><span class="br-value">${String(v).trim()}</span></li>`)
+        .map(([l,v])=>`<li><span class="br-label">${l}</span><span class="br-value-wrap"><span class="br-value">${String(v).trim()}</span><button type="button" class="br-copy" aria-label="Copiar ${l}" title="Copiar"><svg viewBox="0 0 24 24"><use href="#ic-copy"/></svg></button></span></li>`)
         .join("");
       if(filas)
         items+=`<li class="gift-item">
@@ -1041,6 +1053,30 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
       card.toggleAttribute("hidden",!open);
       bankToggle.setAttribute("aria-expanded",String(open));
       bankToggle.textContent=open?"Ocultar datos de la cuenta":"Ver datos de la cuenta";
+    });
+    $("giftExtra").querySelectorAll(".br-copy").forEach(btn=>{
+      btn.addEventListener("click",async()=>{
+        const text=btn.closest("li").querySelector(".br-value").textContent;
+        try{
+          await navigator.clipboard.writeText(text);
+        }catch(e){
+          const ta=document.createElement("textarea");
+          ta.value=text; ta.style.position="fixed"; ta.style.opacity="0";
+          document.body.appendChild(ta); ta.select();
+          try{document.execCommand("copy");}catch(err){}
+          document.body.removeChild(ta);
+        }
+        const use=btn.querySelector("use");
+        use.setAttribute("href","#ic-check");
+        btn.classList.add("is-copied");
+        btn.setAttribute("aria-label","Copiado");
+        clearTimeout(btn._copyTimeout);
+        btn._copyTimeout=setTimeout(()=>{
+          use.setAttribute("href","#ic-copy");
+          btn.classList.remove("is-copied");
+          btn.setAttribute("aria-label","Copiar");
+        },1500);
+      });
     });
   })();
 

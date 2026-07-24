@@ -546,6 +546,7 @@ const CONFIG = {
   .rsvp-btn{display:inline-flex;align-items:center;gap:11px;background:var(--dark-terra);color:var(--cream);border:none;border-radius:30px;padding:16px 40px;font-family:'Jost',sans-serif;font-weight:500;letter-spacing:.18em;text-transform:uppercase;font-size:.76rem;cursor:pointer;text-decoration:none;transition:.3s}
   .rsvp-btn:hover{background:var(--ink);transform:translateY(-3px)}
   .rsvp-btn:disabled{opacity:.55;cursor:default;transform:none}
+  .rsvp-guest{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--dark-terra);font-size:1.25rem;margin-bottom:6px}
   .rsvp-thanks{display:none;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--dark-terra);font-size:1.35rem;line-height:1.5;max-width:420px;margin:0 auto}
   .rsvp-error{display:none;color:#a03a3a;font-size:.78rem;margin-top:14px}
   .rsvp-checklist{display:flex;flex-direction:column;gap:8px}
@@ -899,6 +900,7 @@ const CONFIG = {
   <div class="eyebrow" style="color:var(--dark-terra)">Confirmación</div>
   <h3 style="margin-top:10px">¿Nos acompañas?</h3>
   <p class="sub" id="rsvpHasta"></p>
+  <div class="rsvp-guest" id="rsvpGuest"></div>
 
   <!-- Modo Google Sheets (se muestra si googleSheet.scriptURL está configurado) -->
   <div id="sheetBlock" style="display:none">
@@ -1195,6 +1197,7 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
 
   // ── Confirmación (RSVP) ──
   const quien = (titulo ? titulo + " " : "") + invitado;
+  $("rsvpGuest").textContent = "Para: " + quien;
 
   const gs = CONFIG.googleSheet || {};
   const hasSheet = gs.scriptURL && gs.scriptURL.trim();

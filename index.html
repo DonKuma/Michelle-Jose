@@ -115,7 +115,7 @@ const CONFIG = {
 
   // Fecha y hora límite para confirmar. El texto "Confirma tu asistencia antes del..."
   // se genera automáticamente a partir de esta fecha (edita solo este valor).
-  rsvpLimite:"2026-10-14T23:59:59-05:00",
+  rsvpLimite:"2026-09-05T23:59:59-05:00",
 
   // ─────────────────────────────────────────────────────────────
   // CONFIRMACIÓN → GOOGLE SHEETS (sin Google Forms, sin salir de la página)
@@ -415,7 +415,11 @@ const CONFIG = {
   .verse-ref{display:block;margin-top:16px;font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;opacity:.8;font-family:'Jost',sans-serif;font-style:normal}
 
   /* ════════ INVITACIÓN PERSONALIZADA ════════ */
-  .invite{max-width:600px;margin:0 auto;padding:30px 24px;text-align:center}
+  /* Se une visualmente con RSVP: la línea separadora sube a aquí y el
+     mismo fondo rosa empolvado de RSVP arranca desde esta sección. */
+  .invite{padding:30px 24px;text-align:center;
+    border-top:1px solid var(--line);background:rgba(245,239,231,.6)}
+  .invite-inner{max-width:600px;margin:0 auto}
   .invite .eyebrow{margin-bottom:8px}
   .guest-card{position:relative;margin:0 auto 0;width:100%;max-width:420px}
   .guest-card-art{display:block;width:100%;height:auto}
@@ -526,7 +530,7 @@ const CONFIG = {
   .gift p{color:var(--ink-soft);max-width:500px;margin:0 auto}
 
   /* ════════ RSVP (rosa empolvado) ════════ */
-  .rsvp{background:rgba(245,239,231,.6);color:var(--ink);text-align:center;padding:84px 24px;border-top:1px solid var(--line)}
+  .rsvp{background:rgba(245,239,231,.6);color:var(--ink);text-align:center;padding:30px 24px}
   .rsvp h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(1.8rem,5.4vw,2.6rem);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em;color:var(--dark-terra)}
   .rsvp .sub{color:var(--ink-soft);margin-bottom:24px}
   .rsvp-form{max-width:360px;margin:0 auto}
@@ -877,14 +881,16 @@ const CONFIG = {
 
 <!-- ════════ INVITACIÓN PERSONALIZADA ════════ -->
 <section class="invite reveal">
-  <div class="eyebrow">Invitación Para:</div>
-  <div class="guest-card">
-    <img class="guest-card-art" src="fotos/Invitación.png" alt="">
-    <div class="guest-card-text">
-      <div id="guestTitle" class="serif"></div>
-      <div id="guestName" class="serif">Invitado especial</div>
-      <div class="admision">Cupos reservados: <b id="admision">—</b></div>
-      <div class="firma" id="firma"></div>
+  <div class="invite-inner">
+    <div class="eyebrow">Invitación Para:</div>
+    <div class="guest-card">
+      <img class="guest-card-art" src="fotos/Invitación.png" alt="">
+      <div class="guest-card-text">
+        <div id="guestTitle" class="serif"></div>
+        <div id="guestName" class="serif">Invitado especial</div>
+        <div class="admision">Cupos reservados: <b id="admision">—</b></div>
+        <div class="firma" id="firma"></div>
+      </div>
     </div>
   </div>
 </section>

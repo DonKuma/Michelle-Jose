@@ -652,9 +652,6 @@ const CONFIG = {
     .tl-ico{width:74px;height:68px}
   }
 
-  /* ── Reveal ── */
-  .reveal{opacity:0;transform:translateY(26px);transition:opacity 1s ease,transform 1s ease}
-  .reveal.in{opacity:1;transform:none}
 </style>
 </head>
 <body class="pl-active">
@@ -745,7 +742,7 @@ const CONFIG = {
 
 <!-- ════════ HERO ════════ -->
 <section class="hero">
-  <div class="reveal">
+  <div>
     <div class="htop"><span id="novia">Michelle</span> &amp; <span id="novio">José</span></div>
     <div class="hero-emboss"><img id="heroMono" alt="Monograma J y M"></div>
     <div class="hdate" id="heroDate">07 · 11 · 2026</div>
@@ -754,14 +751,14 @@ const CONFIG = {
 </section>
 
 <!-- ════════ ¡NOS CASAMOS! + VIDEO ════════ -->
-<section class="nos reveal">
+<section class="nos">
   <h3>¡Nos casamos!</h3>
   <p id="mensaje"></p>
   <div class="video-wrap" id="videoWrap" style="display:none"></div>
 </section>
 
 <!-- ════════ TOCADISCOS ════════ -->
-<section class="turntable-wrap reveal">
+<section class="turntable-wrap">
   <div class="tt-glow"></div>
   <div class="tt-row">
     <div class="turntable">
@@ -777,14 +774,14 @@ const CONFIG = {
 </section>
 
 <!-- ════════ VERSÍCULO ════════ -->
-<section class="verse-band reveal">
+<section class="verse-band">
   <p class="verse serif" id="verse">“…”
     <span class="verse-ref" id="verseRef"></span>
   </p>
 </section>
 
 <!-- ════════ COUNTDOWN ════════ -->
-<section class="countdown-wrap reveal">
+<section class="countdown-wrap">
   <div class="cd-photo">
     <div class="cd-frame">
       <img class="cd-frame-art" src="fotos/Fondo Conteo.png" alt="" aria-hidden="true">
@@ -810,7 +807,7 @@ const CONFIG = {
 </section>
 
 <!-- ════════ NUESTRA HISTORIA ════════ -->
-<section class="story reveal">
+<section class="story">
   <div class="eyebrow">Nuestra historia</div>
   <div class="story-carousel">
     <button type="button" class="story-arrow" id="storyPrev" aria-label="Historia anterior">&#10094;</button>
@@ -823,7 +820,7 @@ const CONFIG = {
 </section>
 
 <!-- ════════ DETALLES + ITINERARIO ════════ -->
-<section class="details-band reveal">
+<section class="details-band">
   <div class="details">
     <div class="card">
       <div class="licon licon-photo"><img src="fotos/Ceremonia acuarela.png" alt="Ceremonia"></div>
@@ -849,7 +846,7 @@ const CONFIG = {
 </section>
 
 <!-- ════════ VESTIMENTA ════════ -->
-<section class="dress reveal">
+<section class="dress">
   <div class="eyebrow">Código de vestimenta</div>
   <h3 id="dressCode" style="margin-top:10px">Formal</h3>
   <p id="dressNote"></p>
@@ -868,20 +865,20 @@ const CONFIG = {
 </section>
 
 <!-- ════════ SIN NIÑOS ════════ -->
-<section class="nokids reveal" id="nokids" style="display:none">
+<section class="nokids" id="nokids" style="display:none">
   <h3>Solo adultos</h3>
   <p id="nokidsText"></p>
 </section>
 
 <!-- ════════ REGALO ════════ -->
-<section class="gift reveal">
+<section class="gift">
   <h3 style="margin-top:10px">GRACIAS POR SU GENTILEZA</h3>
   <p id="regalo"></p>
   <div class="gift-extra" id="giftExtra"></div>
 </section>
 
 <!-- ════════ INVITACIÓN PERSONALIZADA ════════ -->
-<section class="invite reveal">
+<section class="invite">
   <div class="invite-inner">
     <div class="eyebrow">Invitación Para:</div>
     <div class="guest-card">
@@ -897,7 +894,7 @@ const CONFIG = {
 </section>
 
 <!-- ════════ RSVP ════════ -->
-<section class="rsvp reveal">
+<section class="rsvp">
   <h3 style="margin-top:10px">¿Nos acompañas?</h3>
   <p class="sub" id="rsvpHasta"></p>
 
@@ -942,7 +939,7 @@ const CONFIG = {
 </section>
 
 <!-- ════════ CIERRE "GRACIAS" ════════ -->
-<section class="closing reveal">
+<section class="closing">
   <div class="cmono"><img id="closeMono" alt="Monograma J y M"></div>
   <div class="eyebrow">Con amor</div>
   <div class="cnames serif"><span id="cNovia">Michelle</span><span class="amp">&amp;</span><span id="cNovio">José</span></div>
@@ -1408,10 +1405,6 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
       ttAudio.play().catch(()=>{});
     }
   });
-
-  // Reveal
-  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.1});
-  document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
 
   // Pantalla de carga: se oculta solo cuando toda la página (imágenes, fuentes)
   // terminó de cargar, para que nada se muestre a medias.

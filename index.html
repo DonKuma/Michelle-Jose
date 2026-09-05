@@ -162,14 +162,24 @@ const CONFIG = {
   // Opcionales para la mesa de regalos (déjalos vacíos "" para ocultarlos)
   regaloLink: "",          // ej: enlace a tu lista/registro de regalos
   regaloSobre: "Puedes entregarnos tu regalo el día de la celebración.",         // déjalo vacío "" para ocultar la opción de sobre cerrado
-  // Datos bancarios (deja "" en cualquier campo para no mostrar esa línea; deja todos vacíos para ocultar la opción)
+  // Datos bancarios (deja "" en cualquier campo para no mostrar esa línea; deja todos vacíos en una cuenta para ocultarla)
   regaloBanco: {
-    banco: "Banco Bolivariano",
-    tipoCuenta: "Ahorros",
-    numeroCuenta: "0841273217",
-    titular: "José Blancas",
-    cedula: "0928713056",
-    correo: "blancasmoreno@gmail.com"
+    novio: {
+      banco: "Banco Bolivariano",
+      tipoCuenta: "Ahorros",
+      numeroCuenta: "0841273217",
+      titular: "José Blancas",
+      cedula: "0928713056",
+      correo: "blancasmoreno@gmail.com"
+    },
+    novia: {
+      banco: "Banco Guayaquil",
+      tipoCuenta: "Ahorros",
+      numeroCuenta: "56008085",
+      titular: "Michelle Rivadeneira",
+      cedula: "0750204869",
+      correo: "me_rivadeneira96@hotmail.com"
+    }
   }
 };
 </script>
@@ -589,6 +599,7 @@ const CONFIG = {
   .br-copy.is-copied{background:var(--terra);border-color:var(--terra);color:var(--cream)}
   .gift-item .gift-link{display:inline-block;margin-top:8px;border:1px solid var(--terra);border-radius:30px;color:var(--terra);padding:9px 22px;font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;transition:.3s}
   .gift-item .gift-link:hover{background:var(--terra);color:var(--cream)}
+  .bank-account+.bank-account{margin-top:10px}
   .bank-toggle{display:inline-block;margin-top:8px;border:1px solid var(--terra);border-radius:30px;background:none;color:var(--terra);
     padding:9px 22px;font-family:'Jost',sans-serif;font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;
     cursor:pointer;transition:.3s}
@@ -1027,26 +1038,38 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
         </span>
       </li>`;
     if(CONFIG.regaloBanco){
-      const b=CONFIG.regaloBanco;
-      const campos=[
-        ["Banco", b.banco],
-        ["Tipo de cuenta", b.tipoCuenta],
-        ["Número de cuenta", b.numeroCuenta],
-        ["Titular", b.titular],
-        ["Cédula", b.cedula],
-        ["Correo", b.correo]
+      const cuentas=[
+        ["novio", (CONFIG.novio||"Novio").split(" ")[0]],
+        ["novia", (CONFIG.novia||"Novia").split(" ")[0]]
       ];
-      const filas=campos
-        .filter(([,v])=>v && String(v).trim())
-        .map(([l,v])=>`<li><span class="br-label">${l}</span><span class="br-value-wrap"><span class="br-value">${String(v).trim()}</span><button type="button" class="br-copy" aria-label="Copiar ${l}" title="Copiar"><svg viewBox="0 0 24 24"><use href="#ic-copy"/></svg></button></span></li>`)
-        .join("");
-      if(filas)
+      let bankHtml="";
+      cuentas.forEach(([key,label])=>{
+        const b=CONFIG.regaloBanco[key];
+        if(!b) return;
+        const campos=[
+          ["Banco", b.banco],
+          ["Tipo de cuenta", b.tipoCuenta],
+          ["Número de cuenta", b.numeroCuenta],
+          ["Titular", b.titular],
+          ["Cédula", b.cedula],
+          ["Correo", b.correo]
+        ];
+        const filas=campos
+          .filter(([,v])=>v && String(v).trim())
+          .map(([l,v])=>`<li><span class="br-label">${l}</span><span class="br-value-wrap"><span class="br-value">${String(v).trim()}</span><button type="button" class="br-copy" aria-label="Copiar ${l}" title="Copiar"><svg viewBox="0 0 24 24"><use href="#ic-copy"/></svg></button></span></li>`)
+          .join("");
+        if(filas)
+          bankHtml+=`<div class="bank-account">
+            <button type="button" class="bank-toggle" data-label="datos cuenta ${label}" aria-expanded="false">Ver datos cuenta ${label}</button>
+            <div class="bank-card" hidden><ul>${filas}</ul></div>
+          </div>`;
+      });
+      if(bankHtml)
         items+=`<li class="gift-item">
           <span class="gi-ico"><svg viewBox="0 0 24 24"><use href="#ic-bank"/></svg></span>
           <span class="gi-body">
             <span class="gi-title">Transferencia bancaria</span>
-            <button type="button" class="bank-toggle" aria-expanded="false">Ver datos de la cuenta</button>
-            <div class="bank-card" hidden><ul>${filas}</ul></div>
+            ${bankHtml}
           </span>
         </li>`;
     }
@@ -1059,13 +1082,15 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
         </span>
       </li>`;
     $("giftExtra").innerHTML = items ? `<ul class="gift-list">${items}</ul>` : "";
-    const bankToggle=$("giftExtra").querySelector(".bank-toggle");
-    if(bankToggle) bankToggle.addEventListener("click",()=>{
-      const card=bankToggle.nextElementSibling;
-      const open=card.hasAttribute("hidden");
-      card.toggleAttribute("hidden",!open);
-      bankToggle.setAttribute("aria-expanded",String(open));
-      bankToggle.textContent=open?"Ocultar datos de la cuenta":"Ver datos de la cuenta";
+    $("giftExtra").querySelectorAll(".bank-toggle").forEach(bankToggle=>{
+      bankToggle.addEventListener("click",()=>{
+        const card=bankToggle.nextElementSibling;
+        const open=card.hasAttribute("hidden");
+        card.toggleAttribute("hidden",!open);
+        bankToggle.setAttribute("aria-expanded",String(open));
+        const label=bankToggle.dataset.label;
+        bankToggle.textContent=open?`Ocultar ${label}`:`Ver ${label}`;
+      });
     });
     $("giftExtra").querySelectorAll(".br-copy").forEach(btn=>{
       btn.addEventListener("click",async()=>{

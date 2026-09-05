@@ -616,16 +616,10 @@ const CONFIG = {
   }
 
   /* ════════ CIERRE "GRACIAS" ════════ */
-  .closing{text-align:center;padding:90px 0 0;overflow:hidden}
+  .closing{text-align:center;padding:0 0 90px;overflow:hidden}
   .closing .cinner{position:relative;z-index:2;padding:0 24px}
-  .closing .cmono{width:88px;margin:0 auto 14px}
-  .closing .cmono img{width:100%}
-  .closing .cnames{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(2.4rem,9vw,4rem);line-height:1;color:var(--ink)}
-  .closing .cnames .amp{color:var(--terra);font-family:'Pinyon Script',cursive;font-size:.6em;margin:0 .06em}
-  .closing .cdate{margin-top:16px;font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;color:var(--dark-terra)}
   .closing .cthanks{margin-top:26px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4rem;color:var(--dusty)}
-  .closing .cdivider{width:1px;height:58px;margin:24px auto 0;background:linear-gradient(180deg,var(--line),rgba(140,86,64,0))}
-  .closing .cphoto{position:relative;z-index:1;width:100%;max-width:980px;margin:clamp(-90px,-7vw,-28px) auto 0}
+  .closing .cphoto{position:relative;z-index:1;width:100%;max-width:980px;margin:0 auto}
   .closing .cphoto img{display:block;width:100%;height:auto;filter:var(--photo-filter);
     -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 34%,#000 84%,transparent 100%),linear-gradient(90deg,transparent 0,#000 15%,#000 85%,transparent 100%);
     -webkit-mask-composite:source-in;
@@ -959,15 +953,10 @@ const CONFIG = {
 
 <!-- ════════ CIERRE "GRACIAS" ════════ -->
 <section class="closing">
-  <div class="cinner">
-    <div class="cmono"><img id="closeMono" alt="Monograma J y M"></div>
-    <div class="eyebrow">Con amor</div>
-    <div class="cnames serif"><span id="cNovia">Michelle</span><span class="amp">&amp;</span><span id="cNovio">José</span></div>
-    <div class="cdate" id="closeDate">07 · 11 · 2026</div>
-    <div class="cthanks">Gracias por acompañarnos</div>
-    <div class="cdivider"></div>
-  </div>
   <div class="cphoto"><img src="fotos/Cierre.jpg" alt="Michelle y José" loading="lazy"></div>
+  <div class="cinner">
+    <div class="cthanks">Gracias por acompañarnos</div>
+  </div>
 </section>
 
 <footer class="credits">Elaborado por <b>Don Kuma</b> © 2026 · Todos los derechos reservados</footer>
@@ -1005,9 +994,6 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
   // Ceremonia / Recepción
   const fill=(pre,o)=>{$(pre+"Title").textContent=o.titulo;$(pre+"Hora").textContent=o.hora;$(pre+"Lugar").textContent=o.lugar;$(pre+"Dir").textContent=o.direccion;$(pre+"Mapa").href=o.mapa;};
   fill("c",CONFIG.ceremonia); fill("r",CONFIG.recepcion);
-
-  // Monograma de cierre
-  $("closeMono").src = MONO_DARK;
 
   // Mensaje "¡Nos casamos!"
   $("mensaje").textContent = CONFIG.mensaje || "";
@@ -1129,10 +1115,6 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
       });
     });
   })();
-
-  // Cierre "Gracias"
-  $("cNovia").textContent=CONFIG.novia; $("cNovio").textContent=CONFIG.novio;
-  try{const d=new Date(CONFIG.fechaISO);$("closeDate").textContent=String(d.getDate()).padStart(2,"0")+" · "+String(d.getMonth()+1).padStart(2,"0")+" · "+d.getFullYear();}catch(e){}
 
   // Itinerario (línea de tiempo zigzag con ilustraciones)
   CONFIG.itinerario.forEach(it=>{

@@ -954,6 +954,7 @@ const CONFIG = {
       <p class="rsvp-error" id="sheetError">No pudimos enviar tu confirmación. Por favor intenta de nuevo en un momento.</p>
     </form>
     <p class="rsvp-thanks" id="sheetThanks">¡Gracias por confirmar! Ya recibimos tu respuesta y no vemos la hora de celebrar contigo.</p>
+    <p class="rsvp-thanks" id="sheetSorry">Lamentamos mucho que no puedas acompañarnos. Gracias por avisarnos; te tendremos presente ese día.</p>
   </div>
   <iframe name="hidden_iframe" id="hidden_iframe" style="display:none"></iframe>
 </section>
@@ -1332,7 +1333,14 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
       if(!submitting) return; // primer load (iframe en blanco) se ignora
       submitting = false; submitted = true;
       form.style.display = "none";
-      $("sheetThanks").style.display = "block";
+      if($("asistNo").checked){
+        $("sheetSorry").textContent = (maxCupos > 1)
+          ? "Lamentamos mucho que no puedan acompañarnos. Gracias por avisarnos; los tendremos presentes ese día."
+          : "Lamentamos mucho que no puedas acompañarnos. Gracias por avisarnos; te tendremos presente ese día.";
+        $("sheetSorry").style.display = "block";
+      } else {
+        $("sheetThanks").style.display = "block";
+      }
     });
     // Si tras 12s no hubo respuesta del iframe, algo falló (URL mal configurada, etc.)
     form.addEventListener("submit", ()=>{

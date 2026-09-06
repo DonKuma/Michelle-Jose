@@ -563,6 +563,7 @@ const CONFIG = {
   .rsvp-btn:disabled{opacity:.55;cursor:default;transform:none}
   .rsvp-thanks{display:none;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--dark-terra);font-size:1.35rem;line-height:1.5;max-width:420px;margin:0 auto}
   .rsvp-error{display:none;color:#a03a3a;font-size:.78rem;margin-top:14px}
+  .rsvp-checking{display:none;color:var(--ink-soft);font-size:.8rem;letter-spacing:.06em}
   .rsvp-checklist{display:flex;flex-direction:column;gap:8px}
   .rsvp-checklist label{display:flex;align-items:center;gap:10px;border:1px solid var(--line);padding:11px 14px;font-size:.88rem;cursor:pointer;text-align:left}
   .rsvp-checklist input{width:17px;height:17px;flex:none;accent-color:var(--dark-terra)}
@@ -953,6 +954,8 @@ const CONFIG = {
       <button type="submit" class="rsvp-btn" id="sheetBtn">Confirmar</button>
       <p class="rsvp-error" id="sheetError">No pudimos enviar tu confirmación. Por favor intenta de nuevo en un momento.</p>
     </form>
+    <p class="rsvp-checking" id="sheetChecking">Verificando tu confirmación…</p>
+    <p class="rsvp-thanks" id="sheetAlready">Tu respuesta ya fue enviada. Si tuviste algún problema o necesitas cambiarla, comunícate con nosotros.</p>
     <p class="rsvp-thanks" id="sheetThanks">¡Gracias por confirmar! Ya recibimos tu respuesta y no vemos la hora de celebrar contigo.</p>
     <p class="rsvp-thanks" id="sheetSorry">Lamentamos mucho que no puedas acompañarnos. Gracias por avisarnos; te tendremos presente ese día.</p>
   </div>
@@ -1353,6 +1356,30 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
         }
       }, 12000);
     });
+
+    // ── ¿Esta invitación ya respondió? ──
+    // Antes de mostrar el formulario se consulta la hoja de confirmaciones
+    // (GET ?check=1&titulo=...&invitado=...). Si esa invitación ya tiene una
+    // fila, en vez del formulario se muestra el aviso de que la respuesta ya
+    // fue enviada. Si la consulta falla (red, Apps Script sin actualizar…) se
+    // muestra el formulario igual, para no bloquear a un invitado real.
+    form.style.display = "none";
+    $("sheetChecking").style.display = "block";
+    const checkURL = gs.scriptURL.trim()
+      + "?check=1&titulo=" + encodeURIComponent(titulo)
+      + "&invitado=" + encodeURIComponent(invitado);
+    fetch(checkURL)
+      .then(r=>r.json())
+      .then(d=>!!(d && d.respondido))
+      .catch(()=>false)
+      .then(yaRespondio=>{
+        $("sheetChecking").style.display = "none";
+        if(yaRespondio){
+          $("sheetAlready").style.display = "block";
+        } else {
+          form.style.display = "block";
+        }
+      });
   }
 
   // Countdown

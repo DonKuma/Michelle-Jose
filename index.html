@@ -19,14 +19,21 @@ window.addEventListener("error", function(ev){
 <!-- ════ PREVIEW DE WHATSAPP (Open Graph) ════
      Cambia donkuma y Michelle-Jose por los reales de GitHub.
      La imagen debe ser una URL ABSOLUTA (WhatsApp no lee rutas relativas
-     ni ejecuta JavaScript). Sube "fotos/portada.jpg" (ideal 1200x630px,
-     menos de 300 KB) al repositorio. -->
+     ni ejecuta JavaScript). fotos/hero-og.jpg es una versión 1200x630
+     (formato horizontal 1.91:1) generada a partir de fotos/hero.jpeg:
+     WhatsApp muestra previews de forma inconsistente con imágenes
+     verticales, así que siempre usa aquí una versión horizontal. -->
 <meta property="og:title" content="Michelle &amp; José · ¡Nos casamos!">
 <meta property="og:description" content="Sábado 7 de noviembre de 2026 · Guayaquil. Toca para abrir tu invitación.">
-<meta property="og:image" content="https://donkuma.github.io/Michelle-Jose/fotos/hero.jpeg">
+<meta property="og:image" content="https://donkuma.github.io/Michelle-Jose/fotos/hero-og.jpg">
+<meta property="og:image:secure_url" content="https://donkuma.github.io/Michelle-Jose/fotos/hero-og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:url" content="https://donkuma.github.io/Michelle-Jose/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://donkuma.github.io/Michelle-Jose/fotos/hero-og.jpg">
 
 <!-- ════════════════════════════════════════════════════════════════
      CONFIGURACIÓN — edita SOLO este bloque para reutilizar la plantilla.

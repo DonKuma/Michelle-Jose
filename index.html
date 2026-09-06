@@ -955,9 +955,9 @@ const CONFIG = {
       <p class="rsvp-error" id="sheetError">No pudimos enviar tu confirmación. Por favor intenta de nuevo en un momento.</p>
     </form>
     <p class="rsvp-checking" id="sheetChecking">Verificando tu confirmación…</p>
-    <p class="rsvp-thanks" id="sheetAlready">Tu respuesta ya fue enviada. Si tuviste algún problema o necesitas cambiarla, comunícate con nosotros.</p>
+    <p class="rsvp-thanks" id="sheetAlready">Tu respuesta ya fue enviada, si necesitas ayuda comunícate con nosotros.</p>
     <p class="rsvp-thanks" id="sheetThanks">¡Gracias por confirmar! Ya recibimos tu respuesta y no vemos la hora de celebrar contigo.</p>
-    <p class="rsvp-thanks" id="sheetSorry">Lamentamos que no puedan acompañarnos. Gracias por avisarnos; los tendremos presentes en nuestros corazones. 🤍</p>
+    <p class="rsvp-thanks" id="sheetSorry">Lamentamos que no puedan acompañarnos. Gracias por avisarnos; los tendremos presentes en nuestros corazones. ♥️</p>
   </div>
   <iframe name="hidden_iframe" id="hidden_iframe" style="display:none"></iframe>
 </section>
@@ -1338,8 +1338,8 @@ const MONO_LIGHT = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAAIxCAYAAA
       form.style.display = "none";
       if($("asistNo").checked){
         $("sheetSorry").textContent = (maxCupos > 1)
-          ? "Lamentamos que no puedan acompañarnos. Gracias por avisarnos; los tendremos presentes en nuestros corazones. 🤍"
-          : "Lamentamos que no puedas acompañarnos. Gracias por avisarnos; te tendremos presente en nuestros corazones. 🤍";
+          ? "Lamentamos que no puedan acompañarnos. Gracias por avisarnos; los tendremos presentes en nuestros corazones. ♥️"
+          : "Lamentamos que no puedas acompañarnos. Gracias por avisarnos; te tendremos presente en nuestros corazones. ♥️";
         $("sheetSorry").style.display = "block";
       } else {
         $("sheetThanks").style.display = "block";
